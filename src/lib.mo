@@ -86,7 +86,7 @@ module {
   /// Vector.addMany(vec, 2, 1); // [2, 2, 2, 2, 1, 1]
   /// ```
   ///
-  /// Runtime: O(count)
+  /// Runtime: `O(count)`
   public func addMany<X>(vec : Vector<X>, count : Nat, initValue : X) {
     let (i_block, i_element) = locate(size(vec) + count);
     let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
@@ -602,9 +602,9 @@ module {
   /// Vector.forSome<Nat>(vec, func x { x > 3 }); // => true
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `predicate` runs in O(1) time and space.
   public func forSome<X>(vec : Vector<X>, predicate : X -> Bool) : Bool {
@@ -628,9 +628,9 @@ module {
   /// Vector.forNone<Nat>(vec, func x { x == 0 }); // => true
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `predicate` runs in O(1) time and space.
   public func forNone<X>(vec : Vector<X>, predicate : X -> Bool) : Bool = not forSome(vec, predicate);
@@ -816,7 +816,7 @@ module {
   /// and instead the consumption of the iterator is interleaved with other operations on the
   /// Vector, then this may lead to unexpected results.
   ///
-  /// Runtime: O(1)
+  /// Runtime: `O(1)`
   public func keys<X>(vec : Vector<X>) : Iter.Iter<Nat> = Iter.range(0, size(vec) - 1);
 
   /// Creates a Vector containing elements from `iter`.
@@ -1011,7 +1011,7 @@ module {
   ///
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   public func toVarArray<X>(vec : Vector<X>) : [var X] {
     let s = size(vec);
     if (s == 0) return [var];
@@ -1176,9 +1176,9 @@ module {
   /// });
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(size)
+  /// Space: `O(size)`
   ///
   /// *Runtime and space assumes that `f` runs in O(1) time and space.
   public func iterateRev<X>(vec : Vector<X>, f : X -> ()) {
@@ -1222,9 +1222,9 @@ module {
   /// Vector.contains<Nat>(vec, 2, Nat.equal); // => true
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `equal` runs in O(1) time and space.
   public func contains<X>(vec : Vector<X>, element : X, equal : (X, X) -> Bool) : Bool {
@@ -1246,9 +1246,9 @@ module {
   /// Vector.max<Nat>(vec, Nat.compare); // => ?2
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `compare` runs in O(1) time and space.
   public func max<X>(vec : Vector<X>, compare : (X, X) -> Order.Order) : ?X {
@@ -1280,9 +1280,9 @@ module {
   /// Vector.min<Nat>(vec, Nat.compare); // => ?1
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `compare` runs in O(1) time and space.
   public func min<X>(vec : Vector<X>, compare : (X, X) -> Order.Order) : ?X {
@@ -1319,9 +1319,9 @@ module {
   /// Vector.equal<Nat>(vec1, vec2, Nat.equal); // => true
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `equal` runs in O(1) time and space.
   public func equal<X>(vec1 : Vector<X>, vec2 : Vector<X>, equal : (X, X) -> Bool) : Bool {
@@ -1357,9 +1357,9 @@ module {
   /// Vector.compare<Nat>(vec1, vec2, Nat.compare); // => #less
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
   /// *Runtime and space assumes that `compare` runs in O(1) time and space.
   public func compare<X>(vec1 : Vector<X>, vec2 : Vector<X>, compare_fn : (X, X) -> Order.Order) : Order.Order {
@@ -1395,9 +1395,9 @@ module {
   /// Vector.toText<Nat>(vec, Nat.toText); // => "[1, 2, 3, 4]"
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(size)
+  /// Space: `O(size)`
   ///
   /// *Runtime and space assumes that `toText` runs in O(1) time and space.
   public func toText<X>(vec : Vector<X>, toText_fn : X -> Text) : Text {
@@ -1431,11 +1431,11 @@ module {
   /// Vector.foldLeft<Text, Nat>(vec, "", func (acc, x) { acc # Nat.toText(x)}); // => "123"
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
-  /// *Runtime and space assumes that `combine` runs in O(1) time and space.
+  /// *Runtime and space assumes that `combine` runs in O(1)` time and space.
   public func foldLeft<A, X>(vec : Vector<X>, base : A, combine : (A, X) -> A) : A {
     var accumulation = base;
 
@@ -1461,11 +1461,11 @@ module {
   /// Vector.foldRight<Nat, Text>(vec, "", func (x, acc) { Nat.toText(x) # acc }); // => "123"
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   ///
-  /// *Runtime and space assumes that `combine` runs in O(1) time and space.
+  /// *Runtime and space assumes that `combine` runs in O(1)` time and space.
   public func foldRight<X, A>(vec : Vector<X>, base : A, combine : (X, A) -> A) : A {
     var accumulation = base;
 
@@ -1488,9 +1488,9 @@ module {
   /// Vector.toText<Nat>(vec, Nat.toText); // => "[1]"
   /// ```
   ///
-  /// Runtime: O(1)
+  /// Runtime: `O(1)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   public func make<X>(element : X) : Vector<X> = init(1, element);
 
   /// Reverses the order of elements in `vector`.
@@ -1506,9 +1506,9 @@ module {
   /// Vector.toText<Nat>(vec, Nat.toText); // => "[3, 2, 1]"
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   public func reverse<X>(vec : Vector<X>) {
     let vsize = size(vec);
     if (vsize == 0) return;
@@ -1539,9 +1539,9 @@ module {
   /// Vector.toText<Nat>(rvec, Nat.toText); // => "[3, 2, 1]"
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   public func reversed<X>(vec : Vector<X>) : Vector<X> {
     let rvec = new<X>();
 
@@ -1562,9 +1562,9 @@ module {
   /// Vector.isEmpty<Nat>(vec); // => false
   /// ```
   ///
-  /// Runtime: O(1)
+  /// Runtime: `O(1)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   public func isEmpty<X>(vec : Vector<X>) : Bool {
     vec.i_block == 1 and vec.i_element == 0;
   };

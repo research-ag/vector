@@ -29,7 +29,7 @@ module {
   /// ```
   /// Runtime: `O(1)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   public class Vector<X>() {
     var v : Static.Vector<X> = Static.new();
 
@@ -587,9 +587,9 @@ module {
   /// Vector.toText<Nat>(vec, Nat.toText); // => "[1]"
   /// ```
   ///
-  /// Runtime: O(1)
+  /// Runtime: `O(1)`
   ///
-  /// Space: O(1)
+  /// Space: `O(1)`
   public func make<X>(element : X) : Vector<X> {
     let v = Vector<X>();
     v.unshare(Static.init(1, element));
@@ -609,9 +609,9 @@ module {
   /// Vector.toText<Nat>(vec, Nat.toText); // => "[1, 2, 3, 4]"
   /// ```
   ///
-  /// Runtime: O(size)
+  /// Runtime: `O(size)`
   ///
-  /// Space: O(size)
+  /// Space: `O(size)`
   ///
   /// *Runtime and space assumes that `toText` runs in O(1) time and space.
   public func toText<X>(vec : Vector<X>, toText_fn : X -> Text) : Text {
