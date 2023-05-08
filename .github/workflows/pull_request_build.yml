@@ -1,0 +1,42 @@
+name: App build
+on:
+  pull_request:
+    types: [synchronize, opened, reopened, ready_for_review, unlabeled]
+
+env:
+  mops_version: 0.12.1
+  moc_version: 0.8.8
+  dfx_version: 0.14.0
+  ic-repl_version: 0.3.18
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: cachix/install-nix-action@v20
+        with:
+          nix_path: nixpkgs=channel:nixos-22.11
+
+      - name: "Install wasmtime"
+        run: |
+          nix-env --install wasmtime --file '<nixpkgs>'
+  
+      - name: Make bin directory
+        run: mkdir -p /home/runner/bin
+
+      - name: "install Motoko binaries"
+        run: |
+          wget https://github.com/dfinity/motoko/releases/download/${{ env.moc_version }}/motoko-linux64-${{ env.moc_version }}.tar.gz
+          tar -xzf motoko-linux64-${{ env.moc_version }}.tar.gz -C /home/runner/bin
+          echo "/home/runner/bin" >> $GITHUB_PATH
+
+      - name: "install mops"
+        run: |          
+          npm i -g ic-mops@${{ env.mops_version }}
+
+      - name: "test"
+        run: make -C test
