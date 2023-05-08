@@ -326,7 +326,6 @@ run(
 
 vector := Vector.Vector<Nat>();
 
-/* TODO contains
 run(
   suite(
     "contains empty",
@@ -344,13 +343,11 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
 vector := Vector.fromArray<Nat>([2,1,10,1,0,3]);
 
-/* TODO max
 run(
   suite(
     "max",
@@ -363,13 +360,11 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
 vector := Vector.fromArray<Nat>([2,1,10,1,0,3,0]);
 
-/* TODO max
 run(
   suite(
     "min",
@@ -382,7 +377,6 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
@@ -390,14 +384,13 @@ vector := Vector.fromArray<Nat>([0,1,2,3,4,5]);
 
 var vector2 = Vector.fromArray<Nat>([0,1,2]);
 
-/* TODO equal
 run(
   suite(
     "equal",
     [
       test(
         "empty vectors",
-        Vector.equal<Nat>(Vector.Vector<Nat>()(), Vector.Vector<Nat>()(), Nat.equal),
+        Vector.equal<Nat>(Vector.Vector<Nat>(), Vector.Vector<Nat>(), Nat.equal),
         M.equals(T.bool(true))
       ),
       test(
@@ -407,7 +400,7 @@ run(
       ),
       test(
         "non-empty and empty vectors",
-        Vector.equal<Nat>(vector, Vector.Vector<Nat>()(), Nat.equal),
+        Vector.equal<Nat>(vector, Vector.Vector<Nat>(), Nat.equal),
         M.equals(T.bool(false))
       ),
       test(
@@ -418,7 +411,6 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
@@ -427,14 +419,13 @@ vector2 := Vector.fromArray<Nat>([0,1,2]);
 
 var vector3 = Vector.fromArray<Nat>([2,3,4,5]);
 
-/* TODO compare
 run(
   suite(
     "compare",
     [
       test(
         "empty vectors",
-        Vector.compare<Nat>(Vector.Vector<Nat>()(), Vector.Vector<Nat>()(), Nat.compare),
+        Vector.compare<Nat>(Vector.Vector<Nat>(), Vector.Vector<Nat>(), Nat.compare),
         M.equals(OrderTestable(#equal))
       ),
       test(
@@ -444,7 +435,7 @@ run(
       ),
       test(
         "non-empty and empty vectors",
-        Vector.compare<Nat>(vector, Vector.Vector<Nat>()(), Nat.compare),
+        Vector.compare<Nat>(vector, Vector.Vector<Nat>(), Nat.compare),
         M.equals(OrderTestable(#greater))
       ),
       test(
@@ -460,7 +451,6 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
@@ -497,7 +487,6 @@ vector3 := Vector.Vector<Nat>();
 
 var vector4 = Vector.make<Nat>(3);
 
-/* TODO reverse
 Vector.reverse<Nat>(vector);
 Vector.reverse<Nat>(vector2);
 Vector.reverse<Nat>(vector3);
@@ -530,14 +519,12 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
-/* TODO reversed
 vector := Vector.reversed<Nat>(Vector.fromArray<Nat>([0,1,2,3,4,5,6,7]));
 vector2 := Vector.reversed<Nat>(Vector.fromArray<Nat>([0,1,2,3,4,5,6]));
-vector3 := Vector.reversed<Nat>(Vector.Vector<Nat>()());
+vector3 := Vector.reversed<Nat>(Vector.Vector<Nat>());
 vector4 := Vector.reversed<Nat>(Vector.make<Nat>(3));
 
 run(
@@ -567,13 +554,11 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
 vector := Vector.fromArray<Nat>([0,1,2,3,4,5,6]);
 
-/* TODO foldLeft
 run(
   suite(
     "foldLeft",
@@ -585,19 +570,17 @@ run(
       ),
       test(
         "return value empty",
-        Vector.foldLeft<Text, Nat>(Vector.Vector<Nat>()(), "", func(acc, x) = acc # Nat.toText(x)),
+        Vector.foldLeft<Text, Nat>(Vector.Vector<Nat>(), "", func(acc, x) = acc # Nat.toText(x)),
         M.equals(T.text(""))
       )
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
 vector := Vector.fromArray<Nat>([0,1,2,3,4,5,6]);
 
-/* TODO foldLeft
 run(
   suite(
     "foldRight",
@@ -609,26 +592,24 @@ run(
       ),
       test(
         "return value empty",
-        Vector.foldRight<Nat, Text>(Vector.Vector<Nat>()(), "", func(x, acc) = acc # Nat.toText(x)),
+        Vector.foldRight<Nat, Text>(Vector.Vector<Nat>(), "", func(x, acc) = acc # Nat.toText(x)),
         M.equals(T.text(""))
       )
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
 vector := Vector.make<Nat>(2);
 
-/* TODO isEmpty
 run(
   suite(
     "isEmpty",
     [
       test(
         "true",
-        Vector.isEmpty(Vector.Vector<Nat>()()),
+        Vector.isEmpty(Vector.Vector<Nat>()),
         M.equals(T.bool(true))
       ),
       test(
@@ -639,7 +620,6 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 

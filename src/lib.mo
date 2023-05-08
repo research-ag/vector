@@ -1493,7 +1493,7 @@ module {
   /// Space: `O(1)`
   public func make<X>(element : X) : Vector<X> = init(1, element);
 
-  /// Reverses the order of elements in `vec`.
+  /// Reverses the order of elements in `vec` by overwriting in place.
   ///
   /// Example:
   /// ```motoko

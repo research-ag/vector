@@ -18,6 +18,7 @@
 
 import Static "lib";
 import Iter "mo:base/Iter";
+import Order "mo:base/Order";
 
 module {
   /// Constructs an empty `Vector<X>`.
@@ -729,4 +730,234 @@ module {
     Static.forNone(vec.share(), predicate);
   };
 
+  /// Returns true if Vector contains element with respect to equality
+  /// defined by `equal`.
+  ///
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// Vector.add(vec, 2);
+  /// Vector.add(vec, 0);
+  /// Vector.add(vec, 3);
+  ///
+  /// Vector.contains<Nat>(vec, 2, Nat.equal); // => true
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `equal` runs in O(1) time and space.
+  public func contains<X>(vec : Vector<X>, element : X, equal : (X, X) -> Bool) : Bool {
+    Static.contains(vec.share(), element, equal);
+  };
+
+  /// Finds the greatest element in `vec` defined by `compare`.
+  /// Returns `null` if `vec` is empty.
+  ///
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// Vector.add(vec, 1);
+  /// Vector.add(vec, 2);
+  ///
+  /// Vector.max<Nat>(vec, Nat.compare); // => ?2
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `compare` runs in O(1) time and space.
+  public func max<X>(vec : Vector<X>, compare : (X, X) -> Order.Order) : ?X {
+    Static.max(vec.share(), compare);
+  };
+
+  /// Finds the least element in `vec` defined by `compare`.
+  /// Returns `null` if `vec` is empty.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// Vector.add(vec, 1);
+  /// Vector.add(vec, 2);
+  ///
+  /// Vector.min<Nat>(vec, Nat.compare); // => ?1
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `compare` runs in O(1) time and space.
+  public func min<X>(vec : Vector<X>, compare : (X, X) -> Order.Order) : ?X {
+    Static.min(vec.share(), compare);
+  };
+
+  /// Defines equality for two vectors, using `equal` to recursively compare elements in the
+  /// vectors. Returns true iff the two vectors are of the same size, and `equal`
+  /// evaluates to true for every pair of elements in the two vectors of the same
+  /// index.
+  ///
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// let vec1 = Vector.fromArray<Nat>([1,2]);
+  /// let vec2 = Vector.new<Nat>();
+  /// vec2.add(1);
+  /// vec2.add(2);
+  ///
+  /// Vector.equal<Nat>(vec1, vec2, Nat.equal); // => true
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `equal` runs in O(1) time and space.
+  public func equal<X>(vec1 : Vector<X>, vec2 : Vector<X>, equal : (X, X) -> Bool) : Bool {
+    Static.equal(vec1.share(), vec2.share(), equal);
+  };
+
+  /// Defines comparison for two vectors, using `compare` to recursively compare elements in the
+  /// vectors. Comparison is defined lexicographically.
+  ///
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// let vec1 = Vector.fromArray<Nat>([1,2]);
+  /// let vec2 = Vector.new<Nat>();
+  /// vec2.add(1);
+  /// vec2.add(2);
+  ///
+  /// Vector.compare<Nat>(vec1, vec2, Nat.compare); // => #less
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `compare` runs in O(1) time and space.
+  public func compare<X>(vec1 : Vector<X>, vec2 : Vector<X>, compare_fn : (X, X) -> Order.Order) : Order.Order {
+    Static.compare(vec1.share(), vec2.share(), compare_fn);
+  };
+
+  /// Reverses the order of elements in `vec` by overwriting in place.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1,2,3]);
+  ///
+  /// Vector.reverse<Nat>(vec);
+  /// Vector.toText<Nat>(vec, Nat.toText); // => "[3, 2, 1]"
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  public func reverse<X>(vec : Vector<X>) {
+    Static.reverse<X>(vec.share());
+  };
+
+  /// Reverses the order of elements in `vec` and returns a new
+  /// Vector.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1,2,3]);
+  ///
+  /// let rvec = Vector.reversed<Nat>(vec);
+  /// Vector.toText<Nat>(rvec, Nat.toText); // => "[3, 2, 1]"
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  public func reversed<X>(vec : Vector<X>) : Vector<X> {
+    let v = Vector<X>();
+    v.unshare(Static.reversed<X>(vec.share()));
+    v;
+  };
+
+  /// Returns true if and only if the vector is empty.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// let vec = Vector.fromArray<Nat>([2,0,3]);
+  /// Vector.isEmpty<Nat>(vec); // => false
+  /// ```
+  ///
+  /// Runtime: `O(1)`
+  ///
+  /// Space: `O(1)`
+  public func isEmpty<X>(vec : Vector<X>) : Bool {
+    Static.isEmpty(vec.share());
+  };
+
+  /// Collapses the elements in `vec` into a single value by starting with `base`
+  /// and progessively combining elements into `base` with `combine`. Iteration runs
+  /// left to right.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1,2,3]);
+  ///
+  /// Vector.foldLeft<Text, Nat>(vec, "", func (acc, x) { acc # Nat.toText(x)}); // => "123"
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `combine` runs in O(1)` time and space.
+  public func foldLeft<A, X>(vec : Vector<X>, base : A, combine : (A, X) -> A) : A {
+    Static.foldLeft(vec.share(), base, combine);
+  };
+
+  /// Collapses the elements in `vec` into a single value by starting with `base`
+  /// and progessively combining elements into `base` with `combine`. Iteration runs
+  /// right to left.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1,2,3]);
+  ///
+  /// Vector.foldRight<Nat, Text>(vec, "", func (x, acc) { Nat.toText(x) # acc }); // => "123"
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `combine` runs in O(1)` time and space.
+  public func foldRight<X, A>(vec : Vector<X>, base : A, combine : (X, A) -> A) : A {
+    Static.foldRight(vec.share(), base, combine);
+  };
 };
