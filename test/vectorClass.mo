@@ -80,15 +80,15 @@ run(
 );
 
 assert Vector.indexOf(n + 1, vector, Nat.equal) == null;
-// TODO assert Vector.firstIndexWith(vector, func(a : Nat) : Bool = a == n + 1) == null;
+assert Vector.firstIndexWith(vector, func(a : Nat) : Bool = a == n + 1) == null;
 assert Vector.indexOf(n, vector, Nat.equal) == ?n;
-// TODO assert Vector.firstIndexWith(vector, func(a : Nat) : Bool = a == n) == ?n;
+assert Vector.firstIndexWith(vector, func(a : Nat) : Bool = a == n) == ?n;
 
 assert Vector.lastIndexOf(n + 1, vector, Nat.equal) == null;
-// TODO assert Vector.lastIndexWith(vector, func(a : Nat) : Bool = a == n + 1) == null;
+assert Vector.lastIndexWith(vector, func(a : Nat) : Bool = a == n + 1) == null;
 
 assert Vector.lastIndexOf(0, vector, Nat.equal) == ?0;
-// TODO assert Vector.lastIndexWith(vector, func(a : Nat) : Bool = a == 0) == ?0;
+assert Vector.lastIndexWith(vector, func(a : Nat) : Bool = a == 0) == ?0;
 
 // TODO assert Vector.forAll(vector, func(x : Nat) : Bool = 0 <= x and x <= n);
 // TODO assert Vector.forNone(vector, func(x : Nat) : Bool = x == n + 1);

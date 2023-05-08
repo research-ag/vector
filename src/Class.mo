@@ -617,4 +617,48 @@ module {
   public func toText<X>(vec : Vector<X>, toText_fn : X -> Text) : Text {
     Static.toText(vec.share(), toText_fn);
   };
+
+  /// Finds the index of the first element in `vec` for which `predicate` is true.
+  /// Returns `null` if no such element is found.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// let vec = Vector.new<Nat>();
+  /// vec.add(1);
+  /// vec.add(2);
+  /// vec.add(3);
+  /// vec.add(4);
+  ///
+  /// Vector.firstIndexWith<Nat>(vec, func(i) { i % 2 == 0 }); // => ?1
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// *Runtime and space assumes that `predicate` runs in `O(1)` time and space.
+  public func firstIndexWith<X>(vec : Vector<X>, predicate : X -> Bool) : ?Nat {
+    Static.firstIndexWith(vec.share(), predicate);
+  };
+
+  /// Finds the index of the last element in `vec` for which `predicate` is true.
+  /// Returns `null` if no such element is found.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// let vec = Vector.new<Nat>();
+  /// vec.add(1);
+  /// vec.add(2);
+  /// vec.add(3);
+  /// vec.add(4);
+  ///
+  /// Vector.lastIndexWith<Nat>(vec, func(i) { i % 2 == 0 }); // => ?3
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// *Runtime and space assumes that `predicate` runs in `O(1)` time and space.
+  public func lastIndexWith<X>(vec : Vector<X>, predicate : X -> Bool) : ?Nat {
+    Static.lastIndexWith(vec.share(), predicate);
+  };
 };
