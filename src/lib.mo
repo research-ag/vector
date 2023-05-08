@@ -35,7 +35,8 @@ module {
   /// Creates a new empty Vector for elements of type X.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// let vec = Vector.new<Nat>(); // Creates a new Vector
   /// ```
   public func new<X>() : Vector<X> = {
@@ -135,7 +136,7 @@ module {
   /// Resets the vector to size 0, de-referencing all elements.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 10);
   /// Vector.add(vec, 11);
@@ -154,7 +155,7 @@ module {
   /// Returns a copy of a Vector, with the same size.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// vec.add(1);
   ///
@@ -178,7 +179,8 @@ module {
   /// Returns the current number of elements in the vector.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// Vector.size(vec) // => 0
   /// ```
   ///
@@ -257,7 +259,7 @@ module {
   /// and resizing the internal index block if needed.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 0); // add 0 to vector
   /// Vector.add(vec, 1);
@@ -298,7 +300,7 @@ module {
   /// the vector is empty.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 10);
   /// Vector.add(vec, 11);
@@ -355,7 +357,7 @@ module {
   /// Traps if `index >= size`, error message may not be descriptive.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 10);
   /// Vector.add(vec, 11);
@@ -389,7 +391,7 @@ module {
   /// Returns `null` when `index >= size`. Indexing is zero-based.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 10);
   /// Vector.add(vec, 11);
@@ -411,7 +413,7 @@ module {
   /// `index` >= size. Indexing is zero-based.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 10);
   /// Vector.put(vec, 0, 20); // overwrites 10 at index 0 with 20
@@ -430,7 +432,7 @@ module {
   /// by `equal`. Returns `null` if `element` is not found.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// let vector = Vector.new<Nat>();
   /// Vector.add(vec, 1);
@@ -453,7 +455,8 @@ module {
   /// by `equal`. Returns `null` if `element` is not found.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  /// 
   /// let vector = Vector.new<Nat>();
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
@@ -477,7 +480,7 @@ module {
   /// Returns `null` if no such element is found.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// let vector = Vector.new<Nat>();
   /// Vector.add(vec, 1);
@@ -521,7 +524,7 @@ module {
   /// Returns `null` if no such element is found.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// let vector = Vector.new<Nat>();
   /// Vector.add(vec, 1);
@@ -568,7 +571,7 @@ module {
   /// In particular, if `vec` is empty the function returns `true`.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
   ///
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
@@ -590,7 +593,7 @@ module {
   /// In particular, if `vec` is empty the function returns `false`.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
   ///
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
@@ -616,7 +619,7 @@ module {
   /// In particular, if `vec` is empty the function returns `true`.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
   ///
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
@@ -819,7 +822,8 @@ module {
   /// Creates a Vector containing elements from `iter`.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  /// 
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [1, 1, 1];
@@ -838,7 +842,8 @@ module {
   /// Adds elements to a Vector from `iter`.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  /// 
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [1, 1, 1];
@@ -856,7 +861,7 @@ module {
   /// Creates an immutable array containing elements from a Vector.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
@@ -947,7 +952,8 @@ module {
   /// Creates a Vector containing elements from an Array.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  /// 
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [2, 3];
@@ -995,7 +1001,7 @@ module {
   /// Creates a mutable Array containing elements from a Vector.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
@@ -1022,7 +1028,8 @@ module {
   /// Creates a Vector containing elements from a mutable Array.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  /// 
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [var 2, 3];
@@ -1070,7 +1077,7 @@ module {
   /// Returns the first element of `vec`. Traps if `vec` is empty.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// let vec = Vector.init<Nat>(10, 1);
   ///
@@ -1088,7 +1095,7 @@ module {
   /// Returns the last element of `vec`. Traps if `vec` is empty.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
   ///
   /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
   ///
@@ -1111,7 +1118,8 @@ module {
   /// Applies `f` to each element in `vec`.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   /// import Debug "mo:base/Debug";
   ///
@@ -1156,7 +1164,8 @@ module {
   /// Applies `f` to each element in `vec` in reverse order.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   /// import Debug "mo:base/Debug";
   ///
@@ -1202,7 +1211,8 @@ module {
   ///
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// Vector.add(vec, 2);
@@ -1226,7 +1236,8 @@ module {
   ///
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// Vector.add(vec, 1);
@@ -1259,7 +1270,8 @@ module {
   /// Returns `null` if `vector` is empty.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// Vector.add(vec, 1);
@@ -1295,7 +1307,8 @@ module {
   ///
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec1 = Vector.fromArray<Nat>([1,2]);
@@ -1332,7 +1345,8 @@ module {
   ///
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec1 = Vector.fromArray<Nat>([1,2]);
@@ -1372,7 +1386,8 @@ module {
   /// convert the elements into Text.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.fromArray<Nat>([1,2,3,4]);
@@ -1407,7 +1422,8 @@ module {
   /// left to right.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.fromArray<Nat>([1,2,3]);
@@ -1436,7 +1452,8 @@ module {
   /// right to left.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.fromArray<Nat>([1,2,3]);
@@ -1463,7 +1480,8 @@ module {
   /// Returns a new vector with capacity and size 1, containing `element`.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.make<Nat>(1);
@@ -1478,7 +1496,8 @@ module {
   /// Reverses the order of elements in `vector`.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.fromArray<Nat>([1,2,3]);
@@ -1510,7 +1529,8 @@ module {
   /// Vector.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.fromArray<Nat>([1,2,3]);
@@ -1536,7 +1556,7 @@ module {
   /// Returns true if and only if the vector is empty.
   ///
   /// Example:
-  /// ```motoko include=initialize
+  /// ```motoko
   ///
   /// let vec = Vector.fromArray<Nat>([2,0,3]);
   /// Vector.isEmpty<Nat>(vec); // => false

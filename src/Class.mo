@@ -23,8 +23,9 @@ module {
   /// Constructs an empty `Vector<X>`.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
+  /// ```motoko
+  ///
+  /// let vec = Vector.Vector<Nat>();
   /// ```
   /// Runtime: `O(1)`
   ///
@@ -32,12 +33,13 @@ module {
   public class Vector<X>() {
     var v : Static.Vector<X> = Static.new();
 
-    /// Returns the current number of elements in the vector.
+    /// Returns the current number of elements in the vec.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
-    /// vector.size() // => 0
+    /// ```motoko
+    ///
+    /// let vec = Vector.Vector<Nat>();
+    /// vec.size() // => 0
     /// ```
     ///
     /// Runtime: `O(1)`
@@ -48,14 +50,15 @@ module {
     /// Adds a single element to the end of the vector, adding datablocks if capacity is exceeded.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(0); // add 0 to vector
-    /// vector.add(1);
-    /// vector.add(2);
-    /// vector.add(3);
-    /// Vector.toArray(vector) // => [0, 1, 2, 3]
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(0); // add 0 to vector
+    /// vec.add(1);
+    /// vec.add(2);
+    /// vec.add(3);
+    /// Vector.toArray(vec) // => [0, 1, 2, 3]
     /// ```
     ///
     /// Amortized Runtime: `O(1)`, Worst Case Runtime: `O(sqrt(n))`
@@ -65,14 +68,15 @@ module {
     /// Adds a single element to the end of the vector multiple number of times.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(0); // add 0 to vector
-    /// vector.add(1);
-    /// vector.add(2);
-    /// vector.addMany(2, 3);
-    /// Vector.toArray(vector) // => [0, 1, 2, 3, 3]
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(0); // add 0 to vector
+    /// vec.add(1);
+    /// vec.add(2);
+    /// vec.addMany(2, 3);
+    /// Vector.toArray(vec) // => [0, 1, 2, 3, 3]
     /// ```
     ///
     /// Amortized Runtime: `O(count)`, Worst Case Runtime: `O(max(sqrt(n), count))`
@@ -84,12 +88,13 @@ module {
     /// Traps if `index >= size`, error message may not be descriptive.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.get(0); // => 10
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.get(0); // => 10
     /// ```
     ///
     /// Runtime: `O(1)`
@@ -101,13 +106,14 @@ module {
     /// Returns `null` when `index >= size`. Indexing is zero-based.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// let x = vector.getOpt(0); // => ?10
-    /// let y = vector.getOpt(2); // => null
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// let x = vec.getOpt(0); // => ?10
+    /// let y = vec.getOpt(2); // => null
     /// ```
     ///
     /// Runtime: `O(1)`
@@ -119,11 +125,12 @@ module {
     /// `index` >= size. Indexing is zero-based.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.put(0, 20); // overwrites 10 at index 0 with 20
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.put(0, 20); // overwrites 10 at index 0 with 20
     /// Vector.toArray(buffer) // => [20]
     /// ```
     ///
@@ -136,12 +143,13 @@ module {
     /// the buffer is empty.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.removeLast(); // => ?11
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.removeLast(); // => ?11
     /// ```
     ///
     /// Amortized Runtime: `O(1)`, Worst Case Runtime: `O(n)`
@@ -152,14 +160,15 @@ module {
     /// Resets the buffer. Capacity is set to 0.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.add(12);
-    /// vector.clear(); // vector is now empty
-    /// Vector.toArray(vector) // => []
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.add(12);
+    /// vec.clear(); // vector is now empty
+    /// Vector.toArray(vec) // => []
     /// ```
     ///
     /// Runtime: `O(1)`
@@ -167,19 +176,20 @@ module {
     /// Space: `O(1)`
     public func clear() = Static.clear(v);
 
-    /// Returns an Iterator (`Iter`) over the elements of this vector.
+    /// Returns an Iterator (`Iter`) over the elements of this vec.
     /// Iterator provides a single method `next()`, which returns
     /// elements in order, or `null` when out of elements to iterate over.
     ///
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.add(12);
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.add(12);
     ///
     /// var sum = 0;
-    /// for (element in vector.vals()) {
+    /// for (element in vec.vals()) {
     ///   sum += element;
     /// };
     /// sum // => 33
@@ -194,12 +204,13 @@ module {
     /// Iterator provides a single method `next()`, which returns
     /// elements in order, or `null` when out of elements to iterate over.
     ///
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.add(12);
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.add(12);
     /// Iter.toArray(vec.keys()); // [0, 1, 2]
     /// ```
     ///
@@ -214,13 +225,14 @@ module {
     /// Iterator provides a single method `next()`, which returns
     /// elements in order, or `null` when out of elements to iterate over.
     ///
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.add(12);
-    /// Iter.toArray(vector.items()); // [(10, 0), (11, 1), (12, 2)]
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.add(12);
+    /// Iter.toArray(vec.items()); // [(10, 0), (11, 1), (12, 2)]
     /// ```
     ///
     /// Note: This does not create a snapshot. If the returned iterator is not consumed at once,
@@ -236,15 +248,16 @@ module {
     /// Iterator provides a single method `next()`, which returns
     /// elements in reverse order, or `null` when out of elements to iterate over.
     ///
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.add(12);
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.add(12);
     ///
     /// var sum = 0;
-    /// for (element in vector.vals()) {
+    /// for (element in vec.vals()) {
     ///   sum += element;
     /// };
     /// sum // => 33
@@ -261,13 +274,14 @@ module {
     /// Iterator provides a single method `next()`, which returns
     /// elements in reverse order, or `null` when out of elements to iterate over.
     ///
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
+    /// ```motoko
     ///
-    /// vector.add(10);
-    /// vector.add(11);
-    /// vector.add(12);
-    /// Iter.toArray(vector.items()); // [(12, 0), (11, 1), (10, 2)]
+    /// let vec = Vector.Vector<Nat>();
+    ///
+    /// vec.add(10);
+    /// vec.add(11);
+    /// vec.add(12);
+    /// Iter.toArray(vec.items()); // [(12, 0), (11, 1), (10, 2)]
     /// ```
     ///
     /// Note: This does not create a snapshot. If the returned iterator is not consumed at once,
@@ -282,9 +296,10 @@ module {
     /// Returns stable version of the vector
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
-    /// vector.unshare(vector.share()); // Unchanged
+    /// ```motoko
+    ///
+    /// let vec = Vector.Vector<Nat>();
+    /// vec.unshare(vec.share()); // Unchanged
     /// ```
     ///
     /// Runtime: `O(1)`.
@@ -293,9 +308,10 @@ module {
     /// Creates vector from a stable version.
     ///
     /// Example:
-    /// ```
-    /// let vector = Vector.Vector<Nat>();
-    /// vector.unshare(vector.share()); // Unchanged
+    /// ```motoko
+    ///
+    /// let vec = Vector.Vector<Nat>();
+    /// vec.unshare(vec.share()); // Unchanged
     /// ```
     ///
     /// Runtime: `O(1)`.
@@ -305,9 +321,10 @@ module {
   /// Returns the first element of `vec`. Traps if `vec` is empty.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
-  /// vector.add(1);
+  /// ```motoko
+  ///
+  /// let vec = Vector.Vector<Nat>();
+  /// vec.add(1);
   ///
   /// Vector.first(vec); // => 1
   /// ```
@@ -320,9 +337,10 @@ module {
   /// Returns the last element of `vec`. Traps if `vec` is empty.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
-  /// vector.add(1);
+  /// ```motoko
+  ///
+  /// let vec = Vector.Vector<Nat>();
+  /// vec.add(1);
   ///
   /// Vector.last(vec); // => 1
   /// ```
@@ -335,7 +353,8 @@ module {
   /// Applies `f` to each element in `vec`.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
   ///
   /// Vector.iterate<Nat>(vec, func (x) {
@@ -353,7 +372,8 @@ module {
   /// Applies `f` to each element in `vec` in reverse order.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
   ///
   /// Vector.iterate<Nat>(vec, func (x) {
@@ -371,12 +391,13 @@ module {
   /// Creates an immutable array containing elements from a Vector.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
+  /// ```motoko
   ///
-  /// vector.add(10);
-  /// vector.add(11);
-  /// vector.add(12);
+  /// let vec = Vector.Vector<Nat>();
+  ///
+  /// vec.add(10);
+  /// vec.add(11);
+  /// vec.add(12);
   ///
   /// Vector.toArray<Nat>(vec); // => [1, 2, 3]
   /// ```
@@ -387,12 +408,13 @@ module {
   /// Creates a mutable array containing elements from a Vector.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
+  /// ```motoko
   ///
-  /// vector.add(10);
-  /// vector.add(11);
-  /// vector.add(12);
+  /// let vec = Vector.Vector<Nat>();
+  ///
+  /// vec.add(10);
+  /// vec.add(11);
+  /// vec.add(12);
   ///
   /// Vector.toVarArray<Nat>(vec); // => [1, 2, 3]
   /// ```
@@ -404,15 +426,16 @@ module {
   /// by `equal`. Returns `null` if `element` is not found.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
+  /// ```motoko
   ///
-  /// vector.add(1);
-  /// vector.add(2);
-  /// vector.add(3);
-  /// vector.add(4);
+  /// let vec = Vector.Vector<Nat>();
   ///
-  /// Vector.indexOf<Nat>(3, vector, Nat.equal); // => ?2
+  /// vec.add(1);
+  /// vec.add(2);
+  /// vec.add(3);
+  /// vec.add(4);
+  ///
+  /// Vector.indexOf<Nat>(3, vec, Nat.equal); // => ?2
   /// ```
   ///
   /// Runtime: `O(size)`
@@ -424,17 +447,18 @@ module {
   /// by `equal`. Returns `null` if `element` is not found.
   ///
   /// Example:
-  /// ```
-  /// let vector = Vector.Vector<Nat>();
+  /// ```motoko
   ///
-  /// vector.add(1);
-  /// vector.add(2);
-  /// vector.add(3);
-  /// vector.add(4);
-  /// vector.add(2);
-  /// vector.add(2);
+  /// let vec = Vector.Vector<Nat>();
   ///
-  /// Vector.lastIndexOf<Nat>(2, vector, Nat.equal); // => ?5
+  /// vec.add(1);
+  /// vec.add(2);
+  /// vec.add(3);
+  /// vec.add(4);
+  /// vec.add(2);
+  /// vec.add(2);
+  ///
+  /// Vector.lastIndexOf<Nat>(2, vec, Nat.equal); // => ?5
   /// ```
   ///
   /// Runtime: `O(size)`
@@ -444,7 +468,8 @@ module {
 
   /// Create a Vector with `size` copies of the initial value.
   ///
-  /// ```
+  /// ```motoko
+  ///
   /// let vec = Vector.init<Nat>(4, 2); // [2, 2, 2, 2]
   /// ```
   ///
@@ -458,7 +483,8 @@ module {
   /// Creates a Vector containing elements from an Array.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [2, 3];
@@ -476,7 +502,8 @@ module {
   /// Creates a Vector containing elements from a mutable Array.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [var 2, 3];
@@ -494,7 +521,8 @@ module {
   /// Returns a copy of a Vector, with the same size.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// let vec = Vector.Vector<Nat>();
   /// vec.add(1);
   ///
@@ -512,7 +540,8 @@ module {
   /// Creates a Vector containing elements from `iter`.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [1, 1, 1];
@@ -531,7 +560,8 @@ module {
   /// Adds elements to a Vector from `iter`.
   ///
   /// Example:
-  /// ```
+  /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [1, 1, 1];
@@ -550,6 +580,7 @@ module {
   ///
   /// Example:
   /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.make<Nat>(1);
@@ -570,6 +601,7 @@ module {
   ///
   /// Example:
   /// ```motoko
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let vec = Vector.fromArray<Nat>([1,2,3,4]);
