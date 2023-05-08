@@ -318,7 +318,6 @@ run(
 
 vector := Vector.fromArray<Nat>([0,1,2,3,4,5]);
 
-/* TODO contains
 run(
   suite(
     "contains",
@@ -336,7 +335,6 @@ run(
     ]
   )
 );
-*/
 
 /* --------------------------------------- */
 
