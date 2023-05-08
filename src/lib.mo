@@ -428,19 +428,19 @@ module {
     } else Prim.trap "Vector index out of bounds in put";
   };
 
-  /// Finds the first index of `element` in `vector` using equality of elements defined
+  /// Finds the first index of `element` in `vec` using equality of elements defined
   /// by `equal`. Returns `null` if `element` is not found.
   ///
   /// Example:
   /// ```motoko
   ///
-  /// let vector = Vector.new<Nat>();
+  /// let vec = Vector.new<Nat>();
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
   /// Vector.add(vec, 4);
   ///
-  /// Vector.indexOf<Nat>(3, vector, Nat.equal); // => ?2
+  /// Vector.indexOf<Nat>(3, vec, Nat.equal); // => ?2
   /// ```
   ///
   /// Runtime: `O(size)`
@@ -457,7 +457,7 @@ module {
   /// Example:
   /// ```motoko
   /// 
-  /// let vector = Vector.new<Nat>();
+  /// let vec = Vector.new<Nat>();
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
@@ -465,7 +465,7 @@ module {
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 2);
   ///
-  /// Vector.lastIndexOf<Nat>(2, vector, Nat.equal); // => ?5
+  /// Vector.lastIndexOf<Nat>(2, vec, Nat.equal); // => ?5
   /// ```
   ///
   /// Runtime: `O(size)`
@@ -482,13 +482,13 @@ module {
   /// Example:
   /// ```motoko
   ///
-  /// let vector = Vector.new<Nat>();
+  /// let vec = Vector.new<Nat>();
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
   /// Vector.add(vec, 4);
   ///
-  /// Vector.firstIndexWith<Nat>(vector, func(i) { i % 2 == 0 }); // => ?1
+  /// Vector.firstIndexWith<Nat>(vec, func(i) { i % 2 == 0 }); // => ?1
   /// ```
   ///
   /// Runtime: `O(size)`
@@ -526,13 +526,13 @@ module {
   /// Example:
   /// ```motoko
   ///
-  /// let vector = Vector.new<Nat>();
+  /// let vec = Vector.new<Nat>();
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
   /// Vector.add(vec, 3);
   /// Vector.add(vec, 4);
   ///
-  /// Vector.lastIndexWith<Nat>(vector, func(i) { i % 2 == 0 }); // => ?3
+  /// Vector.lastIndexWith<Nat>(vec, func(i) { i % 2 == 0 }); // => ?3
   /// ```
   ///
   /// Runtime: `O(size)`
@@ -1231,8 +1231,8 @@ module {
     Option.isSome(indexOf(element, vec, equal));
   };
 
-  /// Finds the greatest element in `vector` defined by `compare`.
-  /// Returns `null` if `vector` is empty.
+  /// Finds the greatest element in `vec` defined by `compare`.
+  /// Returns `null` if `vec` is empty.
   ///
   ///
   /// Example:
@@ -1266,8 +1266,8 @@ module {
     return ?maxSoFar;
   };
 
-  /// Finds the least element in `vector` defined by `compare`.
-  /// Returns `null` if `vector` is empty.
+  /// Finds the least element in `vec` defined by `compare`.
+  /// Returns `null` if `vec` is empty.
   ///
   /// Example:
   /// ```motoko
@@ -1382,7 +1382,7 @@ module {
     return natCompare(size1, size2);
   };
 
-  /// Creates a textual representation of `vector`, using `toText` to recursively
+  /// Creates a textual representation of `vec`, using `toText` to recursively
   /// convert the elements into Text.
   ///
   /// Example:
@@ -1417,7 +1417,7 @@ module {
     "[" # text # "]";
   };
 
-  /// Collapses the elements in `vector` into a single value by starting with `base`
+  /// Collapses the elements in `vec` into a single value by starting with `base`
   /// and progessively combining elements into `base` with `combine`. Iteration runs
   /// left to right.
   ///
@@ -1447,7 +1447,7 @@ module {
     accumulation;
   };
 
-  /// Collapses the elements in `vector` into a single value by starting with `base`
+  /// Collapses the elements in `vec` into a single value by starting with `base`
   /// and progessively combining elements into `base` with `combine`. Iteration runs
   /// right to left.
   ///
@@ -1493,7 +1493,7 @@ module {
   /// Space: `O(1)`
   public func make<X>(element : X) : Vector<X> = init(1, element);
 
-  /// Reverses the order of elements in `vector`.
+  /// Reverses the order of elements in `vec`.
   ///
   /// Example:
   /// ```motoko
@@ -1525,7 +1525,7 @@ module {
     };
   };
 
-  /// Reverses the order of elements in `vector` and returns a new
+  /// Reverses the order of elements in `vec` and returns a new
   /// Vector.
   ///
   /// Example:
