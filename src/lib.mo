@@ -456,7 +456,7 @@ module {
   ///
   /// Example:
   /// ```motoko
-  /// 
+  ///
   /// let vec = Vector.new<Nat>();
   /// Vector.add(vec, 1);
   /// Vector.add(vec, 2);
@@ -823,7 +823,7 @@ module {
   ///
   /// Example:
   /// ```motoko
-  /// 
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [1, 1, 1];
@@ -843,7 +843,7 @@ module {
   ///
   /// Example:
   /// ```motoko
-  /// 
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [1, 1, 1];
@@ -953,7 +953,7 @@ module {
   ///
   /// Example:
   /// ```motoko
-  /// 
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [2, 3];
@@ -1029,7 +1029,7 @@ module {
   ///
   /// Example:
   /// ```motoko
-  /// 
+  ///
   /// import Nat "mo:base/Nat";
   ///
   /// let array = [var 2, 3];
@@ -1159,6 +1159,39 @@ module {
         case (_) return;
       };
     };
+  };
+
+  /// Applies `f` to each item `(i, x)` in `vec` where `i` is the key
+  /// and `x` is the value.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  /// import Debug "mo:base/Debug";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
+  ///
+  /// Vector.iterateItems<Nat>(vec, func (i,x) {
+  ///   // prints each item (i,x) in vector
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  /// });
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(size)`
+  ///
+  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  public func iterateItems<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
+    let o = object {
+      var i = 0;
+      public func fx(x : X) {
+        f(i, x);
+        i += 1;
+      };
+    };
+    iterate<X>(vec, o.fx);
   };
 
   /// Applies `f` to each element in `vec` in reverse order.

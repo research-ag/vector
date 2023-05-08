@@ -370,6 +370,32 @@ module {
   /// *Runtime and space assumes that `f` runs in `O(1)` time and space.
   public func iterate<X>(vec : Vector<X>, f : X -> ()) = Static.iterate(vec.share(), f);
 
+  /// Applies `f` to each item `(i, x)` in `vec` where `i` is the key
+  /// and `x` is the value.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  /// import Debug "mo:base/Debug";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
+  ///
+  /// Vector.iterateItems<Nat>(vec, func (i,x) {
+  ///   // prints each item (i,x) in vector
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x));
+  /// });
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(size)`
+  ///
+  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  public func iterateItems<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
+    Static.iterateItems(vec.share(), f);
+  };
+
   /// Applies `f` to each element in `vec` in reverse order.
   ///
   /// Example:
