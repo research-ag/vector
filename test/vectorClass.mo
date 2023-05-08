@@ -90,9 +90,9 @@ assert Vector.lastIndexWith(vector, func(a : Nat) : Bool = a == n + 1) == null;
 assert Vector.lastIndexOf(0, vector, Nat.equal) == ?0;
 assert Vector.lastIndexWith(vector, func(a : Nat) : Bool = a == 0) == ?0;
 
-// TODO assert Vector.forAll(vector, func(x : Nat) : Bool = 0 <= x and x <= n);
-// TODO assert Vector.forNone(vector, func(x : Nat) : Bool = x == n + 1);
-// TODO assert Vector.forSome(vector, func(x : Nat) : Bool = x == n / 2);
+assert Vector.forAll(vector, func(x : Nat) : Bool = 0 <= x and x <= n);
+assert Vector.forNone(vector, func(x : Nat) : Bool = x == n + 1);
+assert Vector.forSome(vector, func(x : Nat) : Bool = x == n / 2);
 
 run(
   suite(

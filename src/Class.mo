@@ -661,4 +661,72 @@ module {
   public func lastIndexWith<X>(vec : Vector<X>, predicate : X -> Bool) : ?Nat {
     Static.lastIndexWith(vec.share(), predicate);
   };
+
+  /// Returns true iff every element in `vec` satisfies `predicate`.
+  /// In particular, if `vec` is empty the function returns `true`.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// Vector.add(vec, 2);
+  /// Vector.add(vec, 3);
+  /// Vector.add(vec, 4);
+  ///
+  /// Vector.forAll<Nat>(vec, func x { x > 1 }); // => true
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `predicate` runs in O(1) time and space.
+  public func forAll<X>(vec : Vector<X>, predicate : X -> Bool) : Bool {
+    Static.forAll(vec.share(), predicate);
+  };
+
+  /// Returns true iff some element in `vec` satisfies `predicate`.
+  /// In particular, if `vec` is empty the function returns `false`.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// Vector.add(vec, 2);
+  /// Vector.add(vec, 3);
+  /// Vector.add(vec, 4);
+  ///
+  /// Vector.forSome<Nat>(vec, func x { x > 3 }); // => true
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `predicate` runs in O(1) time and space.
+  public func forSome<X>(vec : Vector<X>, predicate : X -> Bool) : Bool {
+    Static.forSome(vec.share(), predicate);
+  };
+
+  /// Returns true iff no element in `vec` satisfies `predicate`.
+  /// This is logically equivalent to that all elements in `vec` satisfy `not predicate`.
+  /// In particular, if `vec` is empty the function returns `true`.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// Vector.add(vec, 2);
+  /// Vector.add(vec, 3);
+  /// Vector.add(vec, 4);
+  ///
+  /// Vector.forNone<Nat>(vec, func x { x == 0 }); // => true
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(1)`
+  ///
+  /// *Runtime and space assumes that `predicate` runs in O(1) time and space.
+  public func forNone<X>(vec : Vector<X>, predicate : X -> Bool) : Bool {
+    Static.forNone(vec.share(), predicate);
+  };
+
 };
