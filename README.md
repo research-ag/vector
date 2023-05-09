@@ -6,9 +6,10 @@ The `Vector` data structure is meant to be a replacement for `Array` when a grow
 It provides random access like `Array` and `Buffer` and can grow and shrink at the end like `Buffer` can.
 Unlike `Buffer`, the memory overhead for allocated but no yet used space is $O(\sqrt{n})$ instead of $O(n)$.
 
-The package is published on [MOPS](https://mops.one/vector) and [Github](https://github.com/research-ag/vector).
+The package is published on [MOPS](https://mops.one/vector) and [GitHub](https://github.com/research-ag/vector).
+Please refer to the README on GitHub where it renders properly with formulas and tables.
 
-The API documentation can be found here: [https://mops.one/vector/docs](https://mops.one/vector/docs)
+The API documentation can be found here: https://mops.one/vector/docs
 
 ### Characteristics
 
