@@ -6,30 +6,33 @@ The `Vector` data structure is meant to be a replacement for `Array` when a grow
 It provides random access like `Array` and `Buffer` and can grow and shrink at the end like `Buffer` can.
 Unlike `Buffer`, the memory overhead for allocated but no yet used space is $O(\sqrt{n})$ instead of $O(n)$.
 
-The package is published here: [https://mops.one/vector](https://mops.one/vector)
+The package is published on [MOPS](https://mops.one/vector) and [Github](https://github.com/research-ag/vector).
 
 The API documentation can be found here: [https://mops.one/vector/docs](https://mops.one/vector/docs)
 
 ### Characteristics
 
-The data structure is based on the paper [Resizable Arrays in Optimal Time and Space](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
-It is has the following characteristics:
+The data structure is based on the paper [Resizable Arrays in Optimal Time and Space](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999)
+which has the following characteristics:
 
-* implemented as a 2-dimensional array
+* based on a 2-dimensional array
 * performance-optimized
 * persistent memory overhead: $O(\sqrt{n})$
 * worst-case instruction overhead: $O(\sqrt{n})$
 * no re-allocation or copying of data blocks
 
+The implementation is furthermore cycle optimized.
+
 ### Motivation
 
 When developing smart contract canisters, to be sure that the canister does not ever run into cycle limits,
 one has to reason about the code's worst-case complexity. 
-This is even more important as publicly accessible smart contract canisters operate in an adversarial environment in which they don't control their input.
+This is even more important as publicly accessible smart contract canisters don't control their input
+and operate in a potentially adversarial environment.
 Understanding worst-case behavior is often critical.
 
 The go-to data structure for a resizable array is `Buffer` from motoko-base.
-`Buffer` is a fixed-size array with some reserve capacity that is "grown" when the fill level reaches the capacity.
+`Buffer` is a fixed-size array with some reserve capacity that is "grown" when it fills up.
 Growing means that the old array is copied into a newly allocated larger array and the old array becomes garbage.
 The growing factor is 1.5x.
 Therefore, `Buffer` has linear persistent memory overhead (1.5x) and
@@ -104,7 +107,7 @@ This table shows the number of wasm instruction for the given function execution
 
 For some functions the number of instructions is expected to be independent of the size of the vector,
 e.g. init, get, getOpt, put, size, clear, isEmpty.
-However, even in those case we run the function N times and take the average because there may be marginal differences in cost based on the conrete value of the index being used.
+However, even in those case we run the function N times and take the average because there may be marginal differences in cost based on the concrete integer value of the index being used.
 
 For some functions the function is run only once for a vector of size N
 because a single call iterates through the whole vector,
@@ -113,7 +116,11 @@ e.g. addMany, clone, indexOf, firstIndexWith, lastIndexOf, lastIndexWith, forAll
 The functions add and removeLast have sporadic worst-case behavior when the data structure has to grow.
 They are therefore run N times and the result is averaged to obtain an amortized cost per call.
 
+```
 N = 100,000
+Compiler: moc-0.8.8
+value data type: Nat
+```
 
 |method|Vector|VectorClass|Buffer|Array|
 |---|---|---|---|---|
@@ -179,7 +186,11 @@ e.g. init, addMany, clone, etc.
 In cases when there is an amortized cost such as add, removeLast then the function is executed N times
 so that one can get an idea of the average. 
 
+```
 N = 100,000
+Compiler: moc-0.8.8
+value data type: Nat
+```
 
 |method|Vector|VectorClass|Buffer|Array|
 |---|---|---|---|---|
