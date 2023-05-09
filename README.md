@@ -2,9 +2,14 @@
 
 ## Overview
 
+The Vector data structure is meant to be a replacement for Array when a growable and/or shrinkable data structure is needed.
+It provides random access like Array and Buffer and can grow and shrink at the end like Buffer can.
+Unlike Buffer, the memory overhead for allocated but no yet used space is O(sqrt(n)) instead of O(n).
+
 ### Characteristics
 
-The package provides a resizable vector data structure `Vector` with the following characteristics:
+The data structure is based on the paper "Resizable Arrays in Optimal Time and Space" by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
+It is has the following characteristics:
 
 * implemented as a 2-dimensional array
 * performance-optimized
@@ -44,11 +49,9 @@ If a `stable` declaration is not required then the package also provides a class
 This can be used as a drop-in replacement for Buffer as it provides exactly the same interface.
 As with Buffer, the user can benefit from the convenient dot-notation for the class methods.
 
-
-
 ## Usage
 
-### With mops
+### Install with mops
 
 Add this line to your project's `mops.toml`:
 ```
@@ -56,18 +59,35 @@ Add this line to your project's `mops.toml`:
 vector = "0.1.0"
 ```
 
-In your Motoko files import the package as follows:
+Run
+```
+mops install
+```
+
+Import the package in the Motoko source file as follows:
 ```
 import Vec "mo:vector";
-```
-
-to use the static version or
-
-```
 import Vec "mo:vector/Class";
 ```
 
-to use the class version.
+respectively for the static version or the class version.
+
+### Example
+
+```
+import Vector "mo:vector";
+
+let v = Vector.new<Nat>();
+Vector.add(v, 1);
+Vector.add(v, 2);
+Vector.add(v, 3);
+assert(Vector.get(v, 0) == 1);
+assert(Vector.get(v, 1) == 2);
+assert(Vector.get(v, 2) == 3);
+Vector.size(v);
+```
+
+<iframe src="https://embed.smartcontracts.org/motoko/g/AyS1mBK7bmZuQpfetD8HgwnKmVHgBhKWoFLaKskE3RZcmDbLiwSJNqkdGCRytymssQft3fdPSWAQ8opcmqDXTREhCwWGFs1tnAYDbJxraMbSrUKcDSEE2NcZeRZMTsShY3oGpnTjf9iUV2K6iYzdc7hCq2TjZC5gG8dzJN3duuBjPCaKJnyA7aJ642Ps2YWXXUt6NAbpZ?lines=12" width="100%" height="408" style="border:0" title="Motoko code snippet" />
 
 ## Benchmarks
 
@@ -91,7 +111,7 @@ They are therefore run N times and the result is averaged to obtain an amortized
 
 N = 100,000
 
-|method|vector|vector class|buffer|array|
+|method|Vector|VectorClass|Buffer|Array|
 |---|---|---|---|---|
 |init|13|13|12|12|
 |addMany|14|14|-|-|
@@ -157,7 +177,7 @@ so that one can get an idea of the average.
 
 N = 100,000
 
-|method|vector|vector class|buffer|array|
+|method|Vector|VectorClass|Buffer|Array|
 |---|---|---|---|---|
 |init|408688|409076|400504|400008|
 |addMany|408640|408640|-|-|
@@ -208,6 +228,48 @@ Note:
 * add shows the garbage creation of Buffer due to copying of the entire data block during growth events. Buffer copies only its index block which is in the order of sqrt(N). The same effect is seen for shrink events in removeLast.
 * items produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the iterateItems functions may provide a better alternative for the use case.
 
+## Design
+
+The data structure is based on the paper ["Resizable Arrays in Optimal Time and Space"](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
+
+The vector elements are stored in so-called data blocks and
+the whole data structure consists of a sequence of data blocks of increasing size.
+Hence it is in fact a two-dimensional array (but not a "square" one).
+
+The trick lies in the selection of the sizes of the data blocks. 
+They are chosen such that the conversion of the externally used single index 
+to the internally used index pair can be cheaply done by bit shifts.
+
+The data block sizes can be better understood when thinking of the data blocks being arranged in "super blocks".
+Super blocks are merely a virtual concept and have no manifestation in the implementation.
+The capacity of a super block is always a $2$-power.
+The $i$-th super block has capacity $2^i$ and consists of $2^{\lfloor i / 2\rfloor}$ data blocks of size $2^{\lceil i / 2 \rceil}$.
+This is followed by the next super block of capacity $2^{i+1}$ and so on.
+
+Hence, the sequence of data block sizes look like this:
+
+$$1,\ \ 2,\ \ 2,2,\ \ 4,4,\ \ 4,4,4,4,\ \ 8,8,8,8,\ \ ...$$
+
+where the additional white space indicates super block boundaries. 
+
+## Implementation notes
+
+Each data block is a mutable array of type `[var ?X]` where `X` is the element type.
+The data blocks themselves are stored in the mutable array called `data_blocks`.
+Hence `data_blocks` has type `[var [var ?X]]`.
+
+The present implementation differs from the article in that the data block indices are shifted by $2$ and we introduce two data blocks of size $0$ and $1$ at the beginning of the sequence.
+This makes the access faster because it eliminates the frequent computation of $i+2$ in the internal formulas needed for index conversion.
+
+Besides the `data_blocks` array, the `Vector` type constains the index pair `i_block`, `i_element` which means the next position that should be written by an `add` operation:
+`data_blocks[i_block][i_element]`.
+We do not store any more information to reduce memory.
+But we also do not store less any information (such as only the total size in a single variable)
+as to not slow down access.
+
+When growing we resize `data_blocks` (the outer array) so that it can store exactly one next super block. But unused data blocks in the last super block are not allocated, i.e. set to the empty array. 
+
+When shrinking we keep space in `data_blocks` for two additional super blocks. But unused data blocks in the last two super blocks are deallocated, i.e. set to the empty array.
 ## Authors
 
 MR Research AG by Andrii Stepanov with contributions from 
