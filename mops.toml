@@ -1,6 +1,7 @@
 [package]
 name = "vector"
-version = "0.1.0"
-description = "Motoko vector data structure"
+version = "0.1.2"
+description = "Memory-efficient resizable array (replaces Buffer)"
 repository = "https://github.com/research-ag/vector"
+keywords = [ "array", "buffer", "resize", "optimized" ]
 license = "Apache-2.0"

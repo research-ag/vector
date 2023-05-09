@@ -61,24 +61,18 @@ As with `Buffer`, the user can benefit from the convenient dot-notation for the 
 
 ### Install with mops
 
-Add this line to your project's `mops.toml`:
+You need `mops` installed. In your project directory run:
 ```
-[dependencies]
-vector = "0.1.0"
-```
-
-Run
-```
-mops install
+mops add vector
 ```
 
-Import the package in the Motoko source file as follows:
+In the Motoko source file import the package as one of:
 ```
 import Vec "mo:vector";
 import Vec "mo:vector/Class";
 ```
 
-respectively for the static version or the class version.
+for the static version or the class version, respectively.
 
 ### Example
 
@@ -95,7 +89,31 @@ assert(Vector.get(v, 2) == 3);
 Vector.size(v);
 ```
 
-[Executable example](https://embed.smartcontracts.org/motoko/g/AyS1mBK7bmZuQpfetD8HgwnKmVHgBhKWoFLaKskE3RZcmDbLiwSJNqkdGCRytymssQft3fdPSWAQ8opcmqDXTREhCwWGFs1tnAYDbJxraMbSrUKcDSEE2NcZeRZMTsShY3oGpnTjf9iUV2K6iYzdc7hCq2TjZC5gG8dzJN3duuBjPCaKJnyA7aJ642Ps2YWXXUt6NAbpZ?lines=12)
+[Executable version of above example](https://embed.smartcontracts.org/motoko/g/AyS1mBK7bmZuQpfetD8HgwnKmVHgBhKWoFLaKskE3RZcmDbLiwSJNqkdGCRytymssQft3fdPSWAQ8opcmqDXTREhCwWGFs1tnAYDbJxraMbSrUKcDSEE2NcZeRZMTsShY3oGpnTjf9iUV2K6iYzdc7hCq2TjZC5gG8dzJN3duuBjPCaKJnyA7aJ642Ps2YWXXUt6NAbpZ?lines=12)
+
+```
+import Vector "mo:vector/Class";
+
+let v = Vector.Vector<Nat>();
+v.add(1);
+v.add(2);
+v.add(3);
+assert(v.get(0) == 1);
+assert(v.get(1) == 2);
+assert(v.get(2) == 3);
+v.size();
+```
+
+[Executable version of above example](https://embed.smartcontracts.org/motoko/g/7jAGWj9539qPauP9xFW79q2x9Xdeki6FHJWjByGftGsSFTJDKYk6b2oeTZpJZT6RtCWrwSAEpbdmgZ7FiGRoDLQi7149XNunNr8iDS1rk5ix81qC4BqNfjLGBrTnwRRtAQbBmRnZSFzjfuF1hHntQm2js1QAk5ffimyfHBywwtajcmGZyeSKPQzM5WT9n7gwVSfRQ?lines=12)
+
+### Build & test
+
+You need `moc` and `wasmtime` installed.
+Then run:
+```
+git clone git@github.com:research-ag/vector.git
+make -C test
+```
 
 ## Benchmarks
 
