@@ -1,6 +1,6 @@
 [package]
 name = "vector"
-version = "0.1.0"
+version = "0.1.1"
 description = "Motoko vector data structure"
 repository = "https://github.com/research-ag/vector"
 license = "Apache-2.0"
