@@ -2,7 +2,7 @@
 
 // Copyright: 2023 MR Research AG
 // Main author: Andrii Stepanov
-// Contributors: Timo Hanke, Andy Gura
+// Contributors: Timo Hanke (timohanke), Andy Gura (andygura), react0r-com
 
 import Prim "mo:⛔";
 import { bitcountLeadingZero = leadingZeros; fromNat = Nat32; toNat = Nat } "mo:base/Nat32";
@@ -1184,14 +1184,87 @@ module {
   ///
   /// *Runtime and space assumes that `f` runs in O(1) time and space.
   public func iterateItems<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
-    let o = object {
-      var i = 0;
-      public func fx(x : X) {
-        f(i, x);
-        i += 1;
+    /* Inlined version of
+      let o = object {
+        var i = 0;
+        public func fx(x : X) { f(i, x); i += 1; };
+      };
+      iterate<X>(vec, o.fx);
+    */
+    let blocks = vec.data_blocks.size();
+    var i_block = 0;
+    var i_element = 0;
+    var size = 0;
+    var db : [var ?X] = [var];
+    var i = 0;
+
+    loop {
+      if (i_element == size) {
+        i_block += 1;
+        if (i_block >= blocks) return;
+        db := vec.data_blocks[i_block];
+        size := db.size();
+        if (size == 0) return;
+        i_element := 0;
+      };
+      switch (db[i_element]) {
+        case (?x) {
+          f(i, x);
+          i_element += 1;
+          i += 1;
+        };
+        case (_) return;
       };
     };
-    iterate<X>(vec, o.fx);
+  };
+
+  /// Like `iterateItems` but iterates through the vector in reverse order,
+  /// from end to beginning.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  /// import Debug "mo:base/Debug";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
+  ///
+  /// Vector.iterateItemsRev<Nat>(vec, func (i,x) {
+  ///   // prints each item (i,x) in vector
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  /// });
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(size)`
+  ///
+  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  public func iterateItemsRev<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
+    var i_block = vec.i_block;
+    var i_element = vec.i_element;
+    var db : [var ?X] = if (i_block < vec.data_blocks.size()) {
+      vec.data_blocks[i_block];
+    } else { [var] };
+    var i = size(vec);
+
+    loop {
+      if (i_block == 1) {
+        return;
+      };
+      if (i_element == 0) {
+        i_block -= 1;
+        db := vec.data_blocks[i_block];
+        i_element := db.size() - 1;
+      } else {
+        i_element -= 1;
+      };
+      i -= 1;
+      switch (db[i_element]) {
+        case (?x) f(i, x);
+        case (_) Prim.trap(INTERNAL_ERROR);
+      };
+    };
   };
 
   /// Applies `f` to each element in `vec` in reverse order.
