@@ -11,6 +11,12 @@ Please refer to the README on GitHub where it renders properly with formulas and
 
 The API documentation can be found here: https://mops.one/vector/docs
 
+For updates, help, questions, feedback and other requests related to this package join us on:
+
+* OpenChat: https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai
+* Twitter: https://twitter.com/mr_research_ag
+* Dfinity forum: https://forum.dfinity.org/
+
 ### Characteristics
 
 The data structure is based on the paper [Resizable Arrays in Optimal Time and Space](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999)
