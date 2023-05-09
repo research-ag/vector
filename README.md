@@ -2,20 +2,24 @@
 
 ## Overview
 
-The Vector data structure is meant to be a replacement for Array when a growable and/or shrinkable data structure is needed.
-It provides random access like Array and Buffer and can grow and shrink at the end like Buffer can.
-Unlike Buffer, the memory overhead for allocated but no yet used space is O(sqrt(n)) instead of O(n).
+The `Vector` data structure is meant to be a replacement for `Array` when a growable and/or shrinkable data structure is needed.
+It provides random access like `Array` and `Buffer` and can grow and shrink at the end like `Buffer` can.
+Unlike `Buffer`, the memory overhead for allocated but no yet used space is $O(\sqrt{n})$ instead of $O(n)$.
+
+The package is published here: [https://mops.one/vector](https://mops.one/vector)
+
+The API documentation can be found here: [https://mops.one/vector/docs](https://mops.one/vector/docs)
 
 ### Characteristics
 
-The data structure is based on the paper "Resizable Arrays in Optimal Time and Space" by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
+The data structure is based on the paper [Resizable Arrays in Optimal Time and Space](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
 It is has the following characteristics:
 
 * implemented as a 2-dimensional array
 * performance-optimized
-* persistent memory overhead: O(sqrt(n))
-* worst-case instruction overhead: O(sqrt(n))
-* no re-allocation of data blocks and no copying
+* persistent memory overhead: $O(\sqrt{n})$
+* worst-case instruction overhead: $O(\sqrt{n})$
+* no re-allocation or copying of data blocks
 
 ### Motivation
 
@@ -31,7 +35,7 @@ The growing factor is 1.5x.
 Therefore, `Buffer` has linear persistent memory overhead (1.5x) and
 linear worst-case behavior (copying the entire array in the growth event).
 
-The present data structure improves both metrics from linear to O(sqrt(n)) in exchange for less performant random access.
+The present data structure improves both metrics from linear to $O(\sqrt{n})$ in exchange for less performant random access.
 Since the underlying data structure is a 2-dimensional array, put and get operation become approximately twice as expensive.
 However, the implementation is highly optimized so that in practice it is less than 2x in practice.
 Several convenience functions operate even faster for `Vector` than they do for `Buffer`.
@@ -43,11 +47,11 @@ For details see the Benchmarking section below.
 This is unlike `Buffer` which is a class and can not be directly declared `stable`.
 
 `Vector` provides 40+ convenience functions that are modeled and named after the convenience functions of `Buffer`.
-This is done to make it as easy as possible to replace Buffer with Vector.
+This is done to make it as easy as possible to replace `Buffer` with Vector.
 
-If a `stable` declaration is not required then the package also provides a class version of Vector. 
-This can be used as a drop-in replacement for Buffer as it provides exactly the same interface.
-As with Buffer, the user can benefit from the convenient dot-notation for the class methods.
+If a `stable` declaration is not required then the package also provides a class version of `Vector`. 
+This can be used as a drop-in replacement for `Buffer` as it provides exactly the same interface.
+As with `Buffer`, the user can benefit from the convenient dot-notation for the class methods.
 
 ## Usage
 
@@ -87,7 +91,7 @@ assert(Vector.get(v, 2) == 3);
 Vector.size(v);
 ```
 
-<iframe src="https://embed.smartcontracts.org/motoko/g/AyS1mBK7bmZuQpfetD8HgwnKmVHgBhKWoFLaKskE3RZcmDbLiwSJNqkdGCRytymssQft3fdPSWAQ8opcmqDXTREhCwWGFs1tnAYDbJxraMbSrUKcDSEE2NcZeRZMTsShY3oGpnTjf9iUV2K6iYzdc7hCq2TjZC5gG8dzJN3duuBjPCaKJnyA7aJ642Ps2YWXXUt6NAbpZ?lines=12" width="100%" height="408" style="border:0" title="Motoko code snippet" />
+[Executable example](https://embed.smartcontracts.org/motoko/g/AyS1mBK7bmZuQpfetD8HgwnKmVHgBhKWoFLaKskE3RZcmDbLiwSJNqkdGCRytymssQft3fdPSWAQ8opcmqDXTREhCwWGFs1tnAYDbJxraMbSrUKcDSEE2NcZeRZMTsShY3oGpnTjf9iUV2K6iYzdc7hCq2TjZC5gG8dzJN3duuBjPCaKJnyA7aJ642Ps2YWXXUt6NAbpZ?lines=12)
 
 ## Benchmarks
 
@@ -158,7 +162,7 @@ N = 100,000
 
 Note:
 
-* add is the function that can grow the data structure. It performs better for Vector than for Buffer because the growth events are cheaper. `Buffer` only allocates new data blocks, it does not re-allocate and copy old data blocks. 
+* add is the function that can grow the data structure. It performs better for `Vector` than for `Buffer` because the growth events are cheaper. `Buffer` only allocates new data blocks, it does not re-allocate and copy old data blocks. 
 * get, put and getOpt are the random access functions. `Vector` is a 2-dimensional array where (only) the second dimension has option-values, `Buffer` is a 1-dimensional array with option-values and `Array` is a 1-dimensional array with non-option-values. Hence, the expected access time for `Vector` is expected to be roughly the sum of access times for `Buffer` and `Array`. This is correctly reflected in the numbers.
 * All functions that iterate through the data structure are optimized in a way that they don't use random access. This is the reason that they are generally only slighly (0-35%) more costly than `Buffer`. In some case the function can be cheaper than for `Buffer` (iterate, max, min).
 
@@ -169,7 +173,7 @@ The results are for a data structure of size N.
 
 The memory size is generally shown in bytes for a single function execution.
 
-In some cases, the value depends on the size N of the Vector,
+In some cases, the value depends on the size N of the `Vector`,
 e.g. init, addMany, clone, etc.
 
 In cases when there is an amortized cost such as add, removeLast then the function is executed N times
@@ -224,13 +228,13 @@ N = 100,000
 
 Note:
 
-* init and addMany create a data structure of size N. Here we see the sqrt(N) overhead for Vector over Array.
-* add shows the garbage creation of Buffer due to copying of the entire data block during growth events. Buffer copies only its index block which is in the order of sqrt(N). The same effect is seen for shrink events in removeLast.
+* init and addMany create a data structure of size N. Here we see the $\sqrt{N}$ overhead for `Vector` over `Array`.
+* add shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Buffer` copies only its index block which is in the order of $\sqrt{N}$. The same effect is seen for shrink events in removeLast.
 * items produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the iterateItems functions may provide a better alternative for the use case.
 
 ## Design
 
-The data structure is based on the paper ["Resizable Arrays in Optimal Time and Space"](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
+The data structure is based on the paper [Resizable Arrays in Optimal Time and Space](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999).
 
 The vector elements are stored in so-called data blocks and
 the whole data structure consists of a sequence of data blocks of increasing size.
