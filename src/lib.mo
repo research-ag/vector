@@ -1218,6 +1218,55 @@ module {
     };
   };
 
+  /// Like `iterateItems` but iterates through the vector in reverse order,
+  /// from end to beginning.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  /// import Debug "mo:base/Debug";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
+  ///
+  /// Vector.iterateItemsRev<Nat>(vec, func (i,x) {
+  ///   // prints each item (i,x) in vector
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  /// });
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(size)`
+  ///
+  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  public func iterateItemsRev<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
+    var i_block = vec.i_block;
+    var i_element = vec.i_element;
+    var db : [var ?X] = if (i_block < vec.data_blocks.size()) {
+      vec.data_blocks[i_block];
+    } else { [var] };
+    var i = size(vec);
+
+    loop {
+      if (i_block == 1) {
+        return;
+      };
+      if (i_element == 0) {
+        i_block -= 1;
+        db := vec.data_blocks[i_block];
+        i_element := db.size() - 1;
+      } else {
+        i_element -= 1;
+      };
+      i -= 1;
+      switch (db[i_element]) {
+        case (?x) f(i, x);
+        case (_) Prim.trap(INTERNAL_ERROR);
+      };
+    };
+  };
+
   /// Applies `f` to each element in `vec` in reverse order.
   ///
   /// Example:

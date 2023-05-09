@@ -300,6 +300,8 @@ run(
 
 var sumItems = 0;
 Vector.iterateItems<Nat>(vector, func(i,x) { sumItems += i + x });
+var sumItemsRev = 0;
+Vector.iterateItems<Nat>(vector, func(i,x) { sumItemsRev += i + x });
 
 run(
   suite(
@@ -308,6 +310,11 @@ run(
       test(
         "sumItems",
         [sumItems],
+        M.equals(T.array(T.natTestable, [n * (n + 1)])),
+      ),
+      test(
+        "sumItemsRev",
+        [sumItemsRev],
         M.equals(T.array(T.natTestable, [n * (n + 1)])),
       ),
     ],

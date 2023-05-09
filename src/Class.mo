@@ -396,6 +396,32 @@ module {
     Static.iterateItems(vec.share(), f);
   };
 
+  /// Like `iterateItems` but iterates through the vector in reverse order,
+  /// from end to beginning.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// import Nat "mo:base/Nat";
+  /// import Debug "mo:base/Debug";
+  ///
+  /// let vec = Vector.fromArray<Nat>([1, 2, 3]);
+  ///
+  /// Vector.iterateItemsRev<Nat>(vec, func (i,x) {
+  ///   // prints each item (i,x) in vector
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  /// });
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  ///
+  /// Space: `O(size)`
+  ///
+  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  public func iterateItemsRev<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
+    Static.iterateItemsRev(vec.share(), f);
+  };
+
   /// Applies `f` to each element in `vec` in reverse order.
   ///
   /// Example:
