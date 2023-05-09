@@ -6,6 +6,8 @@ The `Vector` data structure is meant to be a replacement for `Array` when a grow
 It provides random access like `Array` and `Buffer` and can grow and shrink at the end like `Buffer` can.
 Unlike `Buffer`, the memory overhead for allocated but no yet used space is $O(\sqrt{n})$ instead of $O(n)$.
 
+### Links
+
 The package is published on [MOPS](https://mops.one/vector) and [GitHub](https://github.com/research-ag/vector).
 Please refer to the README on GitHub where it renders properly with formulas and tables.
 
@@ -133,14 +135,14 @@ The benchmarking code can be found here: https://github.com/research-ag/canister
 This table shows the number of wasm instruction for the given function execution.
 
 For some functions the number of instructions is expected to be independent of the size of the vector,
-e.g. init, get, getOpt, put, size, clear, isEmpty.
+e.g. `init`, `get`, `getOpt`, `put`, `size`, `clear`, `isEmpty`.
 However, even in those case we run the function N times and take the average because there may be marginal differences in cost based on the concrete integer value of the index being used.
 
 For some functions the function is run only once for a vector of size N
 because a single call iterates through the whole vector,
-e.g. addMany, clone, indexOf, firstIndexWith, lastIndexOf, lastIndexWith, forAll, forSome, forNone, iterate, iterateRev, vals, valsRev, items, itemsRev, keys, iterateItems, iterateItemsRev, addFromIter, toArray, fromArray, toVarArray, fromVarArray, contains, max, min, equal, compare, toText, foldLeft, foldRight, reverse, reversed.
+e.g. `addMany`, `clone`, `indexOf`, `firstIndexWith`, `lastIndexOf`, `lastIndexWith`, `forAll`, `forSome`, `forNone`, `iterate`, `iterateRev`, `vals`, `valsRev`, `items`, `itemsRev`, `keys`, `iterateItems`, `iterateItemsRev`, `addFromIter`, `toArray`, `fromArray`, `toVarArray`, `fromVarArray`, `contains`, `max`, `min`, `equal`, `compare`, `toText`, `foldLeft`, `foldRight`, `reverse`, `reversed`.
 
-The functions add and removeLast have sporadic worst-case behavior when the data structure has to grow.
+The functions `add` and `removeLast` have sporadic worst-case behavior when the data structure has to grow.
 They are therefore run N times and the result is averaged to obtain an amortized cost per call.
 
 ```
@@ -196,9 +198,9 @@ value data type: Nat
 
 Note:
 
-* add is the function that can grow the data structure. It performs better for `Vector` than for `Buffer` because the growth events are cheaper. `Buffer` only allocates new data blocks, it does not re-allocate and copy old data blocks. 
-* get, put and getOpt are the random access functions. `Vector` is a 2-dimensional array where (only) the second dimension has option-values, `Buffer` is a 1-dimensional array with option-values and `Array` is a 1-dimensional array with non-option-values. Hence, the expected access time for `Vector` is expected to be roughly the sum of access times for `Buffer` and `Array`. This is correctly reflected in the numbers.
-* All functions that iterate through the data structure are optimized in a way that they don't use random access. This is the reason that they are generally only slighly (0-35%) more costly than `Buffer`. In some case the function can be cheaper than for `Buffer` (iterate, max, min).
+* `add` is the function that can grow the data structure. It performs better in amortized terms than for `Buffer` because the growth events are cheaper. `Vector` only allocates new data blocks, it does not re-allocate and copy old data blocks. 
+* `get`, `put` and `getOpt` are the random access functions. `Vector` is a 2-dimensional array where (only) the second dimension has option-values, `Buffer` is a 1-dimensional array with option-values and `Array` is a 1-dimensional array with non-option-values. Hence, the expected access time for `Vector` is expected to be roughly the sum of access times for `Buffer` and `Array`. This is correctly reflected in the numbers.
+* All functions that iterate through the data structure are optimized in a way that they don't use random access. This is the reason that they are generally only slighly (0-35%) more costly than `Buffer`. In some case the function can be cheaper than for `Buffer` (`iterate`, `max`, `min`).
 
 ### Memory
 
@@ -208,9 +210,9 @@ The results are for a data structure of size N.
 The memory size is generally shown in bytes for a single function execution.
 
 In some cases, the value depends on the size N of the `Vector`,
-e.g. init, addMany, clone, etc.
+e.g. `init`, `addMany`, `clone`, etc.
 
-In cases when there is an amortized cost such as add, removeLast then the function is executed N times
+In cases when there is an amortized cost such as `add`, `removeLast` then the function is executed N times
 so that one can get an idea of the average. 
 
 ```
@@ -266,9 +268,9 @@ value data type: Nat
 
 Note:
 
-* init and addMany create a data structure of size N. Here we see the $\sqrt{N}$ overhead for `Vector` over `Array`.
-* add shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Buffer` copies only its index block which is in the order of $\sqrt{N}$. The same effect is seen for shrink events in removeLast.
-* items produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the iterateItems functions may provide a better alternative for the use case.
+* `init` and `addMany` create a data structure of size N. Here we see the $\sqrt{N}$ overhead for `Vector` over `Array`.
+* `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Buffer` copies only its index block which is in the order of $\sqrt{N}$. The same effect is seen for shrink events in `removeLast`.
+* `items` produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the `iterateItems` function may provide a better alternative for the use case.
 
 ## Design
 
