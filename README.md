@@ -101,6 +101,8 @@ Vector.size(v);
 We extensively benchmarked `Vector` against `Buffer` and the Motoko-native `Array`, where applicable.
 Each line in the follwing tables below is one benchmark and corresponds to the given function name.
 
+The benchmarking code can be found here: https://github.com/research-ag/canister-profiling
+
 ### Time
 
 This table shows the number of wasm instruction for the given function execution.
