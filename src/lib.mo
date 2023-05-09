@@ -1184,14 +1184,38 @@ module {
   ///
   /// *Runtime and space assumes that `f` runs in O(1) time and space.
   public func iterateItems<X>(vec : Vector<X>, f : (Nat, X) -> ()) {
-    let o = object {
-      var i = 0;
-      public func fx(x : X) {
-        f(i, x);
-        i += 1;
+    /* Inlined version of
+      let o = object {
+        var i = 0;
+        public func fx(x : X) { f(i, x); i += 1; };
+      };
+      iterate<X>(vec, o.fx);
+    */
+    let blocks = vec.data_blocks.size();
+    var i_block = 0;
+    var i_element = 0;
+    var size = 0;
+    var db : [var ?X] = [var];
+    var i = 0;
+
+    loop {
+      if (i_element == size) {
+        i_block += 1;
+        if (i_block >= blocks) return;
+        db := vec.data_blocks[i_block];
+        size := db.size();
+        if (size == 0) return;
+        i_element := 0;
+      };
+      switch (db[i_element]) {
+        case (?x) {
+          f(i, x);
+          i_element += 1;
+          i += 1;
+        };
+        case (_) return;
       };
     };
-    iterate<X>(vec, o.fx);
   };
 
   /// Applies `f` to each element in `vec` in reverse order.
