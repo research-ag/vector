@@ -2,7 +2,7 @@
 
 // Copyright: 2023 MR Research AG
 // Main author: Andrii Stepanov
-// Contributors: Timo Hanke, Andy Gura
+// Contributors: Timo Hanke (timohanke), Andy Gura (andygura), react0r-com
 
 import Prim "mo:⛔";
 import { bitcountLeadingZero = leadingZeros; fromNat = Nat32; toNat = Nat } "mo:base/Nat32";
