@@ -15,9 +15,9 @@ The API documentation can be found [here](https://mops.one/vector/docs/lib) on M
 
 For updates, help, questions, feedback and other requests related to this package join us on:
 
-* OpenChat: https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai
-* Twitter: https://twitter.com/mr_research_ag
-* Dfinity forum: https://forum.dfinity.org/
+* [OpenChat group](https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai)
+* [Twitter](https://twitter.com/mr_research_ag)
+* [Dfinity forum](https://forum.dfinity.org/)
 
 ### Characteristics
 
@@ -127,7 +127,7 @@ make -C test
 We extensively benchmarked `Vector` against `Buffer` and the Motoko-native `Array`, where applicable.
 Each line in the follwing tables below is one benchmark and corresponds to the given function name.
 
-The benchmarking code can be found here: https://github.com/research-ag/canister-profiling
+The benchmarking code can be found here: [canister-profiling](https://github.com/research-ag/canister-profiling)
 
 ### Time
 
