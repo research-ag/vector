@@ -2,7 +2,7 @@
 /// Static type `Vector` that can be declared `stable`. 
 /// For the `Vector` class see the file Class.mo.
 ///
-/// The function are modeled with respect to naming and semantics after their
+/// The functions are modeled with respect to naming and semantics after their
 /// counterparts for `Buffer` in motoko-base.
 ///
 /// Copyright: 2023 MR Research AG
