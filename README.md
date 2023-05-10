@@ -1,4 +1,4 @@
-# A vector data structure for Motoko
+# Vector data structure for Motoko
 
 ## Overview
 
@@ -11,7 +11,7 @@ Unlike `Buffer`, the memory overhead for allocated but no yet used space is $O(\
 The package is published on [MOPS](https://mops.one/vector) and [GitHub](https://github.com/research-ag/vector).
 Please refer to the README on GitHub where it renders properly with formulas and tables.
 
-The API documentation can be found here: https://mops.one/vector/docs
+The API documentation can be found [here](https://mops.one/vector/docs/lib) on Mops.
 
 For updates, help, questions, feedback and other requests related to this package join us on:
 
@@ -25,7 +25,6 @@ The data structure is based on the paper [Resizable Arrays in Optimal Time and S
 which has the following characteristics:
 
 * based on a 2-dimensional array
-* performance-optimized
 * persistent memory overhead: $O(\sqrt{n})$
 * worst-case instruction overhead: $O(\sqrt{n})$
 * no re-allocation or copying of data blocks

@@ -1,20 +1,22 @@
-/// Class wrapper around the static Vector type
+/// Resizable array with `O(sqrt(n))` memory overhead.
+/// Class `Vector`.
+/// For the static type `Vector` see the file lib.mo.
 ///
-/// This allows to use VectorClass as a drop-in replacement of Buffer
+/// The `Vector` class can be used as a drop-in replacement for `Buffer`.
 ///
-/// We provide all the functions of Buffer except for:
-/// - sort
-/// - insertBuffer
-/// - insert
-/// - append
-/// - reserve
-/// - capacity
-/// - filterEntries
-/// - remove
-
-// Copyright: 2023 MR Research AG
-// Main author: Andrii Stepanov
-// Contributors: Timo Hanke, Andy Gura
+/// We provide all the functions of `Buffer` except for:
+/// * sort
+/// * insertBuffer
+/// * insert
+/// * append
+/// * reserve
+/// * capacity
+/// * filterEntries
+/// * remove
+///
+/// Copyright: 2023 MR Research AG
+/// Main author: Andrii Stepanov
+/// Contributors: Timo Hanke (timohanke), Andy Gura (andygura), react0r-com
 
 import Static "lib";
 import Iter "mo:base/Iter";

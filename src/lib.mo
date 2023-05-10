@@ -1,8 +1,13 @@
-/// Resizable one-dimensional array with `O(sqrt(n))` memory waste.
-
-// Copyright: 2023 MR Research AG
-// Main author: Andrii Stepanov
-// Contributors: Timo Hanke (timohanke), Andy Gura (andygura), react0r-com
+/// Resizable array with `O(sqrt(n))` memory overhead.
+/// Static type `Vector` that can be declared `stable`. 
+/// For the `Vector` class see the file Class.mo.
+///
+/// The function are modeled with respect to naming and semantics after their
+/// counterparts for `Buffer` in motoko-base.
+///
+/// Copyright: 2023 MR Research AG
+/// Main author: Andrii Stepanov
+/// Contributors: Timo Hanke (timohanke), Andy Gura (andygura), react0r-com
 
 import Prim "mo:⛔";
 import { bitcountLeadingZero = leadingZeros; fromNat = Nat32; toNat = Nat } "mo:base/Nat32";
