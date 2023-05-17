@@ -34,7 +34,7 @@ jobs:
           pwd
           echo "home:" $HOME
           echo "path:" $PATH
-          ls .wasmtime*
+          find $HOME -name wasmtime
           ls $HOME/.wasmtime*
           cp $HOME/.wasmtime*/bin/wastime /home/runner/bin
   
