@@ -15,9 +15,9 @@ The API documentation can be found [here](https://mops.one/vector/docs/lib) on M
 
 For updates, help, questions, feedback and other requests related to this package join us on:
 
-* OpenChat: https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai
-* Twitter: https://twitter.com/mr_research_ag
-* Dfinity forum: https://forum.dfinity.org/
+* [OpenChat group](https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai)
+* [Twitter](https://twitter.com/mr_research_ag)
+* [Dfinity forum](https://forum.dfinity.org/)
 
 ### Characteristics
 
@@ -127,7 +127,7 @@ make -C test
 We extensively benchmarked `Vector` against `Buffer` and the Motoko-native `Array`, where applicable.
 Each line in the follwing tables below is one benchmark and corresponds to the given function name.
 
-The benchmarking code can be found here: https://github.com/research-ag/canister-profiling
+The benchmarking code can be found here: [canister-profiling](https://github.com/research-ag/canister-profiling)
 
 ### Time
 
@@ -267,8 +267,9 @@ value data type: Nat
 
 Note:
 
-* `init` and `addMany` create a data structure of size N. Here we see the $\sqrt{N}$ overhead for `Vector` over `Array`.
-* `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Buffer` copies only its index block which is in the order of $\sqrt{N}$. The same effect is seen for shrink events in `removeLast`.
+* `init` and `addMany` create a data structure of size N. Here we see the persisten $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
+* `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Vector` copies only its index block which is in the order of $\sqrt{N}$. 
+* `removeLast` shows the same effects as `add` but for shrink events.
 * `items` produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the `iterateItems` function may provide a better alternative for the use case.
 
 ## Design
@@ -313,10 +314,13 @@ as to not slow down access.
 When growing we resize `data_blocks` (the outer array) so that it can store exactly one next super block. But unused data blocks in the last super block are not allocated, i.e. set to the empty array. 
 
 When shrinking we keep space in `data_blocks` for two additional super blocks. But unused data blocks in the last two super blocks are deallocated, i.e. set to the empty array.
+
+## Copyright
+
+MR Research AG, 2023
 ## Authors
 
-MR Research AG by Andrii Stepanov with contributions from 
-Timo Hanke, Andy Gura and react0r-com.
+Andrii Stepanov with contributions from Timo Hanke, Andy Gura and react0r-com.
 
 ## License 
 
