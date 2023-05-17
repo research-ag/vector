@@ -6,8 +6,6 @@ on:
 env:
   mops_version: 0.12.1
   moc_version: 0.9.0
-  dfx_version: 0.14.0
-  ic-repl_version: 0.3.18
 
 jobs:
   build:
@@ -23,7 +21,7 @@ jobs:
 
       - name: "Install wasmtime"
         run: |
-          nix-env --install wasmtime --file '<nixpkgs>'
+          curl https://wasmtime.dev/install.sh -sSf | bash
   
       - name: Make bin directory
         run: mkdir -p /home/runner/bin
