@@ -34,8 +34,9 @@ jobs:
           pwd
           echo "home:" $HOME
           echo "path:" $PATH
-          echo "github_path:" $GITHUB_PATH
-          cp $HOME/.wasmtime/bin/wastime /home/runner/bin
+          ls .wasmtime*
+          ls $HOME/.wasmtime*
+          cp $HOME/.wasmtime*/bin/wastime /home/runner/bin
   
       - name: "install mops"
         run: |          
