@@ -31,9 +31,7 @@ jobs:
       - name: "Install wasmtime"
         run: |
           curl https://wasmtime.dev/install.sh -sSf | bash
-          echo "path:" $PATH
-          export PATH="/home/runner/.wasmtime/bin":$PATH
-          echo "path:" $PATH
+          ln -s $HOME/.wasmtime/bin/wasmtime /home/runner/bin
   
       - name: "install mops"
         run: |          
