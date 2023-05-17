@@ -15,10 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - uses: cachix/install-nix-action@v20
-        with:
-          nix_path: nixpkgs=channel:nixos-22.11
-
       - name: Make bin directory
         run: mkdir -p /home/runner/bin
 
@@ -31,7 +27,7 @@ jobs:
       - name: "Install wasmtime"
         run: |
           curl https://wasmtime.dev/install.sh -sSf | bash
-          ln -s $HOME/.wasmtime/bin/wasmtime /home/runner/bin
+          echo "/home/runner/.wasmtime/bin" >> $GITHUB_PATH
   
       - name: "install mops"
         run: |          
