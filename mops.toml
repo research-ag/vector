@@ -5,3 +5,6 @@ description = "Memory-efficient resizable array (replaces Buffer)"
 repository = "https://github.com/research-ag/vector"
 keywords = [ "array", "buffer", "resize", "optimized" ]
 license = "Apache-2.0"
+
+[dependencies]
+base = "0.9.1"
