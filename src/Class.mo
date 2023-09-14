@@ -411,7 +411,7 @@ module {
   ///
   /// Vector.iterateItemsRev<Nat>(vec, func (i,x) {
   ///   // prints each item (i,x) in vector
-  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x));
   /// });
   /// ```
   ///
@@ -589,6 +589,24 @@ module {
   public func clone<X>(vec : Vector<X>) : Vector<X> {
     let v = Vector<X>();
     v.unshare(Static.clone(vec.share()));
+    v;
+  };
+
+  /// Creates and returns a new vector, populated with the results of calling a provided function on every element in the provided vector
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// vec.add(1);
+  ///
+  /// let t = Vector.map<Nat, Text>(vec, Nat.toText);
+  /// Vector.toArray(t); // => ["1"]
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  public func map<X1, X2>(vec : Vector<X1>, f : (X1) -> X2) : Vector<X2> {
+    let v = Vector<X2>();
+    v.unshare(Static.map(vec.share(), f));
     v;
   };
 
