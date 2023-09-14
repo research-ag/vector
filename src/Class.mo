@@ -604,7 +604,7 @@ module {
   /// ```
   ///
   /// Runtime: `O(size)`
-  public func map<X1, X2>(vec : Vector<X1>, f : (X1) -> X2) : Vector<X2> {
+  public func map<X1, X2>(vec : Vector<X1>, f : X1 -> X2) : Vector<X2> {
     let v = Vector<X2>();
     v.unshare(Static.map(vec.share(), f));
     v;

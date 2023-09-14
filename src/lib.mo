@@ -193,16 +193,19 @@ module {
   /// ```
   ///
   /// Runtime: `O(size)`
-  public func map<X1, X2>(vec : Vector<X1>, f : (X1) -> X2) : Vector<X2> = {
+  public func map<X1, X2>(vec : Vector<X1>, f : X1 -> X2) : Vector<X2> = {
     var data_blocks = Array.tabulateVar<[var ?X2]>(
       vec.data_blocks.size(),
-      func(i) = Array.tabulateVar<?X2>(
-        vec.data_blocks[i].size(),
-        func(j) = switch (vec.data_blocks[i][j]) {
-          case (?item) ?f(item);
-          case (null) null;
-        },
-      ),
+      func(i) {
+        let db = vec.data_blocks[i];
+        Array.tabulateVar<?X2>(
+          db.size(),
+          func(j) = switch (db[j]) {
+            case (?item) ?f(item);
+            case (null) null;
+          },
+        );
+      },
     );
     var i_block = vec.i_block;
     var i_element = vec.i_element;
