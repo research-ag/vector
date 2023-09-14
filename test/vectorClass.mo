@@ -654,7 +654,12 @@ run(
         "map",
         Vector.toArray(Vector.map<Nat, Text>(vector, Nat.toText)),
         M.equals(T.array(T.textTestable, ["0", "1", "2", "3", "4", "5", "6"])),
-      )
+      ),
+      test(
+        "empty",
+        Vector.isEmpty(Vector.map<Nat, Text>(Vector.Vector<Nat>(), Nat.toText)),
+        M.equals(T.bool(true)),
+      ),
     ],
   )
 );
