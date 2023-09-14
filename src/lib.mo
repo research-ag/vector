@@ -1,5 +1,5 @@
 /// Resizable array with `O(sqrt(n))` memory overhead.
-/// Static type `Vector` that can be declared `stable`. 
+/// Static type `Vector` that can be declared `stable`.
 /// For the `Vector` class see the file Class.mo.
 ///
 /// The functions are modeled with respect to naming and semantics after their
@@ -176,6 +176,36 @@ module {
         vec.data_blocks[i].size(),
         func(j) = vec.data_blocks[i][j],
       ),
+    );
+    var i_block = vec.i_block;
+    var i_element = vec.i_element;
+  };
+
+  /// Creates and returns a new vector, populated with the results of calling a provided function on every element in the provided vector
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// vec.add(1);
+  ///
+  /// let t = Vector.map<Nat, Text>(vec, Nat.toText);
+  /// Vector.toArray(t); // => ["1"]
+  /// ```
+  ///
+  /// Runtime: `O(size)`
+  public func map<X1, X2>(vec : Vector<X1>, f : X1 -> X2) : Vector<X2> = {
+    var data_blocks = Array.tabulateVar<[var ?X2]>(
+      vec.data_blocks.size(),
+      func(i) {
+        let db = vec.data_blocks[i];
+        Array.tabulateVar<?X2>(
+          db.size(),
+          func(j) = switch (db[j]) {
+            case (?item) ?f(item);
+            case (null) null;
+          },
+        );
+      },
     );
     var i_block = vec.i_block;
     var i_element = vec.i_element;
@@ -1179,7 +1209,7 @@ module {
   ///
   /// Vector.iterateItems<Nat>(vec, func (i,x) {
   ///   // prints each item (i,x) in vector
-  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x));
   /// });
   /// ```
   ///
@@ -1236,7 +1266,7 @@ module {
   ///
   /// Vector.iterateItemsRev<Nat>(vec, func (i,x) {
   ///   // prints each item (i,x) in vector
-  ///   Debug.print(Nat.toText(i) # Nat.toText(x)); 
+  ///   Debug.print(Nat.toText(i) # Nat.toText(x));
   /// });
   /// ```
   ///
