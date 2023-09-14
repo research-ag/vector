@@ -644,6 +644,23 @@ run(
 
 /* --------------------------------------- */
 
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6]);
+
+run(
+  suite(
+    "map",
+    [
+      test(
+        "map",
+        Vector.toArray(Vector.map<Nat, Text>(vector, Nat.toText)),
+        M.equals(T.array(T.textTestable, ["0", "1", "2", "3", "4", "5", "6"])),
+      )
+    ],
+  )
+);
+
+/* --------------------------------------- */
+
 func locate_readable<X>(index : Nat) : (Nat, Nat) {
   // index is any Nat32 except for
   // blocks before super block s == 2 ** s
