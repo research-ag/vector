@@ -1,7 +1,18 @@
 [package]
 name = "vector"
-version = "0.2.0"
+version = "0.3.0"
 description = "Memory-efficient resizable array (replaces Buffer)"
 repository = "https://github.com/research-ag/vector"
 keywords = [ "array", "buffer", "resize", "optimized" ]
 license = "Apache-2.0"
+
+[dependencies]
+base = "0.11.1"
+
+[dev-dependencies]
+test = "2.0.0"
+matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0"
+
+[toolchain]
+wasmtime = "18.0.2"
+moc = "0.11.1"
