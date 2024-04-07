@@ -1,3 +1,0 @@
-[dependencies]
-base = "0.8.7"
-matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0"
