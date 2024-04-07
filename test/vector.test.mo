@@ -7,7 +7,6 @@ import M "mo:matchers/Matchers";
 import Prim "mo:⛔";
 import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
-import Option "mo:base/Option";
 import Array "mo:base/Array";
 import Nat32 "mo:base/Nat32";
 import Nat "mo:base/Nat";
