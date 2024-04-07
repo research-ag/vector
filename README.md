@@ -1,3 +1,6 @@
+[![mops](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/mops/vector)](https://mops.one/vector)
+[![documentation](https://oknww-riaaa-aaaam-qaf6a-cai.raw.ic0.app/badge/documentation/vector)](https://mops.one/vector/docs)
+
 # Vector data structure for Motoko
 
 ## Overview
