@@ -11,6 +11,7 @@ base = "0.11.1"
 
 [dev-dependencies]
 test = "2.0.0"
+bench = "1.0.0"
 matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0"
 
 [toolchain]
