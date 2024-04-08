@@ -149,54 +149,53 @@ They are therefore run N times and the result is averaged to obtain an amortized
 
 ```
 N = 100,000
-Compiler: moc-0.8.8
+Compiler: moc-0.11.4
 value data type: Nat
 ```
-
-|method|Vector|VectorClass|Buffer|Array|
+|method|vector|vector class|buffer|array|
 |---|---|---|---|---|
-|init|13|13|12|12|
-|addMany|14|14|-|-|
-|clone|176|176|253|-|
-|add|291|321|490|-|
-|get|195|225|118|71|
-|getOpt|230|260|120|-|
-|put|236|267|126|72|
-|size|153|182|74|49|
-|removeLast|294|323|326|-|
-|indexOf|148|148|137|34|
-|firstIndexWith|136|136|-|-|
-|lastIndexOf|176|176|144|-|
-|lastIndexWith|164|164|-|-|
-|forAll|140|140|132|-|
-|forSome|136|136|137|-|
-|forNone|136|136|137|-|
-|iterate|93|93|123|-|
-|iterateRev|114|114|-|-|
-|vals|147|147|117|14|
-|valsRev|140|140|-|-|
-|items|247|247|-|-|
-|itemsRev|267|267|-|-|
-|keys|92|92|-|-|
-|iterateItems|123|123|-|-|
-|iterateItemsRev|151|151|-|-|
-|addFromIter|368|368|311|-|
-|toArray|138|138|102|-|
-|fromArray|148|148|152|-|
-|toVarArray|199|199|156|110|
-|fromVarArray|148|148|152|56|
-|clear|161|189|266|-|
-|contains|148|148|138|34|
-|max|147|147|163|37|
-|min|147|147|168|37|
-|equal|291|291|204|112|
-|compare|331|331|244|112|
-|toText|409|409|366|0|
-|foldLeft|137|137|153|50|
-|foldRight|158|158|159|113|
-|reverse|396|396|209|128|
-|reversed|365|365|209|128|
-|isEmpty|89|120|89|61|
+|init|15|15|14|14|
+|addMany|17|17|-|-|
+|clone|188|188|298|-|
+|add|336|378|552|-|
+|get|205|247|136|72|
+|getOpt|261|303|149|-|
+|put|266|309|152|82|
+|size|183|216|101|69|
+|removeLast|315|356|395|-|
+|indexOf|182|182|172|56|
+|firstIndexWith|163|163|-|-|
+|lastIndexOf|222|222|179|-|
+|lastIndexWith|203|203|-|-|
+|forAll|175|175|157|-|
+|forSome|163|163|162|-|
+|forNone|163|163|162|-|
+|iterate|106|106|140|-|
+|iterateRev|133|133|-|-|
+|vals|156|156|127|20|
+|valsRev|163|163|-|-|
+|items|266|266|-|-|
+|itemsRev|293|293|-|-|
+|keys|105|105|-|-|
+|iterateItems|142|142|-|-|
+|iterateItemsRev|177|177|-|-|
+|addFromIter|406|406|354|-|
+|toArray|158|158|117|-|
+|fromArray|163|163|190|-|
+|toVarArray|226|226|170|114|
+|fromVarArray|163|163|190|64|
+|clear|139|180|329|-|
+|contains|182|182|163|56|
+|max|174|174|191|57|
+|min|174|174|197|57|
+|equal|356|356|243|133|
+|compare|397|397|284|133|
+|toText|455|455|398|0|
+|foldLeft|163|163|176|69|
+|foldRight|190|190|192|135|
+|reverse|426|426|243|145|
+|reversed|412|412|243|145|
+|isEmpty|116|156|120|88|
 
 Note:
 
@@ -219,15 +218,15 @@ so that one can get an idea of the average.
 
 ```
 N = 100,000
-Compiler: moc-0.8.8
+Compiler: moc-0.11.1
 value data type: Nat
 ```
 
-|method|Vector|VectorClass|Buffer|Array|
+|method|vector|vector class|buffer|array|
 |---|---|---|---|---|
 |init|408688|409076|400504|400008|
 |addMany|408640|408640|-|-|
-|clone|425060|425448|553568|-|
+|clone|425032|425420|553568|-|
 |add|416060|416060|1659216|-|
 |get|0|0|0|0|
 |getOpt|0|0|0|-|
