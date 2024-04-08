@@ -11,8 +11,11 @@ base = "0.11.1"
 
 [dev-dependencies]
 test = "2.0.0"
-matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0"
+matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0@3dac8a071b69e4e651b25a7d9683fe831eb7cffd"
 
 [toolchain]
 wasmtime = "18.0.2"
 moc = "0.11.1"
+
+[requirements]
+moc = "0.10.0"
