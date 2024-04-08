@@ -2,7 +2,7 @@ import Bench "mo:bench";
 import Nat "mo:base/Nat";
 import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
-import Vector "../src/Class";
+import Vector "../src";
 
 module {
   public func init() : Bench.Bench {
@@ -14,20 +14,21 @@ module {
     bench.rows(["Vector", "Buffer"]);
     bench.cols(["10", "10000", "1000000"]);
 
+    let vec = Vector.new<Nat>();
+    let buf = Buffer.Buffer<Nat>(0);
+
     bench.runner(func(row, col) {
       let ?n = Nat.fromText(col);
 
       // Vector
       if (row == "Vector") {
-        let vec = Vector.Vector<Nat>();
         for (i in Iter.range(1, n)) {
-          vec.add(i);
+          Vector.add(vec, i);
         };
       };
 
       // Buffer
       if (row == "Buffer") {
-        let buf = Buffer.Buffer<Nat>(0);
         for (i in Iter.range(1, n)) {
           buf.add(i);
         };
