@@ -20,7 +20,7 @@ jobs:
       - name: Run mops test
         run: mops test
 
+      - uses: dfinity/setup-dfx@main
+
       - name: Run mops bench
-        run: |
-          mops install
-          mops bench
+        run: mops bench
