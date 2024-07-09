@@ -269,7 +269,7 @@ value data type: Nat
 
 Note:
 
-* `init` and `addMany` create a data structure of size N. Here we see the persisten $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
+* `init` and `addMany` create a data structure of size N. Here we see the persistent $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
 * `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Vector` copies only its index block which is in the order of $\sqrt{N}$. 
 * `removeLast` shows the same effects as `add` but for shrink events.
 * `items` produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the `iterateItems` function may provide a better alternative for the use case.
@@ -319,7 +319,7 @@ When shrinking we keep space in `data_blocks` for two additional super blocks. B
 
 ## Copyright
 
-MR Research AG, 2023
+MR Research AG, 2023-2024
 ## Authors
 
 Andrii Stepanov with contributions from Timo Hanke, Andy Gura and react0r-com.
