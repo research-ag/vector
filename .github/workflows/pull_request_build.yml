@@ -4,7 +4,7 @@ on:
     types: [synchronize, opened, reopened, ready_for_review, unlabeled]
 
 env:
-  dfx_version: 0.19.0
+  dfx_version: 0.20.1
 
 jobs:
   build:
@@ -20,7 +20,9 @@ jobs:
       - name: Run mops test
         run: mops test
 
-      - uses: dfinity/setup-dfx@main
+      - name: Make sure pocket-ic is installed
+        run: mops install
 
       - name: Run mops bench
-        run: mops bench
+        run: mops bench --replica pocket-ic
+

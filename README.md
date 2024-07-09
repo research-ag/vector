@@ -132,6 +132,8 @@ Each line in the follwing tables below is one benchmark and corresponds to the g
 
 The benchmarking code can be found here: [canister-profiling](https://github.com/research-ag/canister-profiling)
 
+The benchmarks were run with dfx 0.20.1 and moc 0.11.2.
+
 ### Time
 
 This table shows the number of wasm instruction for the given function execution.
@@ -149,9 +151,9 @@ They are therefore run N times and the result is averaged to obtain an amortized
 
 ```
 N = 100,000
-Compiler: moc-0.11.4
 value data type: Nat
 ```
+
 |method|vector|vector class|buffer|array|
 |---|---|---|---|---|
 |init|15|15|14|14|
@@ -161,7 +163,7 @@ value data type: Nat
 |get|205|247|136|72|
 |getOpt|261|303|149|-|
 |put|266|309|152|82|
-|size|183|216|101|69|
+|size|183|224|101|69|
 |removeLast|315|356|395|-|
 |indexOf|182|182|172|56|
 |firstIndexWith|163|163|-|-|
@@ -218,10 +220,8 @@ so that one can get an idea of the average.
 
 ```
 N = 100,000
-Compiler: moc-0.11.1
 value data type: Nat
 ```
-
 |method|vector|vector class|buffer|array|
 |---|---|---|---|---|
 |init|408688|409076|400504|400008|
@@ -269,7 +269,7 @@ value data type: Nat
 
 Note:
 
-* `init` and `addMany` create a data structure of size N. Here we see the persisten $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
+* `init` and `addMany` create a data structure of size N. Here we see the persistent $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
 * `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Vector` copies only its index block which is in the order of $\sqrt{N}$. 
 * `removeLast` shows the same effects as `add` but for shrink events.
 * `items` produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the `iterateItems` function may provide a better alternative for the use case.
@@ -319,7 +319,7 @@ When shrinking we keep space in `data_blocks` for two additional super blocks. B
 
 ## Copyright
 
-MR Research AG, 2023
+MR Research AG, 2023-2024
 ## Authors
 
 Andrii Stepanov with contributions from Timo Hanke, Andy Gura and react0r-com.
