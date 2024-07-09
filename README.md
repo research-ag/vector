@@ -132,6 +132,8 @@ Each line in the follwing tables below is one benchmark and corresponds to the g
 
 The benchmarking code can be found here: [canister-profiling](https://github.com/research-ag/canister-profiling)
 
+The benchmarks were run with dfx 0.20.1 and moc 0.11.2.
+
 ### Time
 
 This table shows the number of wasm instruction for the given function execution.
@@ -149,9 +151,9 @@ They are therefore run N times and the result is averaged to obtain an amortized
 
 ```
 N = 100,000
-Compiler: moc-0.11.4
 value data type: Nat
 ```
+
 |method|vector|vector class|buffer|array|
 |---|---|---|---|---|
 |init|15|15|14|14|
@@ -161,7 +163,7 @@ value data type: Nat
 |get|205|247|136|72|
 |getOpt|261|303|149|-|
 |put|266|309|152|82|
-|size|183|216|101|69|
+|size|183|224|101|69|
 |removeLast|315|356|395|-|
 |indexOf|182|182|172|56|
 |firstIndexWith|163|163|-|-|
@@ -218,10 +220,8 @@ so that one can get an idea of the average.
 
 ```
 N = 100,000
-Compiler: moc-0.11.1
 value data type: Nat
 ```
-
 |method|vector|vector class|buffer|array|
 |---|---|---|---|---|
 |init|408688|409076|400504|400008|
