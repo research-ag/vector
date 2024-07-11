@@ -142,6 +142,25 @@ module {
     /// Space: `O(1)`
     public func put(i : Nat, x : X) = Static.put(v, i, x);
 
+    /// Sorts the elements in the vector according to `compare`.
+    /// Sort is deterministic, stable, and in-place.
+    ///
+    /// Example:
+    /// ```motoko
+    ///
+    /// Vector.add(vec, 3);
+    /// Vector.add(vec, 1);
+    /// Vector.add(vec, 2);
+    /// Vector.sort(vec, Nat.compare);
+    /// Vector.toArray(vec) // => [1, 2, 3]
+    /// ```
+    ///
+    /// Runtime: O(size * log(size))
+    ///
+    /// Space: O(size)
+    /// *Runtime and space assumes that `compare` runs in O(1) time and space.
+    public func sort(compare : (X, X) -> Order.Order) = Static.sort(v, compare);
+
     /// Removes and returns the last item in the buffer or `null` if
     /// the buffer is empty.
     ///
