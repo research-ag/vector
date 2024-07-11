@@ -27,7 +27,7 @@ module {
       "Shuffled array",
     ];
 
-    let cols = ["10", "100", "1000"];//, "1000000"];
+    let cols = ["10", "100", "1000", "1000000"];
 
     bench.rows(rows);
     bench.cols(cols);
