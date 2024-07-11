@@ -463,6 +463,32 @@ module {
     } else Prim.trap "Vector index out of bounds in put";
   };
 
+  /// Sorts the elements in the vector according to `compare`.
+  /// Sort is deterministic, stable, and in-place.
+  ///
+  /// Example:
+  /// ```motoko
+  ///
+  /// Vector.add(vec, 3);
+  /// Vector.add(vec, 1);
+  /// Vector.add(vec, 2);
+  /// Vector.sort(vec, Nat.compare);
+  /// Vector.toArray(vec) // => [1, 2, 3]
+  /// ```
+  ///
+  /// Runtime: O(size * log(size))
+  ///
+  /// Space: O(size)
+  /// *Runtime and space assumes that `compare` runs in O(1) time and space.
+  public func sort<X>(vec : Vector<X>, compare : (X, X) -> Order.Order) {
+    if (size(vec) < 2) return;
+    let arr = toVarArray(vec);
+    Array.sortInPlace(arr, compare);
+    for (i in arr.keys()) {
+      put(vec, i, arr[i]);
+    };
+  };
+
   /// Finds the first index of `element` in `vec` using equality of elements defined
   /// by `equal`. Returns `null` if `element` is not found.
   ///

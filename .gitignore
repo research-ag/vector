@@ -3,6 +3,7 @@
 .tmp
 .vessel/
 .vscode/
+.idea/
 .DS_Store
 *.wasm
 dfx.json
