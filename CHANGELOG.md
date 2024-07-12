@@ -1,5 +1,9 @@
 # Vector changelog
 
+## 0.4.0
+
+* Add sort() function
+
 ## 0.3.2
 
 * Bump dependencies to moc/base to 0.11.2, dfx 0.20.1

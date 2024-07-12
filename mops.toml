@@ -1,6 +1,6 @@
 [package]
 name = "vector"
-version = "0.3.2"
+version = "0.4.0"
 description = "Memory-efficient resizable array (replaces Buffer)"
 repository = "https://github.com/research-ag/vector"
 keywords = [ "array", "buffer", "resize", "optimized" ]
@@ -19,4 +19,4 @@ moc = "0.11.2"
 pocket-ic = "1.0.0"
 
 [requirements]
-moc = "0.10.0"
+moc = "0.11.0"

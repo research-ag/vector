@@ -118,11 +118,11 @@ v.size();
 
 ### Build & test
 
-You need `moc` and `wasmtime` installed.
-Then run:
+For tests run:
 ```
 git clone git@github.com:research-ag/vector.git
-make -C test
+mops install
+mops test
 ```
 
 ## Benchmarks
