@@ -3,16 +3,13 @@ on:
   pull_request:
     types: [synchronize, opened, reopened, ready_for_review, unlabeled]
 
-env:
-  dfx_version: 0.20.1
-
 jobs:
   build:
     runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ZenVoich/setup-mops@v1.3.1
+      - uses: ZenVoich/setup-mops@v1
 
       - name: make sure moc is installed
         run: mops toolchain bin moc || mops toolchain use moc latest
