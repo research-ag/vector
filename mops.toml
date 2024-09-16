@@ -19,4 +19,4 @@ moc = "0.12.1"
 pocket-ic = "4.0.0"
 
 [requirements]
-moc = "0.12.1"
+moc = "0.11.0"
