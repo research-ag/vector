@@ -7,7 +7,7 @@ keywords = [ "array", "buffer", "resize", "optimized" ]
 license = "Apache-2.0"
 
 [dependencies]
-base = "0.11.2"
+base = "0.12.1"
 
 [dev-dependencies]
 test = "2.0.0"
@@ -15,8 +15,8 @@ bench = "1.0.0"
 matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0@3dac8a071b69e4e651b25a7d9683fe831eb7cffd"
 
 [toolchain]
-moc = "0.11.2"
-pocket-ic = "1.0.0"
+moc = "0.12.1"
+pocket-ic = "6.0.0"
 
 [requirements]
-moc = "0.11.0"
+moc = "0.12.1"
