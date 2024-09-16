@@ -16,7 +16,7 @@ matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0@3dac8a071b69e4e
 
 [toolchain]
 moc = "0.12.1"
-pocket-ic = "6.0.0"
+pocket-ic = "4.0.0"
 
 [requirements]
 moc = "0.12.1"
