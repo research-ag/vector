@@ -71,23 +71,79 @@ func testAddMany(n : Nat) : Bool {
 
 func testRemoveLast(n : Nat) : Bool {
   let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  if (n == 0) {
-    Vector.removeLast(vec) == null and Vector.size(vec) == 0;
-  } else {
+  var i = n;
+  
+  while (i > 0) {
+    i -= 1;
     let last = Vector.removeLast(vec);
-    last == ?(n - 1 : Nat) and Vector.size(vec) == (n - 1 : Nat) and (n == 1 or Vector.get(vec, n - 2 : Nat) == (n - 2 : Nat));
+    if (last != ?i) {
+      Debug.print("Unexpected value removed: expected ?" # Nat.toText(i) # ", got " # debug_show(last));
+      return false;
+    };
+    if (Vector.size(vec) != i) {
+      Debug.print("Unexpected size after removal: expected " # Nat.toText(i) # ", got " # Nat.toText(Vector.size(vec)));
+      return false;
+    };
   };
+  
+  // Try to remove from empty vector
+  if (Vector.removeLast(vec) != null) {
+    Debug.print("Expected null when removing from empty vector, but got a value");
+    return false;
+  };
+  
+  if (Vector.size(vec) != 0) {
+    Debug.print("Vector should be empty, but has size " # Nat.toText(Vector.size(vec)));
+    return false;
+  };
+  
+  true;
 };
 
 func testGet(n : Nat) : Bool {
-  let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  n == 0 or (Vector.get(vec, 0) == 0 and Vector.get(vec, n - 1 : Nat) == (n - 1 : Nat));
+  let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i + 1));
+  
+  for (i in Iter.range(1, n)) {
+    let value = Vector.get(vec, i - 1 : Nat);
+    if (value != i) {
+      Debug.print("get: Mismatch at index " # Nat.toText(i) # ": expected " # Nat.toText(i) # ", got " # Nat.toText(value));
+      return false;
+    };
+  };
+  
+  true;
 };
 
 func testGetOpt(n : Nat) : Bool {
-  let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  (n == 0 or (Vector.getOpt(vec, 0) == ?0 and Vector.getOpt(vec, n - 1 : Nat) == ?(n - 1 : Nat))) and
-  Vector.getOpt(vec, n) == null;
+  let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i + 1));
+  
+  for (i in Iter.range(1, n)) {
+    switch (Vector.getOpt(vec, i - 1 : Nat)) {
+      case (?value) {
+        if (value != i) {
+          Debug.print("getOpt: Mismatch at index " # Nat.toText(i) # ": expected ?" # Nat.toText(i) # ", got ?" # Nat.toText(value));
+          return false;
+        };
+      };
+      case (null) {
+        Debug.print("getOpt: Unexpected null at index " # Nat.toText(i));
+        return false;
+      };
+    };
+  };
+  
+  // Test out-of-bounds access
+  switch (Vector.getOpt(vec, n)) {
+    case (null) {
+      // This is expected
+    };
+    case (?value) {
+      Debug.print("getOpt: Expected null for out-of-bounds access, got ?" # Nat.toText(value));
+      return false;
+    };
+  };
+  
+  true;
 };
 
 func testPut(n : Nat) : Bool {
@@ -153,10 +209,30 @@ func testLastIndexOf(n : Nat) : Bool {
 };
 
 func testContains(n : Nat) : Bool {
-  let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  (n == 0 or Vector.contains(vec, n - 1 : Nat, Nat.equal)) and not Vector.contains(vec, n, Nat.equal);
+  let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i + 1));
+  
+  // Check if it contains all elements from 0 to n-1
+  for (i in Iter.range(1, n)) {
+    if (not Vector.contains(vec, i, Nat.equal)) {
+      Debug.print("Vector should contain " # Nat.toText(i) # " but it doesn't");
+      return false;
+    };
+  };
+  
+  // Check if it doesn't contain n (which should be out of range)
+  if (Vector.contains(vec, n + 1, Nat.equal)) {
+    Debug.print("Vector shouldn't contain " # Nat.toText(n + 1) # " but it does");
+    return false;
+  };
+  
+  // Check if it doesn't contain n+1 (another out of range value)
+  if (Vector.contains(vec, n + 2, Nat.equal)) {
+    Debug.print("Vector shouldn't contain " # Nat.toText(n + 2) # " but it does");
+    return false;
+  };
+  
+  true;
 };
-
 func testReverse(n : Nat) : Bool {
   let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
   Vector.reverse(vec);
@@ -175,9 +251,9 @@ func testToArray(n : Nat) : Bool {
 };
 
 func testFromIter(n : Nat) : Bool {
-  let iter = Iter.range(0, n - 1 : Nat);
+  let iter = Iter.range(1, n);
   let vec = Vector.fromIter<Nat>(iter);
-  Vector.equal(vec, Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i)), Nat.equal);
+  Vector.equal(vec, Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i + 1)), Nat.equal);
 };
 
 func testFoldLeft(n : Nat) : Bool {

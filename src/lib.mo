@@ -351,7 +351,7 @@ module {
       shrink_index_block_if_needed(vec);
 
       var i_block = vec.i_block;
-      if (i_block == 0) {
+      if (i_block == 1) {
         return null;
       };
       i_block -= 1;
