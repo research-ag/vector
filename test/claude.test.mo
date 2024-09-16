@@ -29,17 +29,44 @@ func testInit(n : Nat) : Bool {
 };
 
 func testAdd(n : Nat) : Bool {
+  if (n == 0) return true;
   let vec = Vector.new<Nat>();
   for (i in Iter.range(0, n - 1 : Nat)) {
     Vector.add(vec, i);
   };
-  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 0 and Vector.get(vec, n - 1 : Nat) == (n - 1 : Nat)));
+  
+  if (Vector.size(vec) != n) {
+    Debug.print("Size mismatch: expected " # Nat.toText(n) # ", got " # Nat.toText(Vector.size(vec)));
+    return false;
+  };
+  
+  for (i in Iter.range(0, n - 1 : Nat)) {
+    let value = Vector.get(vec, i);
+    if (value != i) {
+      Debug.print("Value mismatch at index " # Nat.toText(i) # ": expected " # Nat.toText(i) # ", got " # Nat.toText(value));
+      return false;
+    };
+  };
+  
+  true;
 };
 
 func testAddMany(n : Nat) : Bool {
-  let vec = Vector.new<Nat>();
+  if (n == 0) return true;
+  let vec = Vector.init<Nat>(n, 0);
   Vector.addMany(vec, n, 1);
-  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 1 and Vector.get(vec, n - 1 : Nat) == 1));
+  if (Vector.size(vec) != 2 * n) {
+    Debug.print("Size mismatch: expected " # Nat.toText(2 * n) # ", got " # Nat.toText(Vector.size(vec)));
+    return false;
+  };
+  for (i in Iter.range(0, n - 1 : Nat)) {
+    let value = Vector.get(vec, n + i);
+    if (value != 1) {
+      Debug.print("Value mismatch at index " # Nat.toText(i) # ": expected " # Nat.toText(1) # ", got " # Nat.toText(value));
+      return false;
+    };
+  };
+  true;
 };
 
 func testRemoveLast(n : Nat) : Bool {
