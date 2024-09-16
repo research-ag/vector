@@ -25,21 +25,21 @@ func testNew(n : Nat) : Bool {
 
 func testInit(n : Nat) : Bool {
   let vec = Vector.init<Nat>(n, 1);
-  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 1 and Vector.get(vec, n - 1) == 1));
+  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 1 and Vector.get(vec, n - 1 : Nat) == 1));
 };
 
 func testAdd(n : Nat) : Bool {
   let vec = Vector.new<Nat>();
-  for (i in Iter.range(0, n - 1)) {
+  for (i in Iter.range(0, n - 1 : Nat)) {
     Vector.add(vec, i);
   };
-  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 0 and Vector.get(vec, n - 1) == n - 1));
+  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 0 and Vector.get(vec, n - 1 : Nat) == (n - 1 : Nat)));
 };
 
 func testAddMany(n : Nat) : Bool {
   let vec = Vector.new<Nat>();
   Vector.addMany(vec, n, 1);
-  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 1 and Vector.get(vec, n - 1) == 1));
+  Vector.size(vec) == n and (n == 0 or (Vector.get(vec, 0) == 1 and Vector.get(vec, n - 1 : Nat) == 1));
 };
 
 func testRemoveLast(n : Nat) : Bool {
@@ -48,18 +48,18 @@ func testRemoveLast(n : Nat) : Bool {
     Vector.removeLast(vec) == null and Vector.size(vec) == 0;
   } else {
     let last = Vector.removeLast(vec);
-    last == ?(n - 1) and Vector.size(vec) == n - 1 and (n == 1 or Vector.get(vec, n - 2) == n - 2);
+    last == ?(n - 1 : Nat) and Vector.size(vec) == (n - 1 : Nat) and (n == 1 or Vector.get(vec, n - 2 : Nat) == (n - 2 : Nat));
   };
 };
 
 func testGet(n : Nat) : Bool {
   let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  n == 0 or (Vector.get(vec, 0) == 0 and Vector.get(vec, n - 1) == n - 1);
+  n == 0 or (Vector.get(vec, 0) == 0 and Vector.get(vec, n - 1 : Nat) == (n - 1 : Nat));
 };
 
 func testGetOpt(n : Nat) : Bool {
   let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  (n == 0 or (Vector.getOpt(vec, 0) == ?0 and Vector.getOpt(vec, n - 1) == ?(n - 1))) and
+  (n == 0 or (Vector.getOpt(vec, 0) == ?0 and Vector.getOpt(vec, n - 1 : Nat) == ?(n - 1 : Nat))) and
   Vector.getOpt(vec, n) == null;
 };
 
@@ -68,8 +68,8 @@ func testPut(n : Nat) : Bool {
   if (n == 0) {
     true;
   } else {
-    Vector.put(vec, n - 1, 100);
-    Vector.get(vec, n - 1) == 100;
+    Vector.put(vec, n - 1 : Nat, 100);
+    Vector.get(vec, n - 1 : Nat) == 100;
   };
 };
 
@@ -97,7 +97,7 @@ func testIndexOf(n : Nat) : Bool {
     Vector.indexOf(0, vec, Nat.equal) == null;
   } else {
     var allCorrect = true;
-    for (i in Iter.range(0, n - 1)) {
+    for (i in Iter.range(0, n - 1 : Nat)) {
       let index = Vector.indexOf(i, vec, Nat.equal);
       if (index != ?i) {
         allCorrect := false;
@@ -114,7 +114,7 @@ func testLastIndexOf(n : Nat) : Bool {
     Vector.lastIndexOf(0, vec, Nat.equal) == null;
   } else {
     var allCorrect = true;
-    for (i in Iter.range(0, n - 1)) {
+    for (i in Iter.range(0, n - 1 : Nat)) {
       let index = Vector.lastIndexOf(i, vec, Nat.equal);
       if (index != ?(n + i)) {
         allCorrect := false;
@@ -127,7 +127,7 @@ func testLastIndexOf(n : Nat) : Bool {
 
 func testContains(n : Nat) : Bool {
   let vec = Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i));
-  (n == 0 or Vector.contains(vec, n - 1, Nat.equal)) and not Vector.contains(vec, n, Nat.equal);
+  (n == 0 or Vector.contains(vec, n - 1 : Nat, Nat.equal)) and not Vector.contains(vec, n, Nat.equal);
 };
 
 func testReverse(n : Nat) : Bool {
@@ -148,7 +148,7 @@ func testToArray(n : Nat) : Bool {
 };
 
 func testFromIter(n : Nat) : Bool {
-  let iter = Iter.range(0, n - 1);
+  let iter = Iter.range(0, n - 1 : Nat);
   let vec = Vector.fromIter<Nat>(iter);
   Vector.equal(vec, Vector.fromArray<Nat>(Array.tabulate<Nat>(n, func (i) = i)), Nat.equal);
 };
