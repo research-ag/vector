@@ -10,10 +10,10 @@
 /// Contributors: Timo Hanke (timohanke), Andy Gura (andygura), react0r-com
 
 import Prim "mo:⛔";
-import { bitcountLeadingZero = leadingZeros; fromNat = Nat32; toNat = Nat } "mo:base/Nat32";
+import Nat32 "mo:base/Nat32";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
-import { min = natMin; compare = natCompare } "mo:base/Nat";
+import Nat "mo:base/Nat";
 import Order "mo:base/Order";
 import Option "mo:base/Option";
 
@@ -60,7 +60,7 @@ module {
   public func init<X>(size : Nat, initValue : X) : Vector<X> {
     let (i_block, i_element) = locate(size);
 
-    let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
+    let blocks = new_index_block_length(Nat32.fromNat(if (i_element == 0) { i_block - 1 } else i_block));
     let data_blocks = Array.init<[var ?X]>(blocks, [var]);
     var i = 1;
     while (i < i_block) {
@@ -94,7 +94,7 @@ module {
   /// Runtime: `O(count)`
   public func addMany<X>(vec : Vector<X>, count : Nat, initValue : X) {
     let (i_block, i_element) = locate(size(vec) + count);
-    let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
+    let blocks = new_index_block_length(Nat32.fromNat(if (i_element == 0) { i_block - 1 } else i_block));
 
     let old_blocks = vec.data_blocks.size();
     if (old_blocks < blocks) {
@@ -119,7 +119,7 @@ module {
           vec.data_blocks[vec.i_block] := Array.init<?X>(db_size, null);
         };
         let from = vec.i_element;
-        let to = natMin(vec.i_element + cnt, db_size);
+        let to = Nat.min(vec.i_element + cnt, db_size);
 
         let block = vec.data_blocks[vec.i_block];
         var i = from;
@@ -221,8 +221,8 @@ module {
   ///
   /// Runtime: `O(1)` (with some internal calculations)
   public func size<X>(vec : Vector<X>) : Nat {
-    let d = Nat32(vec.i_block);
-    let i = Nat32(vec.i_element);
+    let d = Nat32.fromNat(vec.i_block);
+    let i = Nat32.fromNat(vec.i_element);
 
     // We call all data blocks of the same capacity an "epoch". We number the epochs 0,1,2,...
     // A data block is in epoch e iff the data block has capacity 2 ** e.
@@ -231,7 +231,7 @@ module {
 
     // epoch of last data block
     // e = 32 - lz
-    let lz = leadingZeros(d / 3);
+    let lz = Nat32.bitcountLeadingZero(d / 3);
 
     // capacity of all prior epochs combined
     // capacity_before_e = 2 * 4 ** (e - 1) - 1
@@ -244,25 +244,25 @@ module {
 
     // there can be overflows, but the result is without overflows, so use addWrap and subWrap
     // we don't erase bits by >>, so to use <>> is ok
-    Nat((d -% (1 <>> lz)) <>> lz +% i);
+    Nat32.toNat((d -% (1 <>> lz)) <>> lz +% i);
   };
 
   func data_block_size(i_block : Nat) : Nat {
     // formula for the size of given i_block
     // don't call it for i_block == 0
-    Nat(1 <>> leadingZeros(Nat32(i_block) / 3));
+    Nat32.toNat(1 <>> Nat32.bitcountLeadingZero(Nat32.fromNat(i_block) / 3));
   };
 
   func new_index_block_length(i_block : Nat32) : Nat {
     if (i_block <= 1) 2 else {
-      let s = 30 - leadingZeros(i_block);
-      Nat(((i_block >> s) +% 1) << s);
+      let s = 30 - Nat32.bitcountLeadingZero(i_block);
+      Nat32.toNat(((i_block >> s) +% 1) << s);
     };
   };
 
   func grow_index_block_if_needed<X>(vec : Vector<X>) {
     if (vec.data_blocks.size() == vec.i_block) {
-      let new_blocks = Array.init<[var ?X]>(new_index_block_length(Nat32(vec.i_block)), [var]);
+      let new_blocks = Array.init<[var ?X]>(new_index_block_length(Nat32.fromNat(vec.i_block)), [var]);
       var i = 0;
       while (i < vec.i_block) {
         new_blocks[i] := vec.data_blocks[i];
@@ -273,9 +273,9 @@ module {
   };
 
   func shrink_index_block_if_needed<X>(vec : Vector<X>) {
-    let i_block = Nat32(vec.i_block);
+    let i_block = Nat32.fromNat(vec.i_block);
     // kind of index of the first block in the super block
-    if ((i_block << leadingZeros(i_block)) << 2 == 0) {
+    if ((i_block << Nat32.bitcountLeadingZero(i_block)) << 2 == 0) {
       let new_length = new_index_block_length(i_block);
       if (new_length < vec.data_blocks.size()) {
         let new_blocks = Array.init<[var ?X]>(new_length, [var]);
@@ -378,13 +378,13 @@ module {
 
   func locate(index : Nat) : (Nat, Nat) {
     // see comments in tests
-    let i = Nat32(index);
-    let lz = leadingZeros(i);
+    let i = Nat32.fromNat(index);
+    let lz = Nat32.bitcountLeadingZero(i);
     let lz2 = lz >> 1;
     if (lz & 1 == 0) {
-      (Nat(((i << lz2) >> 16) ^ (0x10000 >> lz2)), Nat(i & (0xFFFF >> lz2)));
+      (Nat32.toNat(((i << lz2) >> 16) ^ (0x10000 >> lz2)), Nat32.toNat(i & (0xFFFF >> lz2)));
     } else {
-      (Nat(((i << lz2) >> 15) ^ (0x18000 >> lz2)), Nat(i & (0x7FFF >> lz2)));
+      (Nat32.toNat(((i << lz2) >> 15) ^ (0x18000 >> lz2)), Nat32.toNat(i & (0x7FFF >> lz2)));
     };
   };
 
@@ -407,14 +407,14 @@ module {
     //     case (?element) element;
     //     case (null) Prim.trap "";
     //   };
-    let i = Nat32(index);
-    let lz = leadingZeros(i);
+    let i = Nat32.fromNat(index);
+    let lz = Nat32.bitcountLeadingZero(i);
     let lz2 = lz >> 1;
     switch (
       if (lz & 1 == 0) {
-        vec.data_blocks[Nat(((i << lz2) >> 16) ^ (0x10000 >> lz2))][Nat(i & (0xFFFF >> lz2))];
+        vec.data_blocks[Nat32.toNat(((i << lz2) >> 16) ^ (0x10000 >> lz2))][Nat32.toNat(i & (0xFFFF >> lz2))];
       } else {
-        vec.data_blocks[Nat(((i << lz2) >> 15) ^ (0x18000 >> lz2))][Nat(i & (0x7FFF >> lz2))];
+        vec.data_blocks[Nat32.toNat(((i << lz2) >> 15) ^ (0x18000 >> lz2))][Nat32.toNat(i & (0x7FFF >> lz2))];
       }
     ) {
       case (?result) return result;
@@ -1026,7 +1026,7 @@ module {
   public func fromArray<X>(array : [X]) : Vector<X> {
     let (i_block, i_element) = locate(array.size());
 
-    let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
+    let blocks = new_index_block_length(Nat32.fromNat(if (i_element == 0) { i_block - 1 } else i_block));
     let data_blocks = Array.init<[var ?X]>(blocks, [var]);
     var i = 1;
     var pos = 0;
@@ -1102,7 +1102,7 @@ module {
   public func fromVarArray<X>(array : [var X]) : Vector<X> {
     let (i_block, i_element) = locate(array.size());
 
-    let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
+    let blocks = new_index_block_length(Nat32.fromNat(if (i_element == 0) { i_block - 1 } else i_block));
     let data_blocks = Array.init<[var ?X]>(blocks, [var]);
     var i = 1;
     var pos = 0;
@@ -1149,8 +1149,10 @@ module {
   ///
   /// Space: `O(1)`
   public func first<X>(vec : Vector<X>) : X {
-    let ?x = vec.data_blocks[1][0] else Prim.trap "Vector index out of bounds in first";
-    x;
+    switch (vec.data_blocks[1][0]) {
+      case (?x) x;
+      case null Prim.trap "Vector index out of bounds in first";
+    };
   };
 
   /// Returns the last element of `vec`. Traps if `vec` is empty.
@@ -1169,11 +1171,15 @@ module {
   public func last<X>(vec : Vector<X>) : X {
     let e = vec.i_element;
     if (e > 0) {
-      let ?x = vec.data_blocks[vec.i_block][e - 1] else Prim.trap(INTERNAL_ERROR);
-      return x;
+      switch (vec.data_blocks[vec.i_block][e - 1]) {
+        case (?x) return x;
+        case null Prim.trap INTERNAL_ERROR;
+      };
     };
-    let ?x = vec.data_blocks[vec.i_block - 1][0] else Prim.trap "Vector index out of bounds in first";
-    return x;
+    switch (vec.data_blocks[vec.i_block - 1][0]) {
+      case (?x) x;
+      case null Prim.trap "Vector index out of bounds in last";
+    };
   };
 
   /// Applies `f` to each element in `vec`.
@@ -1546,7 +1552,7 @@ module {
       i += 1;
     };
 
-    return natCompare(size1, size2);
+    return Nat.compare(size1, size2);
   };
 
   /// Creates a textual representation of `vec`, using `toText` to recursively

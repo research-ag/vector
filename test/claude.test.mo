@@ -1,4 +1,5 @@
 import Vector "../src/lib";
+import Prim "mo:⛔";
 import Debug "mo:base/Debug";
 import Nat "mo:base/Nat";
 import Int "mo:base/Int";
@@ -12,7 +13,7 @@ func runTest(name : Text, test : (Nat) -> Bool) {
     if (test(n)) {
       Debug.print("✅ " # name # " passed for n = " # Nat.toText(n));
     } else {
-      Debug.trap("❌ " # name # " failed for n = " # Nat.toText(n));
+      Prim.trap("❌ " # name # " failed for n = " # Nat.toText(n));
     };
   };
 };
