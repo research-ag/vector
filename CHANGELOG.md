@@ -1,5 +1,10 @@
 # Vector changelog
 
+## 0.4.1
+
+* Bugfix: removeLast can trap on empty vector
+* Bump dependencies
+
 ## 0.4.0
 
 * Add sort() function
