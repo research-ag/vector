@@ -57,21 +57,23 @@ module {
   /// ```
   ///
   /// Runtime: `O(size)`
-  public func init<X>(size : Nat, initValue : X) : Vector<X> {
+  public func init<X>(size : Nat, initValue : X) : Vector<X> = initInteranal(size, ?initValue);
+
+  public func initInteranal<X>(size : Nat, initValue : ?X) : Vector<X> {
     let (i_block, i_element) = locate(size);
 
     let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
     let data_blocks = Array.init<[var ?X]>(blocks, [var]);
     var i = 1;
     while (i < i_block) {
-      data_blocks[i] := Array.init<?X>(data_block_size(i), ?initValue);
+      data_blocks[i] := Array.init<?X>(data_block_size(i), initValue);
       i += 1;
     };
     if (i_element != 0 and i_block < blocks) {
       let block = Array.init<?X>(data_block_size(i), null);
       var j = 0;
       while (j < i_element) {
-        block[j] := ?initValue;
+        block[j] := initValue;
         j += 1;
       };
       data_blocks[i] := block;
@@ -935,16 +937,30 @@ module {
   /// Runtime: `O(size)`
   public func toArray<X>(vec : Vector<X>) : [X] = Array.tabulate<X>(size(vec), vals_(vec).unsafe_next_i);
 
-  private func vals_<X>(vec : Vector<X>) : {
+  private func vals_<T>(list : Vector<T>) : {
+    next : () -> ?T;
+    unsafe_next : () -> T;
+    unsafe_next_i : Nat -> T;
+    next_set : T -> ();
+  } = vals_from_(0, list);
+
+  private func vals_from_<X>(start : Nat, vec : Vector<X>) : {
     next : () -> ?X;
     unsafe_next : () -> X;
     unsafe_next_i : Nat -> X;
+    next_set : X -> ();
   } = object {
     let blocks = vec.data_blocks.size();
     var i_block = 0;
     var i_element = 0;
-    var db_size = 0;
-    var db : [var ?X] = [var];
+    if (start != 0) {
+      let (block, element) = if (start == 0) (0, 0) else locate(start - 1);
+      i_block := block;
+      i_element := element + 1;
+    };
+
+    var db : [var ?X] = vec.data_blocks[i_block];
+    var db_size = db.size();
 
     public func next() : ?X {
       if (i_element == db_size) {
@@ -1007,6 +1023,19 @@ module {
         };
         case (_) Prim.trap(INTERNAL_ERROR);
       };
+    };
+
+    public func next_set(value : X) {
+      if (i_element == db_size) {
+        i_block += 1;
+        if (i_block >= blocks) Prim.trap(INTERNAL_ERROR);
+        db := vec.data_blocks[i_block];
+        db_size := db.size();
+        if (db_size == 0) Prim.trap(INTERNAL_ERROR);
+        i_element := 0;
+      };
+      db[i_element] := ?value;
+      i_element += 1;
     };
   };
 
@@ -1734,5 +1763,33 @@ module {
   /// Space: `O(1)`
   public func isEmpty<X>(vec : Vector<X>) : Bool {
     vec.i_block == 1 and vec.i_element == 0;
+  };
+
+  public func concat<T>(slices : [(Vector<T>, fromInclusive : Nat, toExclusive : Nat)]) : Vector<T> {
+    var length = 0;
+    for (slice in slices.vals()) {
+      let (list, start, end) = slice;
+      let sz = size<T>(list);
+      let ok = start <= end and end <= sz;
+      if (not ok) {
+        Prim.trap("Invalid slice in concat");
+      };
+      length += end - start;
+    };
+
+    var result = initInteranal<T>(length, null);
+    var resultIter = vals_(result);
+    for (slice in slices.vals()) {
+      let (list, start, end) = slice;
+      let values = vals_from_<T>(start, list);
+      var i = start;
+      while (i < end) {
+        let copiedValue = values.unsafe_next();
+        resultIter.next_set(copiedValue);
+        i += 1;
+      };
+    };
+
+    result;
   };
 };
