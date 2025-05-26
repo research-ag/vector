@@ -937,11 +937,11 @@ module {
   /// Runtime: `O(size)`
   public func toArray<X>(vec : Vector<X>) : [X] = Array.tabulate<X>(size(vec), vals_(vec).unsafe_next_i);
 
-  private func vals_<T>(list : Vector<T>) : {
-    next : () -> ?T;
-    unsafe_next : () -> T;
-    unsafe_next_i : Nat -> T;
-    next_set : T -> ();
+  private func vals_<X>(list : Vector<X>) : {
+    next : () -> ?X;
+    unsafe_next : () -> X;
+    unsafe_next_i : Nat -> X;
+    next_set : X -> ();
   } = vals_from_(0, list);
 
   private func vals_from_<X>(start : Nat, vec : Vector<X>) : {
@@ -1765,11 +1765,28 @@ module {
     vec.i_block == 1 and vec.i_element == 0;
   };
 
-  public func concat<T>(slices : [(Vector<T>, fromInclusive : Nat, toExclusive : Nat)]) : Vector<T> {
+  /// Concatenates the provided slices into a new list.
+  /// Each slice is a tuple of a list, a starting index (inclusive), and an ending index (exclusive).
+  ///
+  /// Example:
+  /// ```motoko include=import
+  /// import Nat "mo:base/Nat";
+  /// import Iter "mo:base/Iter";
+  ///
+  /// let list1 = Vector.fromArray<Nat>([1, 2, 3]);
+  /// let list2 = Vector.fromArray<Nat>([4, 5, 6]);
+  /// let result = Vector.concatSlices<Nat>([(list1, 0, 2), (list2, 1, 3)]);
+  /// assert Iter.toArray(Vector.vals(result)) == [1, 2, 5, 6];
+  /// ```
+  ///
+  /// Runtime: `O(sum_size)` where `sum_size` is the sum of the sizes of all slices.
+  ///
+  /// Space: `O(sum_size)`
+  public func concatSlices<X>(slices : [(Vector<X>, fromInclusive : Nat, toExclusive : Nat)]) : Vector<X> {
     var length = 0;
     for (slice in slices.vals()) {
       let (list, start, end) = slice;
-      let sz = size<T>(list);
+      let sz = size<X>(list);
       let ok = start <= end and end <= sz;
       if (not ok) {
         Prim.trap("Invalid slice in concat");
@@ -1777,11 +1794,11 @@ module {
       length += end - start;
     };
 
-    var result = initInteranal<T>(length, null);
+    var result = initInteranal<X>(length, null);
     var resultIter = vals_(result);
     for (slice in slices.vals()) {
       let (list, start, end) = slice;
-      let values = vals_from_<T>(start, list);
+      let values = vals_from_<X>(start, list);
       var i = start;
       while (i < end) {
         let copiedValue = values.unsafe_next();
@@ -1792,4 +1809,25 @@ module {
 
     result;
   };
+
+  /// Concatenates the provided lists into a new list.
+  ///
+  /// Example:
+  /// ```motoko include=import
+  /// import Nat "mo:base/Nat";
+  /// import Iter "mo:base/Iter";
+  ///
+  /// let list1 = Vector.fromArray<Nat>([1,2,3]);
+  /// let list2 = Vector.fromArray<Nat>([4,5,6]);
+  /// let result = Vector.concat<Nat>([list1, list2]);
+  /// assert Iter.toArray(Vector.values(result)) == [1,2,5,6];
+  /// ```
+  ///
+  /// Runtime: `O(sum_size)` where `sum_size` is the sum of the sizes of all vectors.
+  ///
+  /// Space: `O(sum_size)`
+  public func concat<X>(lists : [Vector<X>]) : Vector<X> {
+    concatSlices<X>(Array.tabulate<(Vector<X>, Nat, Nat)>(lists.size(), func(i) = (lists[i], 0, size(lists[i]))))
+  };
+
 };
