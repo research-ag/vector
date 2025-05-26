@@ -1828,11 +1828,9 @@ module {
   /// Space: `O(sum_size)`
   public func concat<X>(vectors : [Vector<X>]) : Vector<X> {
     concatSlices<X>(
-      Iter.toArray(
-        Iter.map<Vector<X>, (Vector<X>, Nat, Nat)>(
-          vectors.vals(),
-          func(vector) = (vector, 0, size(vector)),
-        )
+      Array.map<Vector<X>, (Vector<X>, Nat, Nat)>(
+        vectors,
+        func(vector) = (vector, 0, size(vector)),
       )
     );
   };
