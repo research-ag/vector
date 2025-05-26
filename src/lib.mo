@@ -1779,9 +1779,9 @@ module {
   /// assert Iter.toArray(Vector.vals(result)) == [1, 2, 5, 6];
   /// ```
   ///
-  /// Runtime: `O(sum_size)` where `sum_size` is the sum of the sizes of all slices.
+  /// Runtime: `O(size)` where `size` is the sum of the sizes of all slices.
   ///
-  /// Space: `O(sum_size)`
+  /// Space: `O(size)`
   public func concatSlices<X>(slices : [(Vector<X>, fromInclusive : Nat, toExclusive : Nat)]) : Vector<X> {
     var length = 0;
     for (slice in slices.vals()) {
@@ -1823,9 +1823,9 @@ module {
   /// assert Iter.toArray(Vector.values(result)) == [1,2,5,6];
   /// ```
   ///
-  /// Runtime: `O(sum_size)` where `sum_size` is the sum of the sizes of all vectors.
+  /// Runtime: `O(size)` where `size` is the sum of the sizes of all vectors.
   ///
-  /// Space: `O(sum_size)`
+  /// Space: `O(size)`
   public func concat<X>(vectors : [Vector<X>]) : Vector<X> {
     concatSlices<X>(
       Array.map<Vector<X>, (Vector<X>, Nat, Nat)>(
