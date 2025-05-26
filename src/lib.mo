@@ -59,7 +59,7 @@ module {
   /// Runtime: `O(size)`
   public func init<X>(size : Nat, initValue : X) : Vector<X> = initInteranal(size, ?initValue);
 
-  public func initInteranal<X>(size : Nat, initValue : ?X) : Vector<X> {
+  private func initInteranal<X>(size : Nat, initValue : ?X) : Vector<X> {
     let (i_block, i_element) = locate(size);
 
     let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
@@ -1826,8 +1826,15 @@ module {
   /// Runtime: `O(sum_size)` where `sum_size` is the sum of the sizes of all vectors.
   ///
   /// Space: `O(sum_size)`
-  public func concat<X>(lists : [Vector<X>]) : Vector<X> {
-    concatSlices<X>(Array.tabulate<(Vector<X>, Nat, Nat)>(lists.size(), func(i) = (lists[i], 0, size(lists[i]))))
+  public func concat<X>(vectors : [Vector<X>]) : Vector<X> {
+    concatSlices<X>(
+      Iter.toArray(
+        Iter.map<Vector<X>, (Vector<X>, Nat, Nat)>(
+          vectors.vals(),
+          func(vector) = (vector, 0, size(vector)),
+        )
+      )
+    );
   };
 
 };
