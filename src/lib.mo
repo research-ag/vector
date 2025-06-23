@@ -1200,12 +1200,16 @@ module {
     if (e > 0) {
       switch (vec.data_blocks[vec.i_block][e - 1]) {
         case (?x) return x;
-        case _ Prim.trap "Vector index out of bounds in last";
+        case _ Prim.trap(INTERNAL_ERROR);
       };
     };
     let block = vec.data_blocks[vec.i_block - 1];
-    let ?x = block[block.size() - 1] else Prim.trap "Vector index out of bounds in last";
-    return x;
+    let b = block.size();
+    if (b == 0) Prim.trap "Vector index out of bounds in last";
+    switch(block[b - 1]) {
+      case (?x) return x;
+      case _ Prim.trap(INTERNAL_ERROR);
+    };
   };
 
   /// Applies `f` to each element in `vec`.
