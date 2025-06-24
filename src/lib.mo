@@ -1198,11 +1198,18 @@ module {
   public func last<X>(vec : Vector<X>) : X {
     let e = vec.i_element;
     if (e > 0) {
-      let ?x = vec.data_blocks[vec.i_block][e - 1] else Prim.trap(INTERNAL_ERROR);
-      return x;
+      switch (vec.data_blocks[vec.i_block][e - 1]) {
+        case (?x) return x;
+        case _ Prim.trap(INTERNAL_ERROR);
+      };
     };
-    let ?x = vec.data_blocks[vec.i_block - 1][0] else Prim.trap "Vector index out of bounds in first";
-    return x;
+    let block = vec.data_blocks[vec.i_block - 1];
+    let b = block.size();
+    if (b == 0) Prim.trap "Vector index out of bounds in last";
+    switch(block[b - 1]) {
+      case (?x) return x;
+      case _ Prim.trap(INTERNAL_ERROR);
+    };
   };
 
   /// Applies `f` to each element in `vec`.

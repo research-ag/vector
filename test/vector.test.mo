@@ -222,6 +222,7 @@ run(
 
 for (i in Iter.range(0, n)) {
   Vector.add(vector, i);
+  assert Vector.last(vector) == i;
 };
 
 run(

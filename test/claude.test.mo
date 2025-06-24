@@ -33,6 +33,7 @@ func testAdd(n : Nat) : Bool {
   let vec = Vector.new<Nat>();
   for (i in Iter.range(0, n - 1 : Nat)) {
     Vector.add(vec, i);
+    assert Vector.last(vec) == i;
   };
   
   if (Vector.size(vec) != n) {
@@ -75,7 +76,12 @@ func testRemoveLast(n : Nat) : Bool {
   
   while (i > 0) {
     i -= 1;
+    let expectedLast = Vector.last(vec);
     let last = Vector.removeLast(vec);
+    if (last != ?expectedLast) {
+      Debug.print("Expected last value to be ?" # Nat.toText(expectedLast) # ", got " # debug_show(last));
+      return false;
+    };
     if (last != ?i) {
       Debug.print("Unexpected value removed: expected ?" # Nat.toText(i) # ", got " # debug_show(last));
       return false;
