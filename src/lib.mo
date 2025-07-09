@@ -112,7 +112,7 @@ module {
     var cnt = count;
     while (cnt > 0) {
       let db_size = data_block_size(vec.i_block);
-      if (vec.i_element == 0 and db_size <= cnt) {
+      if (vec.i_element == 0 and db_size <= cnt and vec.data_blocks[vec.i_block].size() == 0) {
         vec.data_blocks[vec.i_block] := Array.init<?X>(db_size, ?initValue);
         cnt -= db_size;
         vec.i_block += 1;
@@ -361,7 +361,7 @@ module {
 
       // Keep one totally empty block when removing
       if (i_block + 2 < vec.data_blocks.size()) {
-        if (vec.data_blocks[i_block + 2].size() == 0) {
+        if (vec.data_blocks[i_block + 2].size() > 0) {
           vec.data_blocks[i_block + 2] := [var];
         };
       };
