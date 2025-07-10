@@ -96,55 +96,55 @@ module {
   /// Runtime: `O(count)`
   public func addMany<X>(vec : Vector<X>, count : Nat, initValue : X) {
     let (b, e) = locate(size(vec) + count);
-    let blocks = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
 
-    let old_blocks = vec.data_blocks.size();
-    if (old_blocks < blocks) {
-      let old_data_blocks = vec.data_blocks;
-      let data_blocks = Array.init<[var ?X]>(blocks, [var]);
-      var i = 0;
-      while (i < old_blocks) {
-        data_blocks[i] := old_data_blocks[i];
-        i += 1;
+    // create new data blocks if needed
+    do {
+      let blocks = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
+      let old_blocks = vec.data_blocks.size();
+      if (old_blocks < blocks) {
+        let old_data_blocks = vec.data_blocks;
+        vec.data_blocks := Array.tabulateVar<[var ?X]>(
+          blocks,
+          func(i) = if (i < old_blocks) old_data_blocks[i] else [var],
+        );
       };
-      vec.data_blocks := data_blocks;
     };
 
     let data_blocks = vec.data_blocks;
     var i_element = vec.i_element;
     var i_block = vec.i_block;
 
-    var cnt = count;
-    while (cnt > 0) {
+    while (i_block < b) {
+      let block = data_blocks[i_block];
       let db_size = data_block_size(i_block);
-
-      var block = data_blocks[i_block];
       if (block.size() == 0) {
-        block :=  Array.init<?X>(db_size, if (i_element == 0 and db_size <= cnt) ?initValue else null);
-        data_blocks[i_block] := block;
-      };
-
-      let from = i_element;
-      let to = natMin(i_element + cnt, db_size);
-
-      if (not (from == 0 and to == db_size)) {
-        var i = from;
-        while (i < to) {
-          block[i] := ?initValue;
-          i += 1;
+        // i_element must be 0 here
+        data_blocks[i_block] := Array.init<?X>(db_size, ?initValue);
+      } else {
+        while (i_element < db_size) {
+          block[i_element] := ?initValue;
+          i_element += 1;
         };
-      };
-
-      i_element := to;
-      if (i_element == db_size) {
         i_element := 0;
-        i_block += 1;
       };
-      cnt -= to - from;
+      i_block += 1;
     };
-    
-    vec.i_block := i_block;
-    vec.i_element := i_element;
+
+    // now i_block == b
+    if (e > 0) {
+      let db_size = data_block_size(b);
+      if (data_blocks[b].size() == 0) {
+        data_blocks[b] := Array.init<?X>(db_size, null);
+      };
+      let block = data_blocks[b];
+      while (i_element < e) {
+        block[i_element] := ?initValue;
+        i_element += 1;
+      };
+    };
+
+    vec.i_block := b;
+    vec.i_element := e;
   };
 
   /// Resets the vector to size 0, de-referencing all elements.
