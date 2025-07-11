@@ -120,16 +120,17 @@ module {
 
       var block = data_blocks[i_block];
       let fill = if (block.size() == 0) {
-        let fill = i_element == 0 and db_size <= cnt;
-        block := Array.init<?X>(db_size, if (fill) ?initValue else null);
+        // i_element should be equal to 0 here
+        let fill = db_size > cnt;
+        block := Array.init<?X>(db_size, if (fill) null else ?initValue);
         data_blocks[i_block] := block;
         fill;
-      } else false;
+      } else true;
 
       let from = i_element;
       let to = natMin(i_element + cnt, db_size);
 
-      if (not fill) {
+      if (fill) {
         var i = from;
         while (i < to) {
           block[i] := ?initValue;
