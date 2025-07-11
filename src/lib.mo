@@ -95,17 +95,18 @@ module {
   ///
   /// Runtime: `O(count)`
   public func addMany<X>(vec : Vector<X>, count : Nat, initValue : X) {
+    // end position after adding 
     let (b, e) = locate(size(vec) + count);
 
-    // create new data blocks if needed
+    // expand index block if needed
     do {
-      let blocks = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
-      let old_blocks = vec.data_blocks.size();
-      if (old_blocks < blocks) {
-        let old_data_blocks = vec.data_blocks;
-        vec.data_blocks := Array.tabulateVar<[var ?X]>(
-          blocks,
-          func(i) = if (i < old_blocks) old_data_blocks[i] else [var],
+      let new_len = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
+      let old_len = vec.data_blocks.size();
+      if (old_len < new_len) {
+        vec.data_blocks := vec.data_blocks
+        |> Array.tabulateVar<[var ?X]>(
+          new_len,
+          func(i) = if (i < old_len) _ [i] else [var],
         );
       };
     };
@@ -114,31 +115,33 @@ module {
     var i_element = vec.i_element;
     var i_block = vec.i_block;
 
+    // all data blocks that need to be completely filled
     while (i_block < b) {
-      let block = data_blocks[i_block];
+      let current_block = data_blocks[i_block];
       let db_size = data_block_size(i_block);
-      if (block.size() == 0) {
-        // i_element must be 0 here
+      if (current_block.size() == 0) {
+        // allocate entire new block
         data_blocks[i_block] := Array.init<?X>(db_size, ?initValue);
       } else {
+        // fill up existing block
         while (i_element < db_size) {
-          block[i_element] := ?initValue;
+          current_block[i_element] := ?initValue;
           i_element += 1;
         };
-        i_element := 0;
       };
+      i_element := 0;
       i_block += 1;
     };
 
-    // now i_block == b
+    // partially filled last block (if needed)
     if (e > 0) {
       let db_size = data_block_size(b);
       if (data_blocks[b].size() == 0) {
         data_blocks[b] := Array.init<?X>(db_size, null);
       };
-      let block = data_blocks[b];
+      let last_block = data_blocks[b];
       while (i_element < e) {
-        block[i_element] := ?initValue;
+        last_block[i_element] := ?initValue;
         i_element += 1;
       };
     };
