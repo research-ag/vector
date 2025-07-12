@@ -57,23 +57,21 @@ module {
   /// ```
   ///
   /// Runtime: `O(size)`
-  public func init<X>(size : Nat, initValue : X) : Vector<X> = initInteranal(size, ?initValue);
-
-  private func initInteranal<X>(size : Nat, initValue : ?X) : Vector<X> {
+  public func init<X>(size : Nat, initValue : X) : Vector<X> {
     let (i_block, i_element) = locate(size);
 
     let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
     let data_blocks = Array.init<[var ?X]>(blocks, [var]);
     var i = 1;
     while (i < i_block) {
-      data_blocks[i] := Array.init<?X>(data_block_size(i), initValue);
+      data_blocks[i] := Array.init<?X>(data_block_size(i), ?initValue);
       i += 1;
     };
     if (i_element != 0 and i_block < blocks) {
       let block = Array.init<?X>(data_block_size(i), null);
       var j = 0;
       while (j < i_element) {
-        block[j] := initValue;
+        block[j] := ?initValue;
         j += 1;
       };
       data_blocks[i] := block;
@@ -945,30 +943,16 @@ module {
   /// Runtime: `O(size)`
   public func toArray<X>(vec : Vector<X>) : [X] = Array.tabulate<X>(size(vec), vals_(vec).unsafe_next_i);
 
-  private func vals_<X>(list : Vector<X>) : {
+  private func vals_<X>(vec : Vector<X>) : {
     next : () -> ?X;
     unsafe_next : () -> X;
     unsafe_next_i : Nat -> X;
-    next_set : X -> ();
-  } = vals_from_(0, list);
-
-  private func vals_from_<X>(start : Nat, vec : Vector<X>) : {
-    next : () -> ?X;
-    unsafe_next : () -> X;
-    unsafe_next_i : Nat -> X;
-    next_set : X -> ();
   } = object {
     let blocks = vec.data_blocks.size();
     var i_block = 0;
     var i_element = 0;
-    if (start != 0) {
-      let (block, element) = if (start == 0) (0, 0) else locate(start - 1);
-      i_block := block;
-      i_element := element + 1;
-    };
-
-    var db : [var ?X] = vec.data_blocks[i_block];
-    var db_size = db.size();
+    var db_size = 0;
+    var db : [var ?X] = [var];
 
     public func next() : ?X {
       if (i_element == db_size) {
@@ -1031,19 +1015,6 @@ module {
         };
         case (_) Prim.trap(INTERNAL_ERROR);
       };
-    };
-
-    public func next_set(value : X) {
-      if (i_element == db_size) {
-        i_block += 1;
-        if (i_block >= blocks) Prim.trap(INTERNAL_ERROR);
-        db := vec.data_blocks[i_block];
-        db_size := db.size();
-        if (db_size == 0) Prim.trap(INTERNAL_ERROR);
-        i_element := 0;
-      };
-      db[i_element] := ?value;
-      i_element += 1;
     };
   };
 
@@ -1206,11 +1177,18 @@ module {
   public func last<X>(vec : Vector<X>) : X {
     let e = vec.i_element;
     if (e > 0) {
-      let ?x = vec.data_blocks[vec.i_block][e - 1] else Prim.trap(INTERNAL_ERROR);
-      return x;
+      switch (vec.data_blocks[vec.i_block][e - 1]) {
+        case (?x) return x;
+        case _ Prim.trap(INTERNAL_ERROR);
+      };
     };
-    let ?x = vec.data_blocks[vec.i_block - 1][0] else Prim.trap "Vector index out of bounds in first";
-    return x;
+    let block = vec.data_blocks[vec.i_block - 1];
+    let b = block.size();
+    if (b == 0) Prim.trap "Vector index out of bounds in last";
+    switch(block[b - 1]) {
+      case (?x) return x;
+      case _ Prim.trap(INTERNAL_ERROR);
+    };
   };
 
   /// Applies `f` to each element in `vec`.
@@ -1772,75 +1750,4 @@ module {
   public func isEmpty<X>(vec : Vector<X>) : Bool {
     vec.i_block == 1 and vec.i_element == 0;
   };
-
-  /// Concatenates the provided slices into a new list.
-  /// Each slice is a tuple of a list, a starting index (inclusive), and an ending index (exclusive).
-  ///
-  /// Example:
-  /// ```motoko include=import
-  /// import Nat "mo:base/Nat";
-  /// import Iter "mo:base/Iter";
-  ///
-  /// let list1 = Vector.fromArray<Nat>([1, 2, 3]);
-  /// let list2 = Vector.fromArray<Nat>([4, 5, 6]);
-  /// let result = Vector.concatSlices<Nat>([(list1, 0, 2), (list2, 1, 3)]);
-  /// assert Iter.toArray(Vector.vals(result)) == [1, 2, 5, 6];
-  /// ```
-  ///
-  /// Runtime: `O(size)` where `size` is the sum of the sizes of all slices.
-  ///
-  /// Space: `O(size)`
-  public func concatSlices<X>(slices : [(Vector<X>, fromInclusive : Nat, toExclusive : Nat)]) : Vector<X> {
-    var length = 0;
-    for (slice in slices.vals()) {
-      let (list, start, end) = slice;
-      let sz = size<X>(list);
-      let ok = start <= end and end <= sz;
-      if (not ok) {
-        Prim.trap("Invalid slice in concat");
-      };
-      length += end - start;
-    };
-
-    var result = initInteranal<X>(length, null);
-    var resultIter = vals_(result);
-    for (slice in slices.vals()) {
-      let (list, start, end) = slice;
-      let values = vals_from_<X>(start, list);
-      var i = start;
-      while (i < end) {
-        let copiedValue = values.unsafe_next();
-        resultIter.next_set(copiedValue);
-        i += 1;
-      };
-    };
-
-    result;
-  };
-
-  /// Concatenates the provided lists into a new list.
-  ///
-  /// Example:
-  /// ```motoko include=import
-  /// import Nat "mo:base/Nat";
-  /// import Iter "mo:base/Iter";
-  ///
-  /// let list1 = Vector.fromArray<Nat>([1,2,3]);
-  /// let list2 = Vector.fromArray<Nat>([4,5,6]);
-  /// let result = Vector.concat<Nat>([list1, list2]);
-  /// assert Iter.toArray(Vector.values(result)) == [1,2,5,6];
-  /// ```
-  ///
-  /// Runtime: `O(size)` where `size` is the sum of the sizes of all vectors.
-  ///
-  /// Space: `O(size)`
-  public func concat<X>(vectors : [Vector<X>]) : Vector<X> {
-    concatSlices<X>(
-      Array.map<Vector<X>, (Vector<X>, Nat, Nat)>(
-        vectors,
-        func(vector) = (vector, 0, size(vector)),
-      )
-    );
-  };
-
 };
