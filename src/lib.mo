@@ -93,19 +93,15 @@ module {
   ///
   /// Runtime: `O(count)`
   public func addMany<X>(vec : Vector<X>, count : Nat, initValue : X) {
+    // extend index block if needed
     let (b, e) = locate(size(vec) + count);
-    let blocks = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
-
-    let old_blocks = vec.data_blocks.size();
-    if (old_blocks < blocks) {
-      let old_data_blocks = vec.data_blocks;
-      let data_blocks = Array.init<[var ?X]>(blocks, [var]);
-      var i = 0;
-      while (i < old_blocks) {
-        data_blocks[i] := old_data_blocks[i];
-        i += 1;
-      };
-      vec.data_blocks := data_blocks;
+    let new_len = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
+    let old_len = vec.data_blocks.size();
+    if (old_len < new_len) {
+      vec.data_blocks := Array.tabulateVar<[var ?X]>(
+        new_len,
+        func(i) = if (i < old_len) vec.data_blocks[i] else [var],
+      );
     };
 
     let data_blocks = vec.data_blocks;
@@ -1185,7 +1181,7 @@ module {
     let block = vec.data_blocks[vec.i_block - 1];
     let b = block.size();
     if (b == 0) Prim.trap "Vector index out of bounds in last";
-    switch(block[b - 1]) {
+    switch (block[b - 1]) {
       case (?x) return x;
       case _ Prim.trap(INTERNAL_ERROR);
     };
