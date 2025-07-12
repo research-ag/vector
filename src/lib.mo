@@ -115,35 +115,33 @@ module {
     var i_block = vec.i_block;
 
     var cnt = count;
-    while (cnt > 0) {
+    label L while (cnt > 0) {
       let db_size = data_block_size(i_block);
 
-      var block = data_blocks[i_block];
-      let fill = if (block.size() == 0) {
-        // i_element should be equal to 0 here
-        let fill = db_size > cnt;
-        block := Array.init<?X>(db_size, if (fill) null else ?initValue);
-        data_blocks[i_block] := block;
-        fill;
-      } else true;
-
-      let from = i_element;
-      let to = natMin(i_element + cnt, db_size);
-
-      if (fill) {
-        var i = from;
-        while (i < to) {
-          block[i] := ?initValue;
-          i += 1;
+      if (data_blocks[i_block].size() == 0) {
+        // i_element is 0 here
+        if (cnt >= db_size) {
+          data_blocks[i_block] := Array.init<?X>(db_size, ?initValue);
+          i_block += 1;
+          cnt -= db_size;
+          continue L;
         };
+        data_blocks[i_block] := Array.init<?X>(db_size, null);
       };
 
-      i_element := to;
+      let block = data_blocks[i_block];
+      let to = natMin(i_element + cnt, db_size);
+      cnt -= to - i_element;
+
+      while (i_element < to) {
+        block[i_element] := ?initValue;
+        i_element += 1;
+      };
+
       if (i_element == db_size) {
         i_element := 0;
         i_block += 1;
       };
-      cnt -= to - from;
     };
 
     vec.i_block := i_block;
