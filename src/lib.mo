@@ -116,9 +116,8 @@ module {
 
     var cnt = count;
     label L while (cnt > 0) {
-      let db_size = data_block_size(i_block);
-
       if (data_blocks[i_block].size() == 0) {
+        let db_size = data_block_size(i_block);
         // i_element is 0 here
         if (cnt >= db_size) {
           data_blocks[i_block] := Array.init<?X>(db_size, ?initValue);
@@ -130,6 +129,7 @@ module {
       };
 
       let block = data_blocks[i_block];
+      let db_size = block.size();
       let to = natMin(i_element + cnt, db_size);
       cnt -= to - i_element;
 
