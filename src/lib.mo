@@ -93,49 +93,53 @@ module {
   ///
   /// Runtime: `O(count)`
   public func addMany<X>(vec : Vector<X>, count : Nat, initValue : X) {
-    let (i_block, i_element) = locate(size(vec) + count);
-    let blocks = new_index_block_length(Nat32(if (i_element == 0) { i_block - 1 } else i_block));
-
-    let old_blocks = vec.data_blocks.size();
-    if (old_blocks < blocks) {
-      let old_data_blocks = vec.data_blocks;
-      vec.data_blocks := Array.init<[var ?X]>(blocks, [var]);
-      var i = 0;
-      while (i < old_blocks) {
-        vec.data_blocks[i] := old_data_blocks[i];
-        i += 1;
-      };
+    // extend index block if needed
+    let (b, e) = locate(size(vec) + count);
+    let new_len = new_index_block_length(Nat32(if (e == 0) b - 1 else b));
+    let old_len = vec.data_blocks.size();
+    if (old_len < new_len) {
+      vec.data_blocks := Array.tabulateVar<[var ?X]>(
+        new_len,
+        func(i) = if (i < old_len) vec.data_blocks[i] else [var],
+      );
     };
+
+    let data_blocks = vec.data_blocks;
+    var i_element = vec.i_element;
+    var i_block = vec.i_block;
 
     var cnt = count;
-    while (cnt > 0) {
-      let db_size = data_block_size(vec.i_block);
-      if (vec.i_element == 0 and db_size <= cnt) {
-        vec.data_blocks[vec.i_block] := Array.init<?X>(db_size, ?initValue);
-        cnt -= db_size;
-        vec.i_block += 1;
-      } else {
-        if (vec.data_blocks[vec.i_block].size() == 0) {
-          vec.data_blocks[vec.i_block] := Array.init<?X>(db_size, null);
+    label L while (cnt > 0) {
+      if (data_blocks[i_block].size() == 0) {
+        let db_size = data_block_size(i_block);
+        // i_element is 0 here
+        if (cnt >= db_size) {
+          data_blocks[i_block] := Array.init<?X>(db_size, ?initValue);
+          i_block += 1;
+          cnt -= db_size;
+          continue L;
         };
-        let from = vec.i_element;
-        let to = natMin(vec.i_element + cnt, db_size);
+        data_blocks[i_block] := Array.init<?X>(db_size, null);
+      };
 
-        let block = vec.data_blocks[vec.i_block];
-        var i = from;
-        while (i < to) {
-          block[i] := ?initValue;
-          i += 1;
-        };
+      let block = data_blocks[i_block];
+      let db_size = block.size();
+      let to = natMin(i_element + cnt, db_size);
+      cnt -= to - i_element;
 
-        vec.i_element := to;
-        if (vec.i_element == db_size) {
-          vec.i_element := 0;
-          vec.i_block += 1;
-        };
-        cnt -= to - from;
+      while (i_element < to) {
+        block[i_element] := ?initValue;
+        i_element += 1;
+      };
+
+      if (i_element == db_size) {
+        i_element := 0;
+        i_block += 1;
       };
     };
+
+    vec.i_block := i_block;
+    vec.i_element := i_element;
   };
 
   /// Resets the vector to size 0, de-referencing all elements.
@@ -359,7 +363,7 @@ module {
 
       // Keep one totally empty block when removing
       if (i_block + 2 < vec.data_blocks.size()) {
-        if (vec.data_blocks[i_block + 2].size() == 0) {
+        if (vec.data_blocks[i_block + 2].size() > 0) {
           vec.data_blocks[i_block + 2] := [var];
         };
       };
@@ -1177,7 +1181,7 @@ module {
     let block = vec.data_blocks[vec.i_block - 1];
     let b = block.size();
     if (b == 0) Prim.trap "Vector index out of bounds in last";
-    switch(block[b - 1]) {
+    switch (block[b - 1]) {
       case (?x) return x;
       case _ Prim.trap(INTERNAL_ERROR);
     };
