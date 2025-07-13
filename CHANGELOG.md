@@ -1,5 +1,11 @@
 # Vector changelog
 
+## 0.4.2
+
+* Bugfix: last() could sometimes return wrong element
+* Memory efficiency: addMany() could sometimes allocate a data_block twice
+* Bump dependencies
+
 ## 0.4.1
 
 * Bugfix: removeLast can trap on empty vector
