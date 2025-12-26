@@ -1,5 +1,10 @@
 # Vector changelog
 
+## 0.4.3
+
+* Notice about using `List` instead
+* Bump dependencies
+
 ## 0.4.2
 
 * Bugfix: last() could sometimes return wrong element

@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: ZenVoich/setup-mops@v1
+      - uses: actions/checkout@v6
+      - uses: caffeinelabs/setup-mops@v1
       - uses: dfinity/setup-dfx@main
 
       - name: make sure moc is installed

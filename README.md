@@ -3,6 +3,14 @@
 
 # Vector data structure for Motoko
 
+**Important notice:** `Vector` has been integrated into the `core` package under the name `List`.
+This package will not be updated anymore.
+The use of `List` is encouraged over `Vector` for the following reasons:
+
+* `List` has a more modern API design. `Lists` are static records that can be declared stable and support dot notation without being classes.
+* `List` is a more comprehensive package. It has more convenience functions than `Vector`.
+* `List` has been optimized for instructions to a higher degree than `Vector`.
+
 ## Overview
 
 The `Vector` data structure is meant to be a replacement for `Array` when a growable and/or shrinkable data structure is needed.
