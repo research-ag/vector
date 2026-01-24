@@ -1,6 +1,6 @@
 [package]
 name = "vector"
-version = "0.4.3"
+version = "0.4.4"
 description = "Memory-efficient resizable array (replaces Buffer)"
 repository = "https://github.com/research-ag/vector"
 keywords = [ "array", "buffer", "resize", "optimized" ]

@@ -1,5 +1,10 @@
 # Vector changelog
 
+## 0.4.4
+
+* Bump bench dependency to 2.0.0
+* Remove unused test dependency
+
 ## 0.4.3
 
 * Notice about using `List` instead
