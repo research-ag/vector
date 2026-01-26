@@ -1,82 +1,91 @@
 import Array "mo:base/Array";
-import Bench "mo:bench";
 import Buffer "mo:base/Buffer";
-import Iter "mo:base/Iter";
 import Nat "mo:base/Nat";
-import Prim "mo:prim";
-import Text "mo:base/Text";
 
 import Vector "../src";
 
 module {
-  public func init() : Bench.Bench {
-    let bench = Bench.Bench();
+  type Schema = {
+    name : Text;
+    description : Text;
+    rows : [Text];
+    cols : [Text];
+  };
 
-    bench.name("Sorting Vector vs Buffer vs Array");
-    bench.description("In-place sorting of vector containing N Nat-s vs Array.sort vs Buffer.sort");
+  class BenchV1(schema : Schema, run : (Nat, Nat) -> ()) {
+    public func getVersion() : Nat = 1;
+    public func getSchema() : Schema = schema;
+    public let runCell = run;
 
-    let rows = [
-      "Sorted vector",
-      "Sorted buffer",
-      "Sorted array",
-      "Sorted vector (reversed)",
-      "Sorted buffer (reversed)",
-      "Sorted array (reversed)",
-      "Shuffled vector",
-      "Shuffled buffer",
-      "Shuffled array",
-    ];
+    // unused stuff just to satisfy types
+    public func name(_ : Text) {};
+    public func description(_ : Text) {};
+    public func rows(_ : [Text]) {};
+    public func cols(_ : [Text]) {};
+    public func runner(_ : (Text, Text) -> ()) {};
+    // end unused stuff
+  };
 
-    let cols = ["10", "100", "1000" /*, "1000000" */ ];
+  public func init() : BenchV1 {
+    let ns = [10, 100, 1_000, 10_000];
 
-    bench.rows(rows);
-    bench.cols(cols);
+    let schema : Schema = {
+      name = "Sorting Vector vs Buffer vs Array Benchmark";
+      description = "In-place sorting of vector containing N Nat-s vs Array.sort vs Buffer.sort";
+      rows = [
+        "Sorted vector",
+        "Sorted buffer",
+        "Sorted array",
+        "Sorted vector (reversed)",
+        "Sorted buffer (reversed)",
+        "Sorted array (reversed)",
+        "Shuffled vector",
+        "Shuffled buffer",
+        "Shuffled array",
+      ];
+      cols = Array.map(ns, func(x) = Nat.toText(x));
+    };
 
-    let routines : [() -> ()] = Array.tabulate<() -> ()>(
-      rows.size() * cols.size(),
-      func(i) {
-        let row : Nat = i % rows.size();
-        let ?n = Nat.fromText(cols[i / rows.size()]) else Prim.trap("Cannot parse N");
+    let nCols = ns.size();
 
-        let shuffledChunk = [8, 6, 9, 0, 4, 2, 3, 7, 1, 5];
-        let generator : (Nat) -> Nat = switch (row / 3) {
-          case (0) func(i : Nat) = i;
-          case (1) func(i : Nat) = n - i - 1;
-          case (2) func(i : Nat) = shuffledChunk[i % 10] + 10**shuffledChunk[(i / 10) % 10];
-          case (_) Prim.trap("Row not implemented");
-        };
+    let shuffledChunk = [8, 6, 9, 0, 4, 2, 3, 7, 1, 5];
 
-        switch (row % 3) {
-          case (0) {
-            Array.tabulate<Nat>(n, generator)
-            |> Vector.fromArray<Nat>(_)
-            |> (func() = Vector.sort(_, Nat.compare));
+    let arrayInput : [[[Nat]]] = Array.tabulate<[[Nat]]>(
+      3,
+      func(r : Nat) = Array.tabulate<[Nat]>(
+        nCols,
+        func(ci) {
+          let n = ns[ci];
+          let generator : (Nat) -> Nat = switch (r) {
+            case (0) func i = i; // ordered
+            case (1) func i = n - i - 1; // reversed
+            case (_) func i = shuffledChunk[i % 10] + 10 ** shuffledChunk[(i / 10) % 10]; // shuffled
           };
-          case (1) {
-            let b = Buffer.Buffer<Nat>(n);
-            for (i in Iter.range(0, n - 1)) {
-              b.add(generator(i));
-            };
-            func() = b.sort(Nat.compare);
-          };
-          case (2) {
-            Array.tabulate<Nat>(n, generator)
-            |> (func() = ignore Array.sort<Nat>(_, Nat.compare));
-          };
-          case (_) Prim.trap("Can never happen");
-        };
-      },
+          Array.tabulate<Nat>(n, generator);
+        },
+      ),
     );
 
-    bench.runner(
-      func(row, col) {
-        let ?ci = Array.indexOf<Text>(col, cols, Text.equal) else Prim.trap("Cannot determine column: " # col);
-        let ?ri = Array.indexOf<Text>(row, rows, Text.equal) else Prim.trap("Cannot determine row: " # row);
+    let bufferInput = Array.map(arrayInput, func x = Array.map(x, func y = Buffer.fromArray<Nat>(y))); 
+    let vectorInput = Array.map(arrayInput, func x = Array.map(x, func y = Vector.fromArray<Nat>(y))); 
 
-        routines[ci * rows.size() + ri]();
-      }
-    );
+    func run(ri : Nat, ci : Nat) {
+      switch (ri % 3) {
+        case (0) {
+          let vec = vectorInput[ri / 3][ci];
+          Vector.sort(vec, Nat.compare);
+        };
+        case (1) {
+          let buf = bufferInput[ri / 3][ci];
+          buf.sort(Nat.compare);
+        };
+        case (_) {
+          let arr = arrayInput[ri / 3][ci];
+          ignore Array.sort<Nat>(arr, Nat.compare);
+        };
+      };
+    };
 
-    bench;
+    BenchV1(schema, run);
   };
 };

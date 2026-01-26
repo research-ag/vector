@@ -1,47 +1,71 @@
-import Bench "mo:bench";
 import Nat "mo:base/Nat";
-import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
 import Vector "../src";
+import { nat32ToNat = nat } "mo:prim";
 
 module {
-  public func init() : Bench.Bench {
-    let bench = Bench.Bench();
+  type Schema = {
+    name : Text;
+    description : Text;
+    rows : [Text];
+    cols : [Text];
+  };
 
-    bench.name("Vector vs Buffer vs Array");
-    bench.description("Vector/Buffer add items one-by-one. Array uses tabulate.");
+  class BenchV1(schema : Schema, run : (Nat, Nat) -> ()) {
+    public func getVersion() : Nat = 1;
+    public func getSchema() : Schema = schema;
+    public let runCell = run;
 
-    bench.rows(["Vector", "Buffer", "Array"]);
-    bench.cols(["10", "10000", "1000000"]);
+    // unused stuff just to satisfy types
+    public func name(_ : Text) {};
+    public func description(_ : Text) {};
+    public func rows(_ : [Text]) {};
+    public func cols(_ : [Text]) {};
+    public func runner(_ : (Text, Text) -> ()) {};
+    // end unused stuff
+  };
+
+  public func init() : BenchV1 {
+    let schema : Schema = {
+      name = "Vector vs Buffer vs Array Benchmark";
+      description = "Vector/Buffer add items one-by-one. Array uses tabulate.";
+      rows = ["Vector", "Buffer", "Array"];
+      cols = ["10", "10000", "1000000"];
+    };
 
     let vec = Vector.new<Nat>();
     let buf = Buffer.Buffer<Nat>(0);
     var arr = [] : [Nat];
+    let ns : [Nat32] = [10, 10000, 1000000];
 
-    bench.runner(func(row, col) {
-      let ?n = Nat.fromText(col);
+    func run(ri : Nat, ci : Nat) {
+      let n = ns[ci];
 
       // Vector
-      if (row == "Vector") {
-        for (i in Iter.range(1, n)) {
-          Vector.add(vec, i);
+      if (ri == 0) {
+        var i : Nat32 = 0; 
+        while (i < n) {
+          Vector.add(vec, nat(i));
+          i +%= 1;
         };
       };
 
       // Buffer
-      if (row == "Buffer") {
-        for (i in Iter.range(1, n)) {
-          buf.add(i);
+      if (ri == 1) {
+        var i : Nat32 = 0; 
+        while (i < n) {
+          buf.add(nat(i));
+          i +%= 1;
         };
       };
 
       // Array
-      if (row == "Array") {
-        arr := Array.tabulate<Nat>(n, func(i) = i);
+      if (ri == 2) {
+        arr := Array.tabulate<Nat>(nat(n), func(i) = i);
       };
-    });
+    };
 
-    bench;
+    BenchV1(schema, run);
   };
 };
