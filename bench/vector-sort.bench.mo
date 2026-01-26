@@ -1,8 +1,6 @@
 import Array "mo:base/Array";
 import Buffer "mo:base/Buffer";
 import Nat "mo:base/Nat";
-import Prim "mo:prim";
-import Text "mo:base/Text";
 
 import Vector "../src";
 
@@ -61,8 +59,7 @@ module {
           let generator : (Nat) -> Nat = switch (r) {
             case (0) func i = i; // ordered
             case (1) func i = n - i - 1; // reversed
-            case (2) func i = shuffledChunk[i % 10] + 10 ** shuffledChunk[(i / 10) % 10]; // shuffled
-            case (_) Prim.trap("Row not implemented");
+            case (_) func i = shuffledChunk[i % 10] + 10 ** shuffledChunk[(i / 10) % 10]; // shuffled
           };
           Array.tabulate<Nat>(n, generator);
         },
@@ -82,11 +79,10 @@ module {
           let buf = bufferInput[ri / 3][ci];
           buf.sort(Nat.compare);
         };
-        case (2) {
+        case (_) {
           let arr = arrayInput[ri / 3][ci];
           ignore Array.sort<Nat>(arr, Nat.compare);
         };
-        case (_) Prim.trap("Can never happen");
       };
     };
 

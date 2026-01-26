@@ -2,7 +2,7 @@ import Nat "mo:base/Nat";
 import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
 import Vector "../src";
-import Prim "mo:prim";
+import { nat32ToNat = nat } "mo:prim";
 
 module {
   type Schema = {
@@ -25,8 +25,6 @@ module {
     public func runner(_ : (Text, Text) -> ()) {};
     // end unused stuff
   };
-
-  let nat = Prim.nat32ToNat;
 
   public func init() : BenchV1 {
     let schema : Schema = {

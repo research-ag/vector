@@ -1,5 +1,10 @@
 # Vector changelog
 
+## 0.4.5
+
+* Improve benchmark accuracy
+* Bump bench dependency to 2.0.1
+
 ## 0.4.4
 
 * Bump bench dependency to 2.0.0
