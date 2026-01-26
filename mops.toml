@@ -10,8 +10,7 @@ license = "Apache-2.0"
 base = "0.16.0"
 
 [dev-dependencies]
-bench = "2.0.0"
-core = "2.0.0"
+bench = "2.0.1"
 matchers = "https://github.com/kritzcreek/motoko-matchers#v1.3.0@3dac8a071b69e4e651b25a7d9683fe831eb7cffd"
 
 [toolchain]
