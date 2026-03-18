@@ -1,35 +1,15 @@
-import Array "mo:base/Array";
+import Array "mo:core/Array";
 import Buffer "mo:base/Buffer";
-import Nat "mo:base/Nat";
+import Nat "mo:core/Nat";
+import Bench "mo:bench-helper";
 
 import Vector "../src";
 
 module {
-  type Schema = {
-    name : Text;
-    description : Text;
-    rows : [Text];
-    cols : [Text];
-  };
-
-  class BenchV1(schema : Schema, run : (Nat, Nat) -> ()) {
-    public func getVersion() : Nat = 1;
-    public func getSchema() : Schema = schema;
-    public let runCell = run;
-
-    // unused stuff just to satisfy types
-    public func name(_ : Text) {};
-    public func description(_ : Text) {};
-    public func rows(_ : [Text]) {};
-    public func cols(_ : [Text]) {};
-    public func runner(_ : (Text, Text) -> ()) {};
-    // end unused stuff
-  };
-
-  public func init() : BenchV1 {
+  public func init() : Bench.V1 {
     let ns = [10, 100, 1_000, 10_000];
 
-    let schema : Schema = {
+    let schema : Bench.Schema = {
       name = "Sorting Vector vs Buffer vs Array Benchmark";
       description = "In-place sorting of vector containing N Nat-s vs Array.sort vs Buffer.sort";
       rows = [
@@ -43,7 +23,7 @@ module {
         "Shuffled buffer",
         "Shuffled array",
       ];
-      cols = Array.map(ns, func(x) = Nat.toText(x));
+      cols = Array.map(ns, func(x) = x.toText());
     };
 
     let nCols = ns.size();
@@ -86,6 +66,6 @@ module {
       };
     };
 
-    BenchV1(schema, run);
+    Bench.V1(schema, run);
   };
 };

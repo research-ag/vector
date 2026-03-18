@@ -1,33 +1,12 @@
-import Nat "mo:base/Nat";
+import Array "mo:core/Array";
 import Buffer "mo:base/Buffer";
-import Array "mo:base/Array";
+import _Nat32 "mo:core/Nat32";
 import Vector "../src";
-import { nat32ToNat = nat } "mo:prim";
+import Bench "mo:bench-helper";
 
 module {
-  type Schema = {
-    name : Text;
-    description : Text;
-    rows : [Text];
-    cols : [Text];
-  };
-
-  class BenchV1(schema : Schema, run : (Nat, Nat) -> ()) {
-    public func getVersion() : Nat = 1;
-    public func getSchema() : Schema = schema;
-    public let runCell = run;
-
-    // unused stuff just to satisfy types
-    public func name(_ : Text) {};
-    public func description(_ : Text) {};
-    public func rows(_ : [Text]) {};
-    public func cols(_ : [Text]) {};
-    public func runner(_ : (Text, Text) -> ()) {};
-    // end unused stuff
-  };
-
-  public func init() : BenchV1 {
-    let schema : Schema = {
+  public func init() : Bench.V1 {
+    let schema : Bench.Schema = {
       name = "Vector vs Buffer vs Array Benchmark";
       description = "Vector/Buffer add items one-by-one. Array uses tabulate.";
       rows = ["Vector", "Buffer", "Array"];
@@ -46,7 +25,7 @@ module {
       if (ri == 0) {
         var i : Nat32 = 0; 
         while (i < n) {
-          Vector.add(vec, nat(i));
+          Vector.add(vec, i.toNat());
           i +%= 1;
         };
       };
@@ -55,17 +34,17 @@ module {
       if (ri == 1) {
         var i : Nat32 = 0; 
         while (i < n) {
-          buf.add(nat(i));
+          buf.add(i.toNat());
           i +%= 1;
         };
       };
 
       // Array
       if (ri == 2) {
-        arr := Array.tabulate<Nat>(nat(n), func(i) = i);
+        arr := Array.tabulate<Nat>(n.toNat(), func(i) = i);
       };
     };
 
-    BenchV1(schema, run);
+    Bench.V1(schema, run);
   };
 };
