@@ -1,5 +1,10 @@
 # Vector changelog
 
+## 0.4.6
+
+* Use bench-helper package
+* Now benchmark against `Array` from `core` (faster sort than `base`)
+
 ## 0.4.5
 
 * Improve benchmark accuracy

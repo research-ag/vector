@@ -371,7 +371,7 @@ module {
     };
     i_element -= 1;
 
-    var last_data_block = vec.data_blocks[vec.i_block];
+    let last_data_block = vec.data_blocks[vec.i_block];
 
     let element = last_data_block[i_element];
     last_data_block[i_element] := null;
