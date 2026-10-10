@@ -329,6 +329,16 @@ When growing we resize `data_blocks` (the outer array) so that it can store exac
 
 When shrinking we keep space in `data_blocks` for two additional super blocks. But unused data blocks in the last two super blocks are deallocated, i.e. set to the empty array.
 
+## Development
+
+### Formatting
+
+To format the code, run:
+
+```bash
+npx -y prettier --plugin prettier-plugin-motoko --write '**/*.{mo,json,md}'
+```
+
 ## Copyright
 
 MR Research AG, 2023-2024

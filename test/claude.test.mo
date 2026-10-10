@@ -8,7 +8,7 @@ import Iter "mo:base/Iter";
 // Helper function to run tests
 func runTest(name : Text, test : (Nat) -> Bool) {
   let testSizes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100];
-  for (n in testSizes.vals()) {
+  for (n in testSizes.values()) {
     if (test(n)) {
       Debug.print("✅ " # name # " passed for n = " # Nat.toText(n));
     } else {

@@ -1,5 +1,10 @@
 # Vector changelog
 
+## 0.4.7
+
+- Tests and benchmarks compile warning-free with moc 2.0.0
+- Switch test dependency to `matchers` 2.1.0 from mops
+
 ## 0.4.6
 
 - Use bench-helper package
