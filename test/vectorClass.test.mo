@@ -7,7 +7,6 @@ import M "mo:matchers/Matchers";
 import Prim "mo:⛔";
 import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
-import Option "mo:base/Option";
 import Array "mo:base/Array";
 import Nat32 "mo:base/Nat32";
 import Nat "mo:base/Nat";
@@ -35,17 +34,17 @@ class OrderTestable(initItem : Order.Order) : T.TestableItem<Order.Order> {
   public func display(order : Order.Order) : Text {
     switch (order) {
       case (#less) {
-        "#less"
+        "#less";
       };
       case (#greater) {
-        "#greater"
+        "#greater";
       };
       case (#equal) {
-        "#equal"
-      }
-    }
+        "#equal";
+      };
+    };
   };
-  public let equals = Order.equal
+  public let equals = Order.equal;
 };
 
 run(
@@ -141,7 +140,7 @@ let for_add_many = Vector.init<Nat>(n, 0);
 for_add_many.addMany(n, 0);
 
 let for_add_iter = Vector.init<Nat>(n, 0);
-Vector.addFromIter(for_add_iter, Array.init<Nat>(n, 0).vals());
+Vector.addFromIter(for_add_iter, Array.init<Nat>(n, 0).values());
 
 run(
   suite(
@@ -299,9 +298,9 @@ run(
 );
 
 var sumItems = 0;
-Vector.iterateItems<Nat>(vector, func(i,x) { sumItems += i + x });
+Vector.iterateItems<Nat>(vector, func(i, x) { sumItems += i + x });
 var sumItemsRev = 0;
-Vector.iterateItems<Nat>(vector, func(i,x) { sumItemsRev += i + x });
+Vector.iterateItems<Nat>(vector, func(i, x) { sumItemsRev += i + x });
 
 run(
   suite(
@@ -323,7 +322,7 @@ run(
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5]);
 
 run(
   suite(
@@ -332,14 +331,14 @@ run(
       test(
         "true",
         Vector.contains<Nat>(vector, 2, Nat.equal),
-        M.equals(T.bool(true))
+        M.equals(T.bool(true)),
       ),
       test(
         "true",
         Vector.contains<Nat>(vector, 9, Nat.equal),
-        M.equals(T.bool(false))
-      )
-    ]
+        M.equals(T.bool(false)),
+      ),
+    ],
   )
 );
 
@@ -354,20 +353,20 @@ run(
       test(
         "true",
         Vector.contains<Nat>(vector, 2, Nat.equal),
-        M.equals(T.bool(false))
+        M.equals(T.bool(false)),
       ),
       test(
         "true",
         Vector.contains<Nat>(vector, 9, Nat.equal),
-        M.equals(T.bool(false))
-      )
-    ]
+        M.equals(T.bool(false)),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([2,1,10,1,0,3]);
+vector := Vector.fromArray<Nat>([2, 1, 10, 1, 0, 3]);
 
 run(
   suite(
@@ -376,15 +375,15 @@ run(
       test(
         "return value",
         Vector.max<Nat>(vector, Nat.compare),
-        M.equals(T.optional(T.natTestable, ?10))
+        M.equals(T.optional(T.natTestable, ?10)),
       )
-    ]
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([2,1,10,1,0,3,0]);
+vector := Vector.fromArray<Nat>([2, 1, 10, 1, 0, 3, 0]);
 
 run(
   suite(
@@ -393,17 +392,17 @@ run(
       test(
         "return value",
         Vector.min<Nat>(vector, Nat.compare),
-        M.equals(T.optional(T.natTestable, ?0))
+        M.equals(T.optional(T.natTestable, ?0)),
       )
-    ]
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5]);
 
-var vector2 = Vector.fromArray<Nat>([0,1,2]);
+var vector2 = Vector.fromArray<Nat>([0, 1, 2]);
 
 run(
   suite(
@@ -412,33 +411,33 @@ run(
       test(
         "empty vectors",
         Vector.equal<Nat>(Vector.Vector<Nat>(), Vector.Vector<Nat>(), Nat.equal),
-        M.equals(T.bool(true))
+        M.equals(T.bool(true)),
       ),
       test(
         "non-empty vectors",
         Vector.equal<Nat>(vector, Vector.clone(vector), Nat.equal),
-        M.equals(T.bool(true))
+        M.equals(T.bool(true)),
       ),
       test(
         "non-empty and empty vectors",
         Vector.equal<Nat>(vector, Vector.Vector<Nat>(), Nat.equal),
-        M.equals(T.bool(false))
+        M.equals(T.bool(false)),
       ),
       test(
         "non-empty vectors mismatching lengths",
         Vector.equal<Nat>(vector, vector2, Nat.equal),
-        M.equals(T.bool(false))
-      )
-    ]
+        M.equals(T.bool(false)),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5]);
-vector2 := Vector.fromArray<Nat>([0,1,2]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5]);
+vector2 := Vector.fromArray<Nat>([0, 1, 2]);
 
-var vector3 = Vector.fromArray<Nat>([2,3,4,5]);
+var vector3 = Vector.fromArray<Nat>([2, 3, 4, 5]);
 
 run(
   suite(
@@ -447,35 +446,35 @@ run(
       test(
         "empty vectors",
         Vector.compare<Nat>(Vector.Vector<Nat>(), Vector.Vector<Nat>(), Nat.compare),
-        M.equals(OrderTestable(#equal))
+        M.equals(OrderTestable(#equal)),
       ),
       test(
         "non-empty vectors equal",
         Vector.compare<Nat>(vector, Vector.clone(vector), Nat.compare),
-        M.equals(OrderTestable(#equal))
+        M.equals(OrderTestable(#equal)),
       ),
       test(
         "non-empty and empty vectors",
         Vector.compare<Nat>(vector, Vector.Vector<Nat>(), Nat.compare),
-        M.equals(OrderTestable(#greater))
+        M.equals(OrderTestable(#greater)),
       ),
       test(
         "non-empty vectors mismatching lengths",
         Vector.compare<Nat>(vector, vector2, Nat.compare),
-        M.equals(OrderTestable(#greater))
+        M.equals(OrderTestable(#greater)),
       ),
       test(
         "non-empty vectors lexicographic difference",
         Vector.compare<Nat>(vector, vector3, Nat.compare),
-        M.equals(OrderTestable(#less))
-      )
-    ]
+        M.equals(OrderTestable(#less)),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5]);
 
 run(
   suite(
@@ -484,26 +483,26 @@ run(
       test(
         "empty vector",
         Vector.toText<Nat>(Vector.Vector<Nat>(), Nat.toText),
-        M.equals(T.text("[]"))
+        M.equals(T.text("[]")),
       ),
       test(
         "singleton vector",
         Vector.toText<Nat>(Vector.make<Nat>(3), Nat.toText),
-        M.equals(T.text("[3]"))
+        M.equals(T.text("[3]")),
       ),
       test(
         "non-empty vector",
         Vector.toText<Nat>(vector, Nat.toText),
-        M.equals(T.text("[0, 1, 2, 3, 4, 5]"))
-      )
-    ]
+        M.equals(T.text("[0, 1, 2, 3, 4, 5]")),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5,6,7]);
-vector2 := Vector.fromArray<Nat>([0,1,2,3,4,5,6]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6, 7]);
+vector2 := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6]);
 vector3 := Vector.Vector<Nat>();
 
 var vector4 = Vector.make<Nat>(3);
@@ -520,31 +519,31 @@ run(
       test(
         "even elements",
         Vector.toArray(vector),
-        M.equals(T.array(T.natTestable, [7, 6, 5, 4, 3, 2, 1, 0]))
+        M.equals(T.array(T.natTestable, [7, 6, 5, 4, 3, 2, 1, 0])),
       ),
       test(
         "odd elements",
         Vector.toArray(vector2),
-        M.equals(T.array(T.natTestable, [6, 5, 4, 3, 2, 1, 0]))
+        M.equals(T.array(T.natTestable, [6, 5, 4, 3, 2, 1, 0])),
       ),
       test(
         "empty",
         Vector.toArray(vector3),
-        M.equals(T.array(T.natTestable, [] : [Nat]))
+        M.equals(T.array(T.natTestable, [] : [Nat])),
       ),
       test(
         "singleton",
         Vector.toArray(vector4),
-        M.equals(T.array(T.natTestable, [3]))
-      )
-    ]
+        M.equals(T.array(T.natTestable, [3])),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.reversed<Nat>(Vector.fromArray<Nat>([0,1,2,3,4,5,6,7]));
-vector2 := Vector.reversed<Nat>(Vector.fromArray<Nat>([0,1,2,3,4,5,6]));
+vector := Vector.reversed<Nat>(Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6, 7]));
+vector2 := Vector.reversed<Nat>(Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6]));
 vector3 := Vector.reversed<Nat>(Vector.Vector<Nat>());
 vector4 := Vector.reversed<Nat>(Vector.make<Nat>(3));
 
@@ -555,30 +554,30 @@ run(
       test(
         "even elements",
         Vector.toArray(vector),
-        M.equals(T.array(T.natTestable, [7, 6, 5, 4, 3, 2, 1, 0]))
+        M.equals(T.array(T.natTestable, [7, 6, 5, 4, 3, 2, 1, 0])),
       ),
       test(
         "odd elements",
         Vector.toArray(vector2),
-        M.equals(T.array(T.natTestable, [6, 5, 4, 3, 2, 1, 0]))
+        M.equals(T.array(T.natTestable, [6, 5, 4, 3, 2, 1, 0])),
       ),
       test(
         "empty",
         Vector.toArray(vector3),
-        M.equals(T.array(T.natTestable, [] : [Nat]))
+        M.equals(T.array(T.natTestable, [] : [Nat])),
       ),
       test(
         "singleton",
         Vector.toArray(vector4),
-        M.equals(T.array(T.natTestable, [3]))
-      )
-    ]
+        M.equals(T.array(T.natTestable, [3])),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5,6]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6]);
 
 run(
   suite(
@@ -587,20 +586,20 @@ run(
       test(
         "return value",
         Vector.foldLeft<Text, Nat>(vector, "", func(acc, x) = acc # Nat.toText(x)),
-        M.equals(T.text("0123456"))
+        M.equals(T.text("0123456")),
       ),
       test(
         "return value empty",
         Vector.foldLeft<Text, Nat>(Vector.Vector<Nat>(), "", func(acc, x) = acc # Nat.toText(x)),
-        M.equals(T.text(""))
-      )
-    ]
+        M.equals(T.text("")),
+      ),
+    ],
   )
 );
 
 /* --------------------------------------- */
 
-vector := Vector.fromArray<Nat>([0,1,2,3,4,5,6]);
+vector := Vector.fromArray<Nat>([0, 1, 2, 3, 4, 5, 6]);
 
 run(
   suite(
@@ -609,14 +608,14 @@ run(
       test(
         "return value",
         Vector.foldRight<Nat, Text>(vector, "", func(x, acc) = acc # Nat.toText(x)),
-        M.equals(T.text("6543210"))
+        M.equals(T.text("6543210")),
       ),
       test(
         "return value empty",
         Vector.foldRight<Nat, Text>(Vector.Vector<Nat>(), "", func(x, acc) = acc # Nat.toText(x)),
-        M.equals(T.text(""))
-      )
-    ]
+        M.equals(T.text("")),
+      ),
+    ],
   )
 );
 
@@ -631,14 +630,14 @@ run(
       test(
         "true",
         Vector.isEmpty(Vector.Vector<Nat>()),
-        M.equals(T.bool(true))
+        M.equals(T.bool(true)),
       ),
       test(
         "false",
         Vector.isEmpty(vector),
-        M.equals(T.bool(false))
-      )
-    ]
+        M.equals(T.bool(false)),
+      ),
+    ],
   )
 );
 
@@ -716,7 +715,7 @@ func locate_optimal<X>(index : Nat) : (Nat, Nat) {
 
     // element mask = 2 ** (16 - lz2) = (1 << 16) >> lz2 = 0xFFFF >> lz2
     let mask = 0xFFFF >> lz2;
-    (Nat32.toNat(((i << lz2) >> 16) ^ (0x10000 >> lz2)), Nat32.toNat(i & (0xFFFF >> lz2)));
+    (Nat32.toNat(((i << lz2) >> 16) ^ (0x10000 >> lz2)), Nat32.toNat(i & mask));
   } else {
     // s / 2 = ceil(s / 2) = floor(s / 2) = 15 - lz2
     // i in binary = zeroes; 1; bits blocks mask; bits element mask
@@ -728,7 +727,7 @@ func locate_optimal<X>(index : Nat) : (Nat, Nat) {
     // we need to shift i by 15 - lz2, set bit with number 16 - lz2 and unset bit 15 - lz2
 
     let mask = 0x7FFF >> lz2;
-    (Nat32.toNat(((i << lz2) >> 15) ^ (0x18000 >> lz2)), Nat32.toNat(i & (0x7FFF >> lz2)));
+    (Nat32.toNat(((i << lz2) >> 15) ^ (0x18000 >> lz2)), Nat32.toNat(i & mask));
   };
 };
 

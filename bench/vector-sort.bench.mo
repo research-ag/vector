@@ -23,7 +23,7 @@ module {
         "Shuffled buffer",
         "Shuffled array",
       ];
-      cols = Array.map(ns, func(x) = x.toText());
+      cols = ns.map(func(x) = x.toText());
     };
 
     let nCols = ns.size();
@@ -46,8 +46,8 @@ module {
       ),
     );
 
-    let bufferInput = Array.map(arrayInput, func x = Array.map(x, func y = Buffer.fromArray<Nat>(y))); 
-    let vectorInput = Array.map(arrayInput, func x = Array.map(x, func y = Vector.fromArray<Nat>(y))); 
+    let bufferInput = arrayInput.map(func x = x.map(func y = Buffer.fromArray<Nat>(y)));
+    let vectorInput = arrayInput.map(func x = x.map(func y = Vector.fromArray<Nat>(y)));
 
     func run(ri : Nat, ci : Nat) {
       switch (ri % 3) {
@@ -61,7 +61,7 @@ module {
         };
         case (_) {
           let arr = arrayInput[ri / 3][ci];
-          ignore Array.sort<Nat>(arr, Nat.compare);
+          ignore arr.sort(Nat.compare);
         };
       };
     };

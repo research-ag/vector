@@ -140,7 +140,7 @@ let for_add_many = Vector.init<Nat>(n, 0);
 Vector.addMany(for_add_many, n, 0);
 
 let for_add_iter = Vector.init<Nat>(n, 0);
-Vector.addFromIter(for_add_iter, Array.init<Nat>(n, 0).vals());
+Vector.addFromIter(for_add_iter, Array.init<Nat>(n, 0).values());
 
 run(
   suite(
@@ -676,7 +676,7 @@ run(
     [
       test(
         "sort",
-        Vector.sort<Nat>(vector, Nat.compare) |> Vector.toArray(vector),
+        do { Vector.sort<Nat>(vector, Nat.compare); Vector.toArray(vector) },
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] |> M.equals(T.array(T.natTestable, _)),
       ),
     ],
@@ -735,7 +735,7 @@ func locate_optimal<X>(index : Nat) : (Nat, Nat) {
 
     // element mask = 2 ** (16 - lz2) = (1 << 16) >> lz2 = 0xFFFF >> lz2
     let mask = 0xFFFF >> lz2;
-    (Nat32.toNat(((i << lz2) >> 16) ^ (0x10000 >> lz2)), Nat32.toNat(i & (0xFFFF >> lz2)));
+    (Nat32.toNat(((i << lz2) >> 16) ^ (0x10000 >> lz2)), Nat32.toNat(i & mask));
   } else {
     // s / 2 = ceil(s / 2) = floor(s / 2) = 15 - lz2
     // i in binary = zeroes; 1; bits blocks mask; bits element mask
@@ -747,7 +747,7 @@ func locate_optimal<X>(index : Nat) : (Nat, Nat) {
     // we need to shift i by 15 - lz2, set bit with number 16 - lz2 and unset bit 15 - lz2
 
     let mask = 0x7FFF >> lz2;
-    (Nat32.toNat(((i << lz2) >> 15) ^ (0x18000 >> lz2)), Nat32.toNat(i & (0x7FFF >> lz2)));
+    (Nat32.toNat(((i << lz2) >> 15) ^ (0x18000 >> lz2)), Nat32.toNat(i & mask));
   };
 };
 
