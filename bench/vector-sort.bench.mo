@@ -46,8 +46,8 @@ module {
       ),
     );
 
-    let bufferInput = Array.map(arrayInput, func x = Array.map(x, func y = Buffer.fromArray<Nat>(y))); 
-    let vectorInput = Array.map(arrayInput, func x = Array.map(x, func y = Vector.fromArray<Nat>(y))); 
+    let bufferInput = Array.map(arrayInput, func x = Array.map(x, func y = Buffer.fromArray<Nat>(y)));
+    let vectorInput = Array.map(arrayInput, func x = Array.map(x, func y = Vector.fromArray<Nat>(y)));
 
     func run(ri : Nat, ci : Nat) {
       switch (ri % 3) {

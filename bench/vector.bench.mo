@@ -23,7 +23,7 @@ module {
 
       // Vector
       if (ri == 0) {
-        var i : Nat32 = 0; 
+        var i : Nat32 = 0;
         while (i < n) {
           Vector.add(vec, i.toNat());
           i +%= 1;
@@ -32,7 +32,7 @@ module {
 
       // Buffer
       if (ri == 1) {
-        var i : Nat32 = 0; 
+        var i : Nat32 = 0;
         while (i < n) {
           buf.add(i.toNat());
           i +%= 1;

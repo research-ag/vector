@@ -87,7 +87,7 @@ func testRemoveLast(n : Nat) : Bool {
     let expectedLast = Vector.last(vec);
     let last = Vector.removeLast(vec);
     if (last != ?expectedLast) {
-      Debug.print("Expected last value to be ?" # Nat.toText(expectedLast) # ", got " # debug_show(last));
+      Debug.print("Expected last value to be ?" # Nat.toText(expectedLast) # ", got " # debug_show (last));
       return false;
     };
     if (last != ?i) {

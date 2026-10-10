@@ -7,9 +7,9 @@
 This package will not be updated anymore.
 The use of `List` is encouraged over `Vector` for the following reasons:
 
-* `List` has a more modern API design. `Lists` are static records that can be declared stable and support dot notation without being classes.
-* `List` is a more comprehensive package. It has more convenience functions than `Vector`.
-* `List` has been optimized for instructions to a higher degree than `Vector`.
+- `List` has a more modern API design. `Lists` are static records that can be declared stable and support dot notation without being classes.
+- `List` is a more comprehensive package. It has more convenience functions than `Vector`.
+- `List` has been optimized for instructions to a higher degree than `Vector`.
 
 ## Overview
 
@@ -26,26 +26,26 @@ The API documentation can be found [here](https://mops.one/vector/docs/lib) on M
 
 For updates, help, questions, feedback and other requests related to this package join us on:
 
-* [OpenChat group](https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai)
-* [Twitter](https://twitter.com/mr_research_ag)
-* [Dfinity forum](https://forum.dfinity.org/)
+- [OpenChat group](https://oc.app/2zyqk-iqaaa-aaaar-anmra-cai)
+- [Twitter](https://twitter.com/mr_research_ag)
+- [Dfinity forum](https://forum.dfinity.org/)
 
 ### Characteristics
 
 The data structure is based on the paper [Resizable Arrays in Optimal Time and Space](https://sedgewick.io/wp-content/themes/sedgewick/papers/1999Optimal.pdf) by Brodnik, Carlsson, Demaine, Munro and Sedgewick (1999)
 which has the following characteristics:
 
-* based on a 2-dimensional array
-* persistent memory overhead: $O(\sqrt{n})$
-* worst-case instruction overhead: $O(\sqrt{n})$
-* no re-allocation or copying of data blocks
+- based on a 2-dimensional array
+- persistent memory overhead: $O(\sqrt{n})$
+- worst-case instruction overhead: $O(\sqrt{n})$
+- no re-allocation or copying of data blocks
 
 The implementation is furthermore cycle optimized.
 
 ### Motivation
 
 When developing smart contract canisters, to be sure that the canister does not ever run into cycle limits,
-one has to reason about the code's worst-case complexity. 
+one has to reason about the code's worst-case complexity.
 This is even more important as publicly accessible smart contract canisters don't control their input
 and operate in a potentially adversarial environment.
 Understanding worst-case behavior is often critical.
@@ -71,7 +71,7 @@ This is unlike `Buffer` which is a class and can not be directly declared `stabl
 `Vector` provides 40+ convenience functions that are modeled and named after the convenience functions of `Buffer`.
 This is done to make it as easy as possible to replace `Buffer` with Vector.
 
-If a `stable` declaration is not required then the package also provides a class version of `Vector`. 
+If a `stable` declaration is not required then the package also provides a class version of `Vector`.
 This can be used as a drop-in replacement for `Buffer` as it provides exactly the same interface.
 As with `Buffer`, the user can benefit from the convenient dot-notation for the class methods.
 
@@ -80,11 +80,13 @@ As with `Buffer`, the user can benefit from the convenient dot-notation for the 
 ### Install with mops
 
 You need `mops` installed. In your project directory run:
+
 ```
 mops add vector
 ```
 
 In the Motoko source file import the package as one of:
+
 ```
 import Vec "mo:vector";
 import Vec "mo:vector/Class";
@@ -127,6 +129,7 @@ v.size();
 ### Build & test
 
 For tests run:
+
 ```
 git clone git@github.com:research-ag/vector.git
 mops install
@@ -162,56 +165,56 @@ N = 100,000
 value data type: Nat
 ```
 
-|method|vector|vector class|buffer|array|
-|---|---|---|---|---|
-|init|15|15|14|14|
-|addMany|17|17|-|-|
-|clone|188|188|298|-|
-|add|336|378|552|-|
-|get|205|247|136|72|
-|getOpt|261|303|149|-|
-|put|266|309|152|82|
-|size|183|224|101|69|
-|removeLast|315|356|395|-|
-|indexOf|182|182|172|56|
-|firstIndexWith|163|163|-|-|
-|lastIndexOf|222|222|179|-|
-|lastIndexWith|203|203|-|-|
-|forAll|175|175|157|-|
-|forSome|163|163|162|-|
-|forNone|163|163|162|-|
-|iterate|106|106|140|-|
-|iterateRev|133|133|-|-|
-|vals|156|156|127|20|
-|valsRev|163|163|-|-|
-|items|266|266|-|-|
-|itemsRev|293|293|-|-|
-|keys|105|105|-|-|
-|iterateItems|142|142|-|-|
-|iterateItemsRev|177|177|-|-|
-|addFromIter|406|406|354|-|
-|toArray|158|158|117|-|
-|fromArray|163|163|190|-|
-|toVarArray|226|226|170|114|
-|fromVarArray|163|163|190|64|
-|clear|139|180|329|-|
-|contains|182|182|163|56|
-|max|174|174|191|57|
-|min|174|174|197|57|
-|equal|356|356|243|133|
-|compare|397|397|284|133|
-|toText|455|455|398|0|
-|foldLeft|163|163|176|69|
-|foldRight|190|190|192|135|
-|reverse|426|426|243|145|
-|reversed|412|412|243|145|
-|isEmpty|116|156|120|88|
+| method          | vector | vector class | buffer | array |
+| --------------- | ------ | ------------ | ------ | ----- |
+| init            | 15     | 15           | 14     | 14    |
+| addMany         | 17     | 17           | -      | -     |
+| clone           | 188    | 188          | 298    | -     |
+| add             | 336    | 378          | 552    | -     |
+| get             | 205    | 247          | 136    | 72    |
+| getOpt          | 261    | 303          | 149    | -     |
+| put             | 266    | 309          | 152    | 82    |
+| size            | 183    | 224          | 101    | 69    |
+| removeLast      | 315    | 356          | 395    | -     |
+| indexOf         | 182    | 182          | 172    | 56    |
+| firstIndexWith  | 163    | 163          | -      | -     |
+| lastIndexOf     | 222    | 222          | 179    | -     |
+| lastIndexWith   | 203    | 203          | -      | -     |
+| forAll          | 175    | 175          | 157    | -     |
+| forSome         | 163    | 163          | 162    | -     |
+| forNone         | 163    | 163          | 162    | -     |
+| iterate         | 106    | 106          | 140    | -     |
+| iterateRev      | 133    | 133          | -      | -     |
+| vals            | 156    | 156          | 127    | 20    |
+| valsRev         | 163    | 163          | -      | -     |
+| items           | 266    | 266          | -      | -     |
+| itemsRev        | 293    | 293          | -      | -     |
+| keys            | 105    | 105          | -      | -     |
+| iterateItems    | 142    | 142          | -      | -     |
+| iterateItemsRev | 177    | 177          | -      | -     |
+| addFromIter     | 406    | 406          | 354    | -     |
+| toArray         | 158    | 158          | 117    | -     |
+| fromArray       | 163    | 163          | 190    | -     |
+| toVarArray      | 226    | 226          | 170    | 114   |
+| fromVarArray    | 163    | 163          | 190    | 64    |
+| clear           | 139    | 180          | 329    | -     |
+| contains        | 182    | 182          | 163    | 56    |
+| max             | 174    | 174          | 191    | 57    |
+| min             | 174    | 174          | 197    | 57    |
+| equal           | 356    | 356          | 243    | 133   |
+| compare         | 397    | 397          | 284    | 133   |
+| toText          | 455    | 455          | 398    | 0     |
+| foldLeft        | 163    | 163          | 176    | 69    |
+| foldRight       | 190    | 190          | 192    | 135   |
+| reverse         | 426    | 426          | 243    | 145   |
+| reversed        | 412    | 412          | 243    | 145   |
+| isEmpty         | 116    | 156          | 120    | 88    |
 
 Note:
 
-* `add` is the function that can grow the data structure. It performs better in amortized terms than for `Buffer` because the growth events are cheaper. `Vector` only allocates new data blocks, it does not re-allocate and copy old data blocks. 
-* `get`, `put` and `getOpt` are the random access functions. `Vector` is a 2-dimensional array where (only) the second dimension has option-values, `Buffer` is a 1-dimensional array with option-values and `Array` is a 1-dimensional array with non-option-values. Hence, the expected access time for `Vector` is expected to be roughly the sum of access times for `Buffer` and `Array`. This is correctly reflected in the numbers.
-* All functions that iterate through the data structure are optimized in a way that they don't use random access. This is the reason that they are generally only slighly (0-35%) more costly than `Buffer`. In some case the function can be cheaper than for `Buffer` (`iterate`, `max`, `min`).
+- `add` is the function that can grow the data structure. It performs better in amortized terms than for `Buffer` because the growth events are cheaper. `Vector` only allocates new data blocks, it does not re-allocate and copy old data blocks.
+- `get`, `put` and `getOpt` are the random access functions. `Vector` is a 2-dimensional array where (only) the second dimension has option-values, `Buffer` is a 1-dimensional array with option-values and `Array` is a 1-dimensional array with non-option-values. Hence, the expected access time for `Vector` is expected to be roughly the sum of access times for `Buffer` and `Array`. This is correctly reflected in the numbers.
+- All functions that iterate through the data structure are optimized in a way that they don't use random access. This is the reason that they are generally only slighly (0-35%) more costly than `Buffer`. In some case the function can be cheaper than for `Buffer` (`iterate`, `max`, `min`).
 
 ### Memory
 
@@ -224,63 +227,64 @@ In some cases, the value depends on the size N of the `Vector`,
 e.g. `init`, `addMany`, `clone`, etc.
 
 In cases when there is an amortized cost such as `add`, `removeLast` then the function is executed N times
-so that one can get an idea of the average. 
+so that one can get an idea of the average.
 
 ```
 N = 100,000
 value data type: Nat
 ```
-|method|vector|vector class|buffer|array|
-|---|---|---|---|---|
-|init|408688|409076|400504|400008|
-|addMany|408640|408640|-|-|
-|clone|425032|425420|553568|-|
-|add|416060|416060|1659216|-|
-|get|0|0|0|0|
-|getOpt|0|0|0|-|
-|put|0|0|0|0|
-|size|0|0|0|0|
-|removeLast|7404|7404|553112|-|
-|indexOf|28|28|0|0|
-|firstIndexWith|8|8|-|-|
-|lastIndexOf|20|20|0|-|
-|lastIndexWith|0|0|-|-|
-|forAll|24|24|48|-|
-|forSome|8|8|48|-|
-|forNone|8|8|48|-|
-|iterate|8|8|48|-|
-|iterateRev|0|0|-|-|
-|vals|172|172|48|0|
-|valsRev|68|68|-|-|
-|items|1600104|1600104|-|-|
-|itemsRev|1600080|1600080|-|-|
-|keys|44|44|-|-|
-|iterateItems|8|8|-|-|
-|iterateItemsRev|0|0|-|-|
-|addFromIter|416060|416060|1200008|-|
-|toArray|400180|400180|400024|-|
-|fromArray|408716|409104|600504|-|
-|toVarArray|400180|400180|400008|400008|
-|fromVarArray|408716|409104|600504|400024|
-|clear|20|20|40|-|
-|contains|28|28|48|0|
-|max|36|36|48|0|
-|min|36|36|48|0|
-|equal|344|344|0|0|
-|compare|344|344|0|0|
-|toText|3200164|3200164|3199992|296|
-|foldLeft|36|36|48|0|
-|foldRight|28|28|0|0|
-|reverse|0|0|0|400028|
-|reversed|416144|416532|0|400028|
-|isEmpty|0|0|0|0|
+
+| method          | vector  | vector class | buffer  | array  |
+| --------------- | ------- | ------------ | ------- | ------ |
+| init            | 408688  | 409076       | 400504  | 400008 |
+| addMany         | 408640  | 408640       | -       | -      |
+| clone           | 425032  | 425420       | 553568  | -      |
+| add             | 416060  | 416060       | 1659216 | -      |
+| get             | 0       | 0            | 0       | 0      |
+| getOpt          | 0       | 0            | 0       | -      |
+| put             | 0       | 0            | 0       | 0      |
+| size            | 0       | 0            | 0       | 0      |
+| removeLast      | 7404    | 7404         | 553112  | -      |
+| indexOf         | 28      | 28           | 0       | 0      |
+| firstIndexWith  | 8       | 8            | -       | -      |
+| lastIndexOf     | 20      | 20           | 0       | -      |
+| lastIndexWith   | 0       | 0            | -       | -      |
+| forAll          | 24      | 24           | 48      | -      |
+| forSome         | 8       | 8            | 48      | -      |
+| forNone         | 8       | 8            | 48      | -      |
+| iterate         | 8       | 8            | 48      | -      |
+| iterateRev      | 0       | 0            | -       | -      |
+| vals            | 172     | 172          | 48      | 0      |
+| valsRev         | 68      | 68           | -       | -      |
+| items           | 1600104 | 1600104      | -       | -      |
+| itemsRev        | 1600080 | 1600080      | -       | -      |
+| keys            | 44      | 44           | -       | -      |
+| iterateItems    | 8       | 8            | -       | -      |
+| iterateItemsRev | 0       | 0            | -       | -      |
+| addFromIter     | 416060  | 416060       | 1200008 | -      |
+| toArray         | 400180  | 400180       | 400024  | -      |
+| fromArray       | 408716  | 409104       | 600504  | -      |
+| toVarArray      | 400180  | 400180       | 400008  | 400008 |
+| fromVarArray    | 408716  | 409104       | 600504  | 400024 |
+| clear           | 20      | 20           | 40      | -      |
+| contains        | 28      | 28           | 48      | 0      |
+| max             | 36      | 36           | 48      | 0      |
+| min             | 36      | 36           | 48      | 0      |
+| equal           | 344     | 344          | 0       | 0      |
+| compare         | 344     | 344          | 0       | 0      |
+| toText          | 3200164 | 3200164      | 3199992 | 296    |
+| foldLeft        | 36      | 36           | 48      | 0      |
+| foldRight       | 28      | 28           | 0       | 0      |
+| reverse         | 0       | 0            | 0       | 400028 |
+| reversed        | 416144  | 416532       | 0       | 400028 |
+| isEmpty         | 0       | 0            | 0       | 0      |
 
 Note:
 
-* `init` and `addMany` create a data structure of size N. Here we see the persistent $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
-* `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Vector` copies only its index block which is in the order of $\sqrt{N}$. 
-* `removeLast` shows the same effects as `add` but for shrink events.
-* `items` produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the `iterateItems` function may provide a better alternative for the use case.
+- `init` and `addMany` create a data structure of size N. Here we see the persistent $\sqrt{N}$ memory overhead for `Vector` relative to `Array`.
+- `add` shows the garbage creation of `Buffer` due to copying of the entire data block during growth events. `Vector` copies only its index block which is in the order of $\sqrt{N}$.
+- `removeLast` shows the same effects as `add` but for shrink events.
+- `items` produces a large amount of garbage because the iterator produces tupels (unlike vals which produces single Nat values in this example). If that is a problem than the `iterateItems` function may provide a better alternative for the use case.
 
 ## Design
 
@@ -290,8 +294,8 @@ The vector elements are stored in so-called data blocks and
 the whole data structure consists of a sequence of data blocks of increasing size.
 Hence it is in fact a two-dimensional array (but not a "square" one).
 
-The trick lies in the selection of the sizes of the data blocks. 
-They are chosen such that the conversion of the externally used single index 
+The trick lies in the selection of the sizes of the data blocks.
+They are chosen such that the conversion of the externally used single index
 to the internally used index pair can be cheaply done by bit shifts.
 
 The data block sizes can be better understood when thinking of the data blocks being arranged in "super blocks".
@@ -304,7 +308,7 @@ Hence, the sequence of data block sizes look like this:
 
 $$1,\ \ 2,\ \ 2,2,\ \ 4,4,\ \ 4,4,4,4,\ \ 8,8,8,8,\ \ ...$$
 
-where the additional white space indicates super block boundaries. 
+where the additional white space indicates super block boundaries.
 
 ## Implementation notes
 
@@ -321,17 +325,18 @@ We do not store any more information to reduce memory.
 But we also do not store less any information (such as only the total size in a single variable)
 as to not slow down access.
 
-When growing we resize `data_blocks` (the outer array) so that it can store exactly one next super block. But unused data blocks in the last super block are not allocated, i.e. set to the empty array. 
+When growing we resize `data_blocks` (the outer array) so that it can store exactly one next super block. But unused data blocks in the last super block are not allocated, i.e. set to the empty array.
 
 When shrinking we keep space in `data_blocks` for two additional super blocks. But unused data blocks in the last two super blocks are deallocated, i.e. set to the empty array.
 
 ## Copyright
 
 MR Research AG, 2023-2024
+
 ## Authors
 
 Andrii Stepanov with contributions from Timo Hanke, Andy Gura and react0r-com.
 
-## License 
+## License
 
 Apache-2.0
