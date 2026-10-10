@@ -16,7 +16,7 @@ matchers = "2.1.0"
 
 [toolchain]
 moc = "2.0.0"
-pocket-ic = "16.1.0"
+pocket-ic = "15.0.0"
 wasm-opt = "133"
 
 [requirements]
